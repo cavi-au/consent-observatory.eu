@@ -25,7 +25,7 @@ https://example2.eu`}"></textarea>
     <div class="mb-3 form-check">
         <input type="checkbox" class="form-check-input" id="include-screenshots-checkbox">
         <label class="form-check-label" for="include-screenshots-checkbox" aria-describedby="include-screenshots-checkbox-info">Include Screenshots</label>
-        <div id="include-screenshots-checkbox-info" class="form-text">If selected a screenshot of each url analyzed will be include in the result</div>
+        <div id="include-screenshots-checkbox-info" class="form-text">If selected a screenshot of each url analyzed will be included in the result</div>
     </div>
     <button type="submit" class="btn btn-primary" disabled={!formValid}>Submit</button>
 </form>
