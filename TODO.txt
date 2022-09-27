@@ -1,0 +1,15 @@
+
+
+forbedringer af webscraber tool.
+
+1. Improve scraper blocking workarounds: the more popular websites have ways to detect scrapers and block them,
+which has stopped me from being able to collect data on them. I was hoping workarounds could be implemented.
+Perhaps the Node-Unblocker library might be something easy to add? https://scrapfly.io/blog/web-scraping-with-node-unblocker/
+
+2. URL resolution: the library currently doesn't cycle through different protocols when one of them doesn't work,
+e.g., try both http, https, and www. I currently manually adjust this in the page-analyzer.js file ,
+but it would be good if this could just be built in.
+
+I think both of these adjustments would reduce the number of errors I currently get. I've attached a recent error log to show the kind of things I run into.
+se zenhub fil fra midas
+

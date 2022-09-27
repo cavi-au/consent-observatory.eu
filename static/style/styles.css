@@ -1,0 +1,38 @@
+body, #wrapper {
+    min-height: 100vh;
+}
+
+header {
+    border-bottom: 1px solid #ccc;
+    vertical-align: center;
+}
+
+#site-title {
+    color: #f9007e;
+    font-size: 18px;
+    margin-right: 8px;
+    padding-top: 3px;
+}
+
+#site-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.main {
+    max-width: 1200px;
+}
+
+.content {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+footer {
+    font-size: 12px;
+    height: 31px;
+    line-height: 30px;
+    border-top: 1px solid #ccc;
+    color: #333;
+    width: 100%;
+}
