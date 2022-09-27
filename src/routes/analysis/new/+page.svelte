@@ -30,6 +30,16 @@ https://example2.eu`}"></textarea>
     <button type="submit" class="btn btn-primary" disabled={!formValid}>Submit</button>
 </form>
 
+Følg bare sveltekits form guide og bruge use:enhance ,
+Ved success viser vi bare en besked om tak for request, request status kan ses på link..., der er også blevet sendt en mail med linket til din email.
+
+Og formen vises ikke... det gør den så når trykker på menu igen..
+
+Lav validering på serveren. tjek email (for om det er en email), tjek om alle url er gyldige, og ellers skriv hvilke der ikke er er (som fejlbesked).
+Antal url'es afhænger af om de på whitelist eller ej, tjek om de opfylder krav hvis ikke på whitelist
+Desuden tjek om bruger er tilladt at lave request. Hvis på whitelist -> OK ellers hvis de har pending/processing nej.
+Lav så man konfigurere hvor whitelist fil findes i env-vars, hvis den ikke findes er listen bare tom..., skriv warning til konsol ved opstart...
+
 <!--
 
  website with
