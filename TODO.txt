@@ -13,3 +13,10 @@ but it would be good if this could just be built in.
 I think both of these adjustments would reduce the number of errors I currently get. I've attached a recent error log to show the kind of things I run into.
 se zenhub fil fra midas
 
+
+TODO unser /analysis/status
+beskriv at filen automatisk bliver sletter om xxx dage, timer, minutter. Hvis man gerne vil oprette en ny analyse inden kan man slette filen ved at trykke på [DELETE] knap
+så slettes den med det samme ...
+
+er det et sikkerhedsmæssigt problem at browseren kan gemme url til status-side, skal den lave en session og sætte en cookie o redirecte i stedet, og så trækker den jobStatusId fra session,
+så browseren ikke gemmer url?

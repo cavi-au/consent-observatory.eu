@@ -1,25 +1,31 @@
+import * as crypto from "crypto";
+
 class Job {
 
-    #submitTime;
-    #processStartTime = null;
-    #completedTime = null;
     #id;
+    #submitTime;
+    #processingStartTime = null;
+    #completedTime = null;
     #userEmail;
     #urls;
 
     constructor(id, userEmail, urls) {
         this.#id = id;
-        this.#userEmail = userEmail;
+        this.#userEmail = userEmail.trim().toLowerCase();
         this.#urls = urls;
         this.#submitTime = Date.now();
+    }
+
+    get id() {
+        return this.#id;
     }
 
     get submitTime() {
         return this.#submitTime;
     }
 
-    get processStartTime() {
-        return this.#processStartTime;
+    get processingStartTime() {
+        return this.#processingStartTime;
     }
 
     get completedTime() {
@@ -34,10 +40,24 @@ class Job {
         return this.#urls;
     }
 
+    markProcessingStartTime() {
+        if (this.#processingStartTime) {
+            throw new Error('processStartTime already set');
+        }
+        this.#processingStartTime = Date.now();
+    }
+
+    markCompletedTime() {
+        if (this.#completedTime) {
+            throw new Error('completedTime already set');
+        }
+        this.#completedTime = Date.now();
+    }
+
     toJSON() {
         return {
             submitTime: this.#submitTime,
-            processStartTime: this.#processStartTime,
+            processStartTime: this.#processingStartTime,
             completedTime: this.#completedTime,
             userEmail: this.#userEmail,
             urls: this.#urls
@@ -48,13 +68,19 @@ class Job {
         return new Job(crypto.randomUUID(), userEmail, urls);
     }
 
-    static fromJSON(jsonStr) {
+    static fromJSONStr(jsonStr) {
         let json = JSON.parse(jsonStr);
-        let job = new Job(json.userEmail, json.urls);
-        job.#submitTime = json.submitTime;
-        job.#processStartTime = json.processStartTime;
-        job.#completedTime = json.completedTime;
+        return Job.fromJSON(json);
+    }
+
+    static fromJSON(jsonObj) {
+        let job = new Job(jsonObj.id, jsonObj.userEmail, jsonObj.urls);
+        job.#submitTime = jsonObj.submitTime;
+        job.#processingStartTime = jsonObj.processingStartTime;
+        job.#completedTime = jsonObj.completedTime;
         return job;
     }
 
 }
+
+export { Job };

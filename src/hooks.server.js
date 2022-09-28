@@ -1,12 +1,6 @@
 import { env as privateEnvVars } from '$env/dynamic/private';
 import * as serverState from './server-state.js';
 
-const REQUIRED_ENV_VARS = [
-	'JOBS_ROOT_DIR',
-];
-
-checkRequiredEnvVars();
-
 await serverState.init();
 
 /** @type {import('@sveltejs/kit').Handle} */
@@ -26,11 +20,3 @@ export const handle = async ({ event, resolve }) => {
 
 	return resolve(event);
 };
-
-function checkRequiredEnvVars() {
-	for (let envVar of REQUIRED_ENV_VARS) {
-		if (!privateEnvVars[envVar]) {
-			console.error(`required environment variable "${envVar}" not set`);
-		}
-	}
-}
