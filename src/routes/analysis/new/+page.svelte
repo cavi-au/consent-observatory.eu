@@ -1,28 +1,37 @@
 <script>
     import { enhance } from '$app/forms';
+    import CopyToClipboard from "$lib/client/components/CopyToClipboard.svelte";
 
     export let form;
 
-    $: {
-        console.log(form?.errors?.email)
-    }
 </script>
 
-<h1>Submit a New Analysis</h1>
-
 {#if form?.success}
-    <h2>Success TODO AND SOME ICON HERE</h2>
+    <h1>Success - Your Analysis Was Submitted <i class="bi-check2-square text-success"></i></h1>
     <p>
-        Your job was successfully submitted to the queue and will be processed as soon as possible. There are currently XXX jobs in the queue before yours.
-        An email with a <a href="/analysis/status?jobId={form.jobId}">status link</a> has been sent to your email address. You can always visit this link to see the current status of job.
+        Your analysis was successfully submitted to the queue and will be processed as soon as possible.
     </p>
     <p>
-        You will receive an email when the job is completed and your analysis result is ready for download.
+        There are currently <span class="badge rounded-pill text-bg-secondary">{form?.queueSize}</span> jobs in the queue before yours.
+    </p>
+    <p>
+        An email with your analysis-id: <code>{form?.jobId}</code> <CopyToClipboard value={form?.jobId} /> has been sent to your email address. You can also copy the id:
+        <code>{form?.jobId}</code> <CopyToClipboard value={form?.jobId} />
+        and see the current status now by visiting the <a href="/analysis/status">status page</a>.
+    </p>
+    <p>
+        You will receive a new email when the analysis is completed and your result is ready for download.
     </p>
 {:else}
-    <form use:enhance>
+    <h1>Submit a New Analysis</h1>
+    {#if form?.errors?.global}
+        <div class="alert alert-danger" role="alert">
+            {form?.errors?.global}
+        </div>
+    {/if}
+    <form method="POST" use:enhance>
         <div class="mb-3">
-            <label for="email-field" class="form-label">Your Email address</label>
+            <label for="email-field" class="form-label">Your Email Address</label>
             <input type="email" class="form-control" class:is-invalid={form?.errors?.email} name="email" id="email-field" aria-describedby="email-field-info email-field-error" placeholder="example@example.eu" value="{form?.data?.email ?? ''}">
             {#if form?.errors?.email}
                 <div id="email-field-error" class="invalid-feedback">{form?.errors?.email}</div>
@@ -48,21 +57,3 @@ https://example2.eu`}">{form?.data?.urls ?? ''}</textarea>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 {/if}
-
-
-
-Desuden tjek om bruger er tilladt at lave request. Hvis på whitelist -> OK ellers hvis de har pending/processing nej.
-Lav så man konfigurere hvor whitelist fil findes i env-vars, hvis den ikke findes er listen bare tom..., skriv warning til konsol ved opstart...
-
-<!--
-
- website with
-
-A textbox for people to type/(copy/paste) URLs (with some kind of regex to check formatting)
-// max limit of urls = 10?`if not on whitelist... I user already have a pending/running job, no new jobs can be submitted
-Radio buttons to set
-- Include Screenshots [ ]
-- Page-timeout
-Box to type in email to receive link to where to download result
-Submit button
--->

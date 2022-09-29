@@ -15,6 +15,7 @@
 	},
 	"dependencies": {
 		"archiver": "^5.3.1",
+		"chokidar": "^3.5.3",
 		"lodash": "^4.17.21"
 	}
 }

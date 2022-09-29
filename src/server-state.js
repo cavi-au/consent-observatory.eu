@@ -1,3 +1,5 @@
+import fs from 'fs';
+import chokidar from 'chokidar';
 import { JobExecutor } from "$lib/job/job-executor.js";
 import { env as privateEnvVars } from '$env/dynamic/private';
 
@@ -5,11 +7,13 @@ const REQUIRED_ENV_VARS = [
     'JOBS_ROOT_DIR',
 ];
 
+let env = {};
 checkRequiredEnvVars();
 loadEnvVars();
 
 let jobExecutor;
-let env = {};
+let emailWhitelist; // may be use this to it's own util if more files needs watching
+
 
 async function init() {
     let executorOpts = {
@@ -17,6 +21,29 @@ async function init() {
     };
     jobExecutor = new JobExecutor(env.JOBS_ROOT_DIR, executorOpts);
     await jobExecutor.init();
+    loadAndWatchEmailWhitelist();
+}
+
+function isEmailOnWhitelist(email) {
+    return emailWhitelist.has(email);
+}
+
+function loadAndWatchEmailWhitelist() {
+    let filePath = env.USER_EMAIL_WHITELIST_FILE_PATH;
+    if (filePath && fs.existsSync(filePath)) {
+        loadEmailWhitelist(filePath);
+        let watcher = chokidar.watch(filePath, { ignoreInitial: true, awaitWriteFinish: true });
+        watcher.on('change', () => loadEmailWhitelist(filePath));
+        watcher.on('error', (e) => console.error(e));
+    } else {
+        emailWhitelist = new Set(); // just empty set, so isUserOnWhitelist works
+    }
+}
+
+function loadEmailWhitelist(path) {
+    let fileContent = fs.readFileSync(path, 'utf-8');
+    let emails = fileContent.split(/\r?\n/).map(email => email.trim()).filter(email => email.length > 0);
+    emailWhitelist = new Set(emails);
 }
 
 function checkRequiredEnvVars() {
@@ -36,10 +63,10 @@ function loadEnvVars() {
     env.USER_DEFAULT_MAX_JOBS = Number.parseInt(privateEnvVars.USER_DEFAULT_MAX_JOBS ?? 1);
     env.USER_WHITELIST_MAX_URLS = Number.parseInt(privateEnvVars.USER_WHITELIST_MAX_URLS ?? 100);
     env.USER_WHITELIST_MAX_JOBS = Number.parseInt(privateEnvVars.USER_WHITELIST_MAX_JOBS ?? 1);
-    env.USER_WHITELIST_FILE_PATH = privateEnvVars.USER_WHITELIST_MAX_JOBS; // no default
+    env.USER_EMAIL_WHITELIST_FILE_PATH = privateEnvVars.USER_EMAIL_WHITELIST_FILE_PATH; // no default
 
     env = Object.freeze(env);
 }
 
-export { init, env, jobExecutor };
+export { init, env, jobExecutor, isEmailOnWhitelist };
 

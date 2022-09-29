@@ -11,7 +11,8 @@ header {
     color: #f9007e;
     font-size: 18px;
     margin-right: 8px;
-    padding-top: 3px;
+    padding-top: 7px;
+    padding-bottom: 7px;
 }
 
 #site-title a {
@@ -19,6 +20,9 @@ header {
     text-decoration: none;
 }
 
+.navbar-toggler {
+    font-size: 1rem;
+}
 .main {
     max-width: 1200px;
 }
@@ -26,6 +30,12 @@ header {
 .content {
     padding-top: 16px;
     padding-bottom: 16px;
+}
+
+pre.codeblock {
+    background-color: var(--bs-gray-100);
+    padding: 8px;
+    border-radius: 6px;
 }
 
 footer {

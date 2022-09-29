@@ -28,6 +28,9 @@
 							<a href="/analysis/new" class="nav-link" class:active={isMenuItemActive('/analysis/new', $page.url.pathname)}>New Analysis</a>
 						</li>
 						<li class="nav-item">
+							<a href="/help" class="nav-link" class:active={isMenuItemActive('/help', $page.url.pathname)}>Help</a>
+						</li>
+						<li class="nav-item">
 							<a href="/about" class="nav-link" class:active={isMenuItemActive('/about', $page.url.pathname)}>About</a>
 						</li>
 					</ul>

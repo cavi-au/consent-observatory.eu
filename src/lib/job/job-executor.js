@@ -49,9 +49,13 @@ class JobExecutor {
             }
         }
 
+        // clean up jobs not finished and put them back to pending state
         for (let file of await fsPromises.readdir(this.#processingDir)) {
             if (this.#isJobFile(file)) {
                 await fsPromises.rename(path.join(this.#processingDir, file), path.join(this.#pendingDir, file));
+                let job = await this.#readJobFromFile(path.join(this.#pendingDir, file));
+                Job.resetProcessingStartTime(job);
+                await this.#writeJobToDir(this.#pendingDir, job);
             }
         }
 
@@ -65,10 +69,16 @@ class JobExecutor {
 
         let completedJobs = await this.#readJobsFromDir(this.#completedDir);
         for (let job of completedJobs) {
-            this.#jobs.set(job.id, { job, status: JobExecutor.jobStatus.COMPLETED });
+            let jobInfo = this.#createJobInfoObject(job, JobExecutor.jobStatus.COMPLETED);
+            await this.#updateJobInfoMetaDataFileSize(jobInfo);
+            this.#jobs.set(job.id, jobInfo);
         }
 
         setInterval(this.#removeExpiredJobs, REMOVE_EXPIRED_JOBS_INTERVAL);
+    }
+
+    get queueSize() {
+        return this.#pendingJobs.length;
     }
 
     getJobsByEmail(email) {
@@ -91,18 +101,33 @@ class JobExecutor {
         return this.#jobs.get(job.id)?.status;
     }
 
+    getJobDataFileSize(job) {
+        if (this.getJobStatus(job) !== JobExecutor.jobStatus.COMPLETED) {
+            throw new Error('Job does not exist or is not completed');
+        }
+        return this.#jobs.get(job.id).meta.dataFileSize;
+    }
+
     /**
      *
      * @param {Job} job
      */
     async addJob(job) {
-        await this.#writeJobToDir(job, this.#pendingDir);
+        await this.#writeJobToDir(this.#pendingDir, job);
         this.#addJobToQueue(job);
+    }
+
+    getJobDataReadStream(job) {
+        if (this.getJobStatus(job) !== JobExecutor.jobStatus.COMPLETED) {
+            throw new Error('Job does not exist or is not completed');
+        }
+        let stream = fs.createReadStream(this.#getJobDataZipFilePath(this.#completedDir, job));
+        return stream;
     }
 
     #addJobToQueue(job) {
         this.#pendingJobs.push(job);
-        this.#jobs.set(job.id, { job, status: JobExecutor.jobStatus.PENDING });
+        this.#jobs.set(job.id, this.#createJobInfoObject(job, JobExecutor.jobStatus.PENDING));
         if (!this.#activeJob) {
             setImmediate(() => this.#pickAndExecuteNextJob());
         }
@@ -114,6 +139,7 @@ class JobExecutor {
         }
 
         let job = this.#pendingJobs.shift();
+        let jobInfo = this.#jobs.get(job.id);
 
         let jobDataDirPath = path.join(this.#processingDir, `data-${job.id}`);
         let processingJobDataZipPath = this.#getJobDataZipFilePath(this.#processingDir, job);
@@ -124,12 +150,13 @@ class JobExecutor {
 
         try {
             await fsPromises.rename(pendingJobPath, processingJobPath); // move to next dir, so it always only exists in one place
+            Job.resetProcessingStartTime(job); // in case some tampered with it from the outside or a fails occured while resetting unfinished jobs at restart
             job.markProcessingStartTime();
-            await this.#writeJobToDir(job, this.#processingDir);
+            await this.#writeJobToDir(this.#processingDir, job);
             await fsPromises.mkdir(jobDataDirPath);
 
             this.#activeJob = job;
-            this.#jobs.get(this.#activeJob.id).status = JobExecutor.jobStatus.PROCESSING;
+            jobInfo.status = JobExecutor.jobStatus.PROCESSING;
         } catch (e) {
             console.error(`Could not initiate job: "${job.id}" due to the following error`);
             console.error(e);
@@ -156,9 +183,10 @@ class JobExecutor {
             try {
                 await fsPromises.rename(processingJobPath, completedJobPath); // move to next dir, so it always only exists in one place
                 job.markCompletedTime();
-                await this.#writeJobToDir(job, this.#completedDir);
+                await this.#writeJobToDir(this.#completedDir, job);
                 await this.#writeDirToZipFile(jobDataDirPath, processingJobDataZipPath);
                 await fsPromises.rename(processingJobDataZipPath, completedJobDataZipPath);
+                await this.#updateJobInfoMetaDataFileSize(jobInfo);
             } catch (e) {
                 console.error(`Could not finalize job: "${job.id}" due to the following error`);
                 console.error(e);
@@ -169,7 +197,7 @@ class JobExecutor {
                 console.error(e);
             }
 
-            this.#jobs.get(job.id).status = JobExecutor.jobStatus.COMPLETED;
+            jobInfo.status = JobExecutor.jobStatus.COMPLETED;
         }
 
         this.#activeJob = undefined;
@@ -195,7 +223,23 @@ class JobExecutor {
         return filename.startsWith('job-') && filename.endsWith('json');
     }
 
-    async #writeJobToDir(job, destDir) {
+    #createJobInfoObject(job, status = JobExecutor.jobStatus.PENDING) {
+        return { job, status, meta: { dataFileSize: -1 } };
+    }
+
+    async #updateJobInfoMetaDataFileSize(jobInfo) {
+        try {
+            let stats = await fsPromises.stat(this.#getJobDataZipFilePath(this.#completedDir, jobInfo.job));
+            jobInfo.meta.dataFileSize = stats.size;
+        } catch (e) {
+            if (e.code !== 'ENOENT') { // ENOENT = the file does not exist
+                throw e;
+            }
+        }
+
+    }
+
+    async #writeJobToDir(destDir, job) {
         let jsonStr = JSON.stringify(job.toJSON());
         let filePath = this.#getJobFilePath(destDir, job);
         await fsPromises.writeFile(filePath, jsonStr, 'utf-8');
@@ -223,12 +267,17 @@ class JobExecutor {
         let jobs= [];
         for (let file of await fsPromises.readdir(dirPath)) {
             if (this.#isJobFile(file)) {
-                let jsonStr = fsPromises.readFile(path.join(this.#pendingDir, file), 'utf-8');
-                let job = Job.fromJSONStr(jsonStr);
+                let job = await this.#readJobFromFile(path.join(dirPath, file));
                 jobs.push(job);
             }
         }
         return jobs;
+    }
+
+    async #readJobFromFile(filePath) {
+        let jsonStr = await fsPromises.readFile(filePath, 'utf-8');
+        let job = Job.fromJSONStr(jsonStr);
+        return job;
     }
 
     async #writeDirToZipFile(dirPath, destFilePath) {
@@ -271,10 +320,17 @@ class JobExecutor {
 }
 
 async function test() {
-    let jEx = new JobExecutor('D:\\temp\\consent-observatory.eu');
-    await jEx.init();
+    try {
+        let jEx = new JobExecutor('D:\\temp\\consent-observatory.eu');
+        await jEx.init();
+        await jEx.addJob(Job.create('peter@vahlstrup.com', '[https://dr.dk]', { includeScreenshots: true }));
 
-    await jEx.addJob(Job.create('peter@vahlstrup.com', '[https://dr.dk]'));
+        //process.exit(0); // kill timer initiated i jEx.init()
+    } catch (e) {
+        console.error("here")
+        console.error(e)
+    }
+
 
 }
 

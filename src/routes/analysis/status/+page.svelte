@@ -7,6 +7,13 @@
    * If jobid but not found, show form and warning, jobid not found
    * */
 
+   let jobId = "e2e7530f-36fb-4101-b2ab-71d024796bd7";
+
 </script>
 
-TODO make me input field for job-id and submit button, on submit show results, see above...
+<form method="POST" action="/analysis/download">
+    <input type="hidden" name="jobId" value="{jobId}">
+    <input type="submit" value="Download" />
+</form>
+
+TODO make the input field for job-id and submit button, on submit show results, see above...

@@ -1,6 +1,7 @@
 import { invalid } from '@sveltejs/kit';
 import _ from 'lodash';
 import { Job } from "$lib/job/job.js";
+import { env, isEmailOnWhitelist, jobExecutor } from '../../../server-state.js';
 
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
@@ -16,13 +17,29 @@ export const actions = {
 
         validateEmail(email, errors);
         let urls = validateAndParseUrls(urlsStr, email, errors);
-            // TODO in validate test if within limit of allowed urls and don't have jobs registered in the executor (none at all) or is on whitelist of emails (whitelist should probably still have a limit, just higher)
 
         if (_.isEmpty(errors)) {
-            let job = Job.create(email, urls);
+            let currentJobs = jobExecutor.getJobsByEmail(email);
+            let errorMessage = `The maximum number of analyses has been reached for the current user. If you \
+            have one or more analyses which is completed you can download the result and then delete the analysis to be able to submit a new one.`
+            if (isEmailOnWhitelist(email)) {
+                if (currentJobs > env.USER_WHITELIST_MAX_JOBS) {
+                    errors.global = errorMessage;
+                }
+            } else {
+                if (currentJobs > env.USER_DEFAULT_MAX_JOBS) {
+                    errors.global = errorMessage;
+                }
+            }
+        }
+
+        if (_.isEmpty(errors)) {
+            let job = Job.create(email, urls, { includeScreenshots });
+            let queueSize = jobExecutor.queueSize;
             // TODO submit the job,
-            // TODO send email to user with info about job-id and link to status
-            return { success: true, jobId: job.id };
+            // TODO send email to user, ...make a emailService class which can do that and put todo into that... with info about job-id and link to status
+            // TODO make ENV vars for config of emailService and use nodemailer, we probably need to setup email at some host...
+            return { success: true, jobId: job.id, queueSize };
         } else {
             return invalid(400, { errors, data: { email, urls: urlsStr } });
         }
@@ -48,29 +65,30 @@ function validateAndParseUrls(urlsStr, email, errors) {
     let urls = urlsStr.split(/\r?\n/);
     urls = urls.filter(url => url.trim() !== '');
     for (let url of urls) {
-        if (!url) {
+        try {
+            let urlObj = new URL(url);
+            if (urlObj.protocol !== 'http:' && urlObj.protocol !== 'https:') {
+                errors.urls = `"${url}" is not a valid url. Urls must start with "http://" or "https://"`;
+                return;
+            }
+        } catch (e) {
             errors.urls = `"${url}" is not a valid url`;
             return;
         }
     }
 
-    if (isEmailOnWhiteList(email)) {
-        // rules for whilelist
-        // USER_DEFAULT_MAX_URLS
-        // USER_DEFAULT_MAX_JOBS
-        // USER_WHITELIST_MAX_URLS
-        // USER_WHITELIST_MAX_JOBS
-        // USER_WHITELIST_FILE_PATH
-        // Todo lav så serverState laver object med defaults for alle env variable og exposer serverState.env.XXXX
+    if (isEmailOnWhitelist(email)) {
+        if (urls.length > env.USER_WHITELIST_MAX_URLS) {
+            errors.urls = `Limit of max urls="${env.USER_DEFAULT_MAX_URLS}" exceeded`;
+            return;
+        }
     } else {
-        // default rules
+        if (urls.length > env.USER_DEFAULT_MAX_URLS) {
+            errors.urls = `Limit of max urls="${env.USER_DEFAULT_MAX_URLS}" exceeded`;
+            return;
+        }
     }
 
 
     return urls;
-}
-
-function isEmailOnWhiteList(email) {
-    // TODO implement this
-    return false;
 }

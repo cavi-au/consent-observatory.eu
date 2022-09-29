@@ -17,7 +17,14 @@
 	</p>
 
 	<h2>Getting Started</h2>
-	Submitting a <a href="/analysis/new" class="btn btn-primary">New Analysis</a> only requires a few steps.
+	<p>
+		Submitting a <a href="/analysis/new" class="btn btn-primary">New Analysis</a> only requires a few steps.You just need:
+	</p>
+	<ol>
+		<li>An email-address</li>
+		<li>A list of urls you want to analyze</li>
+	</ol>
+
 
 </section>
 
