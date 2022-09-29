@@ -6,6 +6,11 @@
 
 </script>
 
+<svelte:head>
+    <title>Consent Observatory - New Analysis</title>
+    <meta name="description" content="" />
+</svelte:head>
+
 {#if form?.success}
     <h1>Success - Your Analysis Was Submitted <i class="bi-check2-square text-success"></i></h1>
     <p>
@@ -21,6 +26,8 @@
     </p>
     <p>
         You will receive a new email when the analysis is completed and your result is ready for download.
+    When the analysis is completed you will have <span class="badge rounded-pill text-bg-secondary">{form?.daysToExpiration}</span> day(s) to download the
+    result before it is automatically deleted.
     </p>
 {:else}
     <h1>Submit a New Analysis</h1>
@@ -40,7 +47,7 @@
             {/if}
         </div>
         <div class="mb-3">
-            <label for="urls-field" class="form-label">Urls (Maximum 10)</label>
+            <label for="urls-field" class="form-label">Urls</label>
             <textarea class="form-control" class:is-invalid={form?.errors?.urls} name="urls" id="urls-field" rows="10" aria-describedby="urls-field-info urls-field-error" placeholder="{`https://example.eu
 https://example2.eu`}">{form?.data?.urls ?? ''}</textarea>
             {#if form?.errors?.urls}

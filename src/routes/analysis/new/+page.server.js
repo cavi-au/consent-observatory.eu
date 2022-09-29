@@ -36,10 +36,14 @@ export const actions = {
         if (_.isEmpty(errors)) {
             let job = Job.create(email, urls, { includeScreenshots });
             let queueSize = jobExecutor.queueSize;
+            let daysToExpiration = (env.JOBS_COMPLETED_EXPIRATION_TIME_MS / (24 * 60 * 60 * 1000));
+            if (daysToExpiration < 1) {
+                daysToExpiration = daysToExpiration.toFixed(2);
+            }
             // TODO submit the job,
             // TODO send email to user, ...make a emailService class which can do that and put todo into that... with info about job-id and link to status
             // TODO make ENV vars for config of emailService and use nodemailer, we probably need to setup email at some host...
-            return { success: true, jobId: job.id, queueSize };
+            return { success: true, jobId: job.id, queueSize, daysToExpiration };
         } else {
             return invalid(400, { errors, data: { email, urls: urlsStr } });
         }

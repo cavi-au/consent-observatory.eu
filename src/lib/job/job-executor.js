@@ -305,10 +305,15 @@ class JobExecutor {
                     try {
                         this.#jobs.delete(jobInfo.job.id);
                         let jobFilePath = this.#getJobFilePath(this.#completedDir, jobInfo.job);
-                        await fsPromises.unlink(jobFilePath);
+                        if (fs.existsSync(jobFilePath)) {
+                            await fsPromises.unlink(jobFilePath);
+                        }
                         let jobDataZipFilePath = this.#getJobDataZipFilePath(this.#completedDir, jobInfo.job);
-                        await fsPromises.unlink(jobDataZipFilePath);
+                        if (fs.existsSync(jobDataZipFilePath)) {
+                            await fsPromises.unlink(jobDataZipFilePath);
+                        }
                     } catch (e) {
+                        console.error('Error in removeExpiredJobs');
                         console.error(e);
                     }
 

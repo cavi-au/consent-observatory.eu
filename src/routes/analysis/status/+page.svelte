@@ -11,6 +11,11 @@
 
 </script>
 
+<svelte:head>
+    <title>Consent Observatory - Analysis Status</title>
+    <meta name="description" content="" />
+</svelte:head>
+
 <form method="POST" action="/analysis/download">
     <input type="hidden" name="jobId" value="{jobId}">
     <input type="submit" value="Download" />
