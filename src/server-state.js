@@ -59,7 +59,6 @@ function loadEnvVars() {
     env.JOBS_ROOT_DIR = privateEnvVars.JOBS_ROOT_DIR;
     // optional, set defaults
     env.JOBS_COMPLETED_EXPIRATION_TIME_MS = Number.parseInt(privateEnvVars.JOBS_COMPLETED_EXPIRATION_TIME_MS ?? 7 * 24 * 60 * 60 * 1000);
-    console.log(env.JOBS_COMPLETED_EXPIRATION_TIME_MS)
     env.USER_DEFAULT_MAX_URLS = Number.parseInt(privateEnvVars.USER_DEFAULT_MAX_URLS ?? 10);
     env.USER_DEFAULT_MAX_JOBS = Number.parseInt(privateEnvVars.USER_DEFAULT_MAX_JOBS ?? 1);
     env.USER_WHITELIST_MAX_URLS = Number.parseInt(privateEnvVars.USER_WHITELIST_MAX_URLS ?? 100);

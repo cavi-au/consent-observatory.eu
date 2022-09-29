@@ -24,4 +24,10 @@ så browseren ikke gemmer url?
 SE MIDAS email ang forside og about side..., der er også nogle asset filer...
 lav også Help side se tlf..
 
-Lav så man konfigurere hvor whitelist fil findes i env-vars, hvis den ikke findes er listen bare tom..., skriv warning til konsol ved opstart...
+web-scraper update
+- update alle dependencies og test, få midas til at teste
+- lav _ til #
+- så den default'er til https i stedet for http ved ingen protokol, og så næste strategi er http
+- test nogle af den fejl midas sendte, kan de afhjælpes?
+- OPDATER user-agent til en nutidig, lav så den kan sættes som option
+- push til npm, og integrer i denne app
