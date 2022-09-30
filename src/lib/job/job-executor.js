@@ -143,16 +143,26 @@ class JobExecutor {
         return stream;
     }
 
-    async getPublicJobInfo(job) {
-        return {
+    getPublicJobInfo(jobId) {
+        let jobInfo = this.#jobs.get(jobId);
+        if (!jobInfo) {
+            throw new Error(`Unknown job id: "${jobId}"`);
+        }
+        let job = jobInfo.job;
+        let result = {
             id: job.id,
+            status: jobInfo.status,
             submittedTime: job.submittedTime,
             processingStartTime: job.processingStartTime,
             completedTime: job.completedTime,
-            expiresTime: null, //TODO only calc if completed
+            expiresTime: null,
             urlCount: job.urls.length,
+            dataFileSize: jobInfo.meta.dataFileSize
         };
-        //TODO calculate expired
+        if (jobInfo.status === JobExecutor.jobStatus.COMPLETED) {
+            result.expiresTime = job.completedTime + this.#options.completedExpirationTime;
+        }
+        return result;
     }
 
     #addJobToQueue(job) {

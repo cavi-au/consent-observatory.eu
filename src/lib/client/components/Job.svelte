@@ -17,7 +17,7 @@
             <table class="table table-sm table-striped">
                 <tbody>
                     <tr><td>Id</td><td class="text-end"><code>{job.id}</code></td></tr>
-                    <tr><td>Submitted</td><td class="text-end">{job.submitTime ? formatUtils.formatDateTime(job.submittedTime) : ''}</td></tr>
+                    <tr><td>Submitted</td><td class="text-end">{job.submittedTime ? formatUtils.formatDateTime(job.submittedTime) : ''}</td></tr>
                     <tr><td>Analysis Started</td><td class="text-end">{job.processingStartTime ? formatUtils.formatDateTime(job.processingStartTime) : ''}</td></tr>
                     <tr><td>Completed</td><td class="text-end">{job.completedTime ? formatUtils.formatDateTime(job.completedTime) : ''}</td></tr>
 
@@ -29,8 +29,8 @@
                 <tbody>
                     <tr><td>Status</td><td class="text-end">{job.status}</td></tr>
                     <tr><td>Url Count</td><td class="text-end">{job.urlCount}</td></tr>
-                    <tr><td>File Size</td><td class="text-end">{job.dataSize !== -1 ? formatUtils.formatBytes(job.dataSize) : ''}</td></tr>
-                    <tr><td>Expires</td><td class="text-end">2021-10-21 12:00:00</td></tr>
+                    <tr><td>File Size</td><td class="text-end">{job.dataFileSize !== -1 ? formatUtils.formatBytes(job.dataFileSize) : ''}</td></tr>
+                    <tr><td>Expires</td><td class="text-end">{job.expiresTime ? formatUtils.formatDateTime(job.expiresTime) : ''}</td></tr>
                 </tbody>
             </table>
         </div>
@@ -54,4 +54,6 @@
 
 
 
-TODO make the input field for job-id and submit button, on submit show results, see above...
+TODO make delete button on:click action, and make a toggle to enable delete button.
+On click call ajax POST delete request, and disable button. On result og success or 404 in json response, emit deleted event, so parent can remove and revalidate the page.
+If anay other other, alert the error (how???) and enable the delete button...

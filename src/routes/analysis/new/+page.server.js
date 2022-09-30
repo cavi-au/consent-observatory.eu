@@ -40,7 +40,7 @@ export const actions = {
             if (daysToExpiration < 1) {
                 daysToExpiration = daysToExpiration.toFixed(2);
             }
-            // TODO submit the job,
+            await jobExecutor.addJob(job);
             // TODO send email to user, ...make a emailService class which can do that and put todo into that... with info about job-id and link to status
             // TODO make ENV vars for config of emailService and use nodemailer, we probably need to setup email at some host...
             return { success: true, jobId: job.id, queueSize, daysToExpiration };

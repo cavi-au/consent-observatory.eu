@@ -22,7 +22,8 @@ export const actions = {
         }
 
         if (_.isEmpty(errors)) {
-            // TODO utils for making public job info, maybe just in jobExecutor
+            let publicJobInfo = jobExecutor.getPublicJobInfo(job.id);
+            return { status: "success", job: publicJobInfo };
         } else {
             return invalid(400, { errors, data: { jobId } });
         }

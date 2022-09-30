@@ -88,7 +88,7 @@ class Job {
 
     static fromJSON(jsonObj) {
         let job = new Job(jsonObj.id, jsonObj.userEmail, jsonObj.urls, jsonObj.options);
-        job.#submitTime = jsonObj.submitTime;
+        job.#submittedTime = jsonObj.submittedTime;
         job.#processingStartTime = jsonObj.processingStartTime;
         job.#completedTime = jsonObj.completedTime;
         return job;
