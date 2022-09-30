@@ -1,24 +1,33 @@
 import * as responseUtils from '$lib/utils/response-utils.js';
+import { jobExecutor } from "../../../server-state.js";
+import { JobExecutor } from "$lib/job/job-executor.js";
 
 export async function POST({ request }) {
-
     let jsonObj;
 
     try {
         jsonObj = await request.json();
     } catch (e) {
-        responseUtils.apiError(400, 'Invalid json request, could not parse');
+        return responseUtils.apiError(400, 'Invalid json request, could not parse');
     }
 
     if (!jsonObj.jobId) {
-        responseUtils.apiError(400, '"jobId" must be defined and cannot be empty');
+        return responseUtils.apiError(400, '"jobId" must be defined and cannot be empty');
     }
 
-    // TODO lookup the job
+    let job = jobExecutor.getJobById(jsonObj.jobId);
+    if (!job) {
+        return responseUtils.apiError(404, `Job with id: "${jsonObj.jobId}" does not exist`);
+    }
+    if (jobExecutor.getJobStatus(job) === JobExecutor.jobStatus.PROCESSING) {
+        return responseUtils.apiError(400,'Cannot delete job while the job is being processed');
+    }
 
-    // if not exists return 404 error, which on the client just means remove as well as success
+    try {
+        await jobExecutor.removeJob(job.id);
+    } catch (e) {
+        return responseUtils.apiError(500, e.message);
+    }
 
-
-    return responseUtils.success({ status: 'success' });
-
+    return responseUtils.apiSuccess({ status: "success"} );
 }

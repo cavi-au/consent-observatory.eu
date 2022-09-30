@@ -62,7 +62,7 @@ class JobExecutor {
         await this.#clearProcessingDir();
 
         let pendingJobs = await this.#readJobsFromDir(this.#pendingDir);
-        pendingJobs.sort((j1, j2) => j1.submitTime - j2.submitTime);
+        pendingJobs.sort((j1, j2) => j1.submittedTime - j2.submittedTime);
         for (let job of pendingJobs) {
             this.#addJobToQueue(job);
         }
@@ -97,6 +97,24 @@ class JobExecutor {
         return this.#jobs.get(jobId)?.job;
     }
 
+    async removeJob(jobId) {
+        let jobInfo = this.#jobs.get(jobId);
+        if (jobInfo) {
+            if (jobInfo.status === JobExecutor.jobStatus.PROCESSING) {
+                throw new Error('Cannot remove job while processing the job')
+            }
+            this.#jobs.delete(jobInfo.job.id);
+            let jobFilePath = this.#getJobFilePath(this.#completedDir, jobInfo.job);
+            if (fs.existsSync(jobFilePath)) {
+                await fsPromises.unlink(jobFilePath);
+            }
+            let jobDataZipFilePath = this.#getJobDataZipFilePath(this.#completedDir, jobInfo.job);
+            if (fs.existsSync(jobDataZipFilePath)) {
+                await fsPromises.unlink(jobDataZipFilePath);
+            }
+        }
+    }
+
     getJobStatus(job) {
         return this.#jobs.get(job.id)?.status;
     }
@@ -123,6 +141,18 @@ class JobExecutor {
         }
         let stream = fs.createReadStream(this.#getJobDataZipFilePath(this.#completedDir, job));
         return stream;
+    }
+
+    async getPublicJobInfo(job) {
+        return {
+            id: job.id,
+            submittedTime: job.submittedTime,
+            processingStartTime: job.processingStartTime,
+            completedTime: job.completedTime,
+            expiresTime: null, //TODO only calc if completed
+            urlCount: job.urls.length,
+        };
+        //TODO calculate expired
     }
 
     #addJobToQueue(job) {
@@ -169,7 +199,7 @@ class JobExecutor {
         }
 
         try {
-            // TODO run the scraper and write results to jobDataDirPath
+            //TODO run the scraper and write results to jobDataDirPath
 
 
         } catch (e) {
@@ -208,7 +238,7 @@ class JobExecutor {
 
     onJobCompleted(listener) {
         this.#eventEmitter.on('completed', listener);
-        // TODO have something hook up here, so a mail can be sent when a job completed
+        //TODO have something hook up here, so a mail can be sent when a job completed
     }
 
     #getJobFilePath(destDir, job) {
@@ -236,7 +266,6 @@ class JobExecutor {
                 throw e;
             }
         }
-
     }
 
     async #writeJobToDir(destDir, job) {
@@ -303,15 +332,7 @@ class JobExecutor {
                 let expired = Date.now() - jobInfo.job.completedTime > this.#options.completedExpirationTime;
                 if (expired) {
                     try {
-                        this.#jobs.delete(jobInfo.job.id);
-                        let jobFilePath = this.#getJobFilePath(this.#completedDir, jobInfo.job);
-                        if (fs.existsSync(jobFilePath)) {
-                            await fsPromises.unlink(jobFilePath);
-                        }
-                        let jobDataZipFilePath = this.#getJobDataZipFilePath(this.#completedDir, jobInfo.job);
-                        if (fs.existsSync(jobDataZipFilePath)) {
-                            await fsPromises.unlink(jobDataZipFilePath);
-                        }
+                        await this.removeJob(jobInfo.job.id);
                     } catch (e) {
                         console.error('Error in removeExpiredJobs');
                         console.error(e);

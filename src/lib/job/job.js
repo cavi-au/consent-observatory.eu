@@ -8,7 +8,7 @@ const DEFAULT_OPTIONS = {
 class Job {
 
     #id;
-    #submitTime;
+    #submittedTime;
     #processingStartTime = null;
     #completedTime = null;
     #userEmail;
@@ -20,15 +20,15 @@ class Job {
         this.#userEmail = userEmail.trim().toLowerCase();
         this.#urls = urls;
         this.#options = _.defaultsDeep({}, options, DEFAULT_OPTIONS);
-        this.#submitTime = Date.now();
+        this.#submittedTime = Date.now();
     }
 
     get id() {
         return this.#id;
     }
 
-    get submitTime() {
-        return this.#submitTime;
+    get submittedTime() {
+        return this.#submittedTime;
     }
 
     get processingStartTime() {
@@ -68,7 +68,7 @@ class Job {
     toJSON() {
         return {
             id: this.#id,
-            submitTime: this.#submitTime,
+            submittedTime: this.#submittedTime,
             processingStartTime: this.#processingStartTime,
             completedTime: this.#completedTime,
             userEmail: this.#userEmail,

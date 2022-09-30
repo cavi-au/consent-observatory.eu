@@ -4,11 +4,12 @@
 
    let job = {
        id: "e2e7530f-36fb-4101-b2ab-71d024796bd7",
-       submitTime: Date.now(),
+       status: 'pending',
+       submittedTime: Date.now(),
        processingStartTime: null,
        completedTime: null,
-       urlCount: 7
-
+       urlCount: 7,
+       dataSize: 343343
    }
 
    // TODO lav så job hentes fra server, og hvis den ikke findes laves en "danger" alert.

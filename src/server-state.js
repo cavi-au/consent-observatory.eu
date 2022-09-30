@@ -49,7 +49,8 @@ function loadEmailWhitelist(path) {
 function checkRequiredEnvVars() {
     for (let envVar of REQUIRED_ENV_VARS) {
         if (!privateEnvVars[envVar]) {
-            console.error(`required environment variable "${envVar}" not set`);
+            console.error(`required environment variable "${envVar}" not set, terminating process...`);
+            process.exit(1);
         }
     }
 }
