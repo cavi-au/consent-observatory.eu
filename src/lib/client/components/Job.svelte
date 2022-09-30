@@ -38,14 +38,15 @@
     <div class="row">
         <div class="col-12 d-flex justify-content-end">
 
-            {#if (job.status !== 'processing')}
+            {#if job.status !== 'processing'}
                 <button class="btn btn-danger">Delete</button>
             {/if}
-
-            <form method="POST" action="/analysis/download" class="ms-2">
-                <input type="hidden" name="jobId" value="{job.id}">
-                <input type="submit" class="btn btn-primary" value="Download" />
-            </form>
+            {#if job.status === 'completed' && job.dataFileSize > 0}
+                <form method="POST" action="/analysis/download" class="ms-2">
+                    <input type="hidden" name="jobId" value="{job.id}">
+                    <input type="submit" class="btn btn-primary" value="Download" />
+                </form>
+            {/if}
         </div>
     </div>
 

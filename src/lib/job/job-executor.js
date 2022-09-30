@@ -101,16 +101,33 @@ class JobExecutor {
         let jobInfo = this.#jobs.get(jobId);
         if (jobInfo) {
             if (jobInfo.status === JobExecutor.jobStatus.PROCESSING) {
-                throw new Error('Cannot remove job while processing the job')
+                throw new Error('Cannot remove job while processing it');
+                // if we are to allow we must set activeJob = undefiened remove files etc. and cue the next job (something like when we finish a job)
             }
+
             this.#jobs.delete(jobInfo.job.id);
-            let jobFilePath = this.#getJobFilePath(this.#completedDir, jobInfo.job);
+
+            if (jobInfo.status === JobExecutor.jobStatus.PENDING) {
+                for (let i = 0; i < this.#pendingJobs.length; i++) {
+                    let pendingJob = this.#pendingJobs[i];
+                    if (pendingJob.id === jobInfo.job.id) {
+                        this.#pendingJobs.splice(i, 1);
+                        i--; // just if we were to search for more in the future
+                        break;
+                    }
+                }
+            }
+
+            let jobDir = this.#getJobDirFromStatus(jobInfo.status);
+            let jobFilePath = this.#getJobFilePath(jobDir, jobInfo.job);
             if (fs.existsSync(jobFilePath)) {
                 await fsPromises.unlink(jobFilePath);
             }
-            let jobDataZipFilePath = this.#getJobDataZipFilePath(this.#completedDir, jobInfo.job);
-            if (fs.existsSync(jobDataZipFilePath)) {
-                await fsPromises.unlink(jobDataZipFilePath);
+            if (jobInfo.status === JobExecutor.jobStatus.COMPLETED) {
+                let jobDataZipFilePath = this.#getJobDataZipFilePath(jobDir, jobInfo.job);
+                if (fs.existsSync(jobDataZipFilePath)) {
+                    await fsPromises.unlink(jobDataZipFilePath);
+                }
             }
         }
     }
@@ -251,6 +268,18 @@ class JobExecutor {
         //TODO have something hook up here, so a mail can be sent when a job completed
     }
 
+    #getJobDirFromStatus(status) {
+        if (status === JobExecutor.jobStatus.PENDING) {
+            return this.#pendingDir;
+        } else if (status === JobExecutor.jobStatus.PROCESSING) {
+            return this.#processingDir;
+        } else if (status === JobExecutor.jobStatus.COMPLETED) {
+            return this.#completedDir;
+        } else {
+            throw new Error(`Unknown job status "${status}"`);
+        }
+    }
+
     #getJobFilePath(destDir, job) {
         return path.join(destDir, `job-${job.id}.json`);
     }
@@ -347,7 +376,6 @@ class JobExecutor {
                         console.error('Error in removeExpiredJobs');
                         console.error(e);
                     }
-
                 }
             }
         }
