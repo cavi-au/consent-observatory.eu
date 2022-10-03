@@ -1,7 +1,27 @@
 <script>
     import * as formatUtils from '$lib/client/utils/format-utils.js';
+    import { createEventDispatcher, getContext } from "svelte";
 
     export let job;
+
+    const dispatch = createEventDispatcher();
+
+    let appContext = getContext('appContext');
+
+    async function deleteJob() {
+        try {
+
+            // TODO fetch, if error and status !== 404, showAlert()
+
+            // on success
+            dispatch('delete');
+
+        } catch (e) {
+            console.error(e);
+            appContext.showAlert('Unknown error', e.message, 'danger');
+        }
+
+    }
 
     // TODO only show buttons when job is finished
     // TODO make a checkbox / swith to enable delete button

@@ -1,19 +1,31 @@
 <script>
     import { enhance } from '$app/forms';
     import Job from "$lib/client/components/Job.svelte";
+    import { goto } from "$app/navigation";
+    import { page } from "$app/stores";
+    import { browser } from "$app/environment";
+    import { onMount } from "svelte";
+    import { formAutoFocus } from "$lib/client/components/actions.js";
 
     export let form;
 
     let job;
+    let jobIdFieldValue = '';
+
     $: {
         job = form?.job;
+        if (job) {
+            setJobIdFieldValue(); // do not reference jobIdFieldValue directly here as it is reactive itself which will cause it to reset to job.id when user enters into the field
+        }
     }
 
+    function setJobIdFieldValue() {
+        jobIdFieldValue = job.id;
+    }
 
-    // TODO lav så job hentes fra server, og hvis den ikke findes laves en "danger" alert.
-    //TODO server skulle gerne send en form?.error med ved fejl som vi bare kan vise... i en alert box
-    //TODO lav så hvis der vist et job hedder knappen refresh i stedet for submit, ved delete event fra Job opdateres knap vel igen, da vi kalder invalidateAll() ???
-    //håndter "delete" event fra Job
+    function jobDeleted() {
+        goto('/analysis/status'); // "reload" the page
+    }
 
 </script>
 
@@ -24,14 +36,19 @@
 
 <h1>Analysis Status</h1>
 
-<form method="POST" class="mb-3" use:enhance>
-    <div class="input-group">
-        <input type="text" class="form-control" name="jobId" id="analysis-id-field" aria-describedby="analysis-id-field-info" placeholder="Analysis Id">
-        <button class="btn btn-primary" type="submit" id="button-addon1">Submit/REFRESK</button>
+<form method="POST" class="mb-3" use:enhance use:formAutoFocus>
+    <div class="input-group" class:is-invalid={form?.errors?.jobId}>
+        <input type="text" class="form-control" class:is-invalid={form?.errors?.jobId} name="jobId" id="analysis-id-field" bind:value={jobIdFieldValue}
+               aria-describedby="analysis-id-field-info analysis-id-field-error" placeholder="Analysis Id">
+        <button class="btn btn-primary" type="submit" id="button-addon1">{job && job.id === jobIdFieldValue ? 'Refresh' : 'Submit'}</button>
     </div>
-    <div id="analysis-id-field-info" class="form-text">Insert the analysis id you received when submitting the analysis (also sent by email) to see the current status</div>
+    {#if form?.errors?.jobId}
+        <div id="analysis-id-field-error" class="invalid-feedback">{form?.errors?.jobId}</div>
+    {:else}
+        <div id="analysis-id-field-info" class="form-text">Insert the analysis id you received when submitting the analysis (also sent by email) to see the current status</div>
+    {/if}
 </form>
 
 {#if job}
-    <Job job={job} />
+    <Job job={job} on:detele={() => jobDeleted()} />
 {/if}

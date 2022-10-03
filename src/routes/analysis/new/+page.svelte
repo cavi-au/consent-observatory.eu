@@ -1,9 +1,9 @@
 <script>
     import { enhance } from '$app/forms';
     import CopyToClipboard from "$lib/client/components/CopyToClipboard.svelte";
+    import { formAutoFocus } from "$lib/client/components/actions.js";
 
     export let form;
-
 </script>
 
 <svelte:head>
@@ -36,10 +36,11 @@
             {form?.errors?.global}
         </div>
     {/if}
-    <form method="POST" use:enhance>
+    <form method="POST" novalidate use:enhance use:formAutoFocus>
         <div class="mb-3">
             <label for="email-field" class="form-label">Your Email Address</label>
-            <input type="email" class="form-control" class:is-invalid={form?.errors?.email} name="email" id="email-field" aria-describedby="email-field-info email-field-error" placeholder="example@example.eu" value="{form?.data?.email ?? ''}">
+            <input type="email" class="form-control" class:is-invalid={form?.errors?.email} name="email" id="email-field" aria-describedby="email-field-info email-field-error"
+                   placeholder="example@example.eu" value="{form?.data?.email ?? ''}">
             {#if form?.errors?.email}
                 <div id="email-field-error" class="invalid-feedback">{form?.errors?.email}</div>
             {:else}

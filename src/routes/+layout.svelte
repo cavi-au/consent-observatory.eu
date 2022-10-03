@@ -1,6 +1,37 @@
 <script>
+	import { setContext } from "svelte";
 	import { page } from "$app/stores";
 	import BoostrapCollapse from "$lib/client/components/bootstrap/BoostrapCollapse.svelte";
+	import AlertStreamer from "$lib/client/components/AlertStreamer.svelte";
+	import ConfirmDialog from "$lib/client/components/ConfirmDialog.svelte";
+
+	let alertStreamer;
+	let confirmDialogContext;
+
+	let appContext = {};
+	appContext.showAlert = (title, message, type) => {
+		if (!alertStreamer) { // if this happens make a buffer and then add the messages to the streamer onMount
+			console.error("Alert streamer got message before mounted");
+		} else {
+			alertStreamer.addAlert(title, message, type);
+		}
+	};
+
+	appContext.showConfirmDialog = async (title, message) => {
+		return new Promise((resolve) => {
+			confirmDialogContext = {
+				title,
+				message,
+				promiseResolve: resolve
+			};
+		});
+	};
+
+	function onConfirmDialogResult(result) {
+		confirmDialogContext = undefined;
+		confirmDialogContext.promiseResolve(result);
+	}
+	setContext('appContext', appContext);
 
 	let showMainMenuMobile = false;
 
@@ -8,6 +39,12 @@
 		return pathname === basePath || (basePath !== '/' && pathname.startsWith(basePath));
 	}
 </script>
+
+<button on:click={async () => await appContext.showConfirmDialog('test', 'message')}>Test</button>
+
+{#if confirmDialogContext}
+	<ConfirmDialog on:action={onConfirmDialogResult} />
+{/if}
 
 <div id="wrapper" class="d-flex flex-column">
 	<header>
@@ -40,6 +77,7 @@
 	</header>
 
 	<div class="container main content d-flex flex-column flex-fill">
+		<AlertStreamer bind:this={alertStreamer} />
 		<slot></slot>
 	</div>
 
