@@ -3,7 +3,7 @@
 	import { page } from "$app/stores";
 	import BoostrapCollapse from "$lib/client/components/bootstrap/BoostrapCollapse.svelte";
 	import AlertStreamer from "$lib/client/components/AlertStreamer.svelte";
-	import ConfirmDialog from "$lib/client/components/ConfirmDialog.svelte";
+	import ConfirmDialog from "$lib/client/components/bootstrap/ConfirmDialog.svelte";
 
 	let alertStreamer;
 	let confirmDialogContext;
@@ -40,10 +40,10 @@
 	}
 </script>
 
-<button on:click={async () => await appContext.showConfirmDialog('test', 'message')}>Test</button>
+<button on:click={async () => await appContext.showConfirmDialog('Delete', 'Are you sure you want to delete?')}>Test</button>
 
 {#if confirmDialogContext}
-	<ConfirmDialog on:action={onConfirmDialogResult} />
+	<ConfirmDialog title={confirmDialogContext.title} message={confirmDialogContext.message} on:action={onConfirmDialogResult} />
 {/if}
 
 <div id="wrapper" class="d-flex flex-column">
