@@ -28,8 +28,9 @@
 	};
 
 	function onConfirmDialogResult(result) {
+		let promiseResolve = confirmDialogContext.promiseResolve;
 		confirmDialogContext = undefined;
-		confirmDialogContext.promiseResolve(result);
+		promiseResolve(result.detail);
 	}
 	setContext('appContext', appContext);
 

@@ -23,8 +23,9 @@
         jobIdFieldValue = job.id;
     }
 
-    function jobDeleted() {
-        goto('/analysis/status'); // "reload" the page
+    async function jobDeleted() {
+        jobIdFieldValue = '';
+        await goto('');
     }
 
 </script>
@@ -50,5 +51,5 @@
 </form>
 
 {#if job}
-    <Job job={job} on:detele={() => jobDeleted()} />
+    <Job job={job} on:delete={() => jobDeleted()} />
 {/if}

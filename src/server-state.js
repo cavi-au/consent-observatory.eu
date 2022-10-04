@@ -2,9 +2,11 @@ import fs from 'fs';
 import chokidar from 'chokidar';
 import { JobExecutor } from "$lib/job/job-executor.js";
 import { env as privateEnvVars } from '$env/dynamic/private';
+import { WebExtractorExecutor } from "$lib/job/web-extractor-executor.js";
 
 const REQUIRED_ENV_VARS = [
     'JOBS_ROOT_DIR',
+    'RULES_DIR'
 ];
 
 let env = {};
@@ -12,6 +14,7 @@ checkRequiredEnvVars();
 loadEnvVars();
 
 let jobExecutor;
+let webExtractorExecutor;
 let emailWhitelist; // may be use this to it's own util if more files needs watching
 
 
@@ -19,7 +22,11 @@ async function init() {
     let executorOpts = {
         completedExpirationTime: env.JOBS_COMPLETED_EXPIRATION_TIME_MS
     };
-    jobExecutor = new JobExecutor(env.JOBS_ROOT_DIR, executorOpts);
+
+    webExtractorExecutor = new WebExtractorExecutor(env.RULES_DIR);
+    await webExtractorExecutor.init();
+
+    jobExecutor = new JobExecutor(env.JOBS_ROOT_DIR, webExtractorExecutor, executorOpts);
     await jobExecutor.init();
     loadAndWatchEmailWhitelist();
 }
@@ -58,6 +65,7 @@ function checkRequiredEnvVars() {
 function loadEnvVars() {
     // required
     env.JOBS_ROOT_DIR = privateEnvVars.JOBS_ROOT_DIR;
+    env.RULES_DIR = privateEnvVars.RULES_DIR;
     // optional, set defaults
     env.JOBS_COMPLETED_EXPIRATION_TIME_MS = Number.parseInt(privateEnvVars.JOBS_COMPLETED_EXPIRATION_TIME_MS ?? 7 * 24 * 60 * 60 * 1000);
     env.USER_DEFAULT_MAX_URLS = Number.parseInt(privateEnvVars.USER_DEFAULT_MAX_URLS ?? 10);

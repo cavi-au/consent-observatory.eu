@@ -22,6 +22,7 @@ class JobExecutor {
     });
 
     #rootDir;
+    #webExtractorExecutor;
     #options;
     #pendingDir;
     #processingDir;
@@ -31,11 +32,12 @@ class JobExecutor {
     #jobs = new Map();
     #eventEmitter = new EventEmitter();
 
-    constructor(rootDir, options = {}) {
+    constructor(rootDir, webExtractorExecutor, options = {}) {
         if (! rootDir || rootDir.trim() === '') {
             throw new Error('rootDir cannot be empty'); // precaution so we don't accidentally start messing with the wrong dir
         }
         this.#rootDir = rootDir;
+        this.#webExtractorExecutor = webExtractorExecutor;
         this.#options = _.defaultsDeep({}, options, defaultOptions);
         this.#pendingDir = path.join(this.#rootDir, 'pending');
         this.#processingDir = path.join(this.#rootDir, 'processing');
@@ -226,8 +228,9 @@ class JobExecutor {
         }
 
         try {
-            //TODO run the scraper and write results to jobDataDirPath
-
+            await this.#webExtractorExecutor.execute(job, jobDataDirPath, (progress) => {
+               // TODO handle progress, or leave it out, maybe write to jobInfo, so we can show it in UI?
+            });
 
         } catch (e) {
             console.error(e);

@@ -14,12 +14,9 @@ I think both of these adjustments would reduce the number of errors I currently 
 se zenhub fil fra midas
 
 
-TODO unser /analysis/status
-beskriv at filen automatisk bliver sletter om xxx dage, timer, minutter. Hvis man gerne vil oprette en ny analyse inden kan man slette filen ved at trykke på [DELETE] knap
-så slettes den med det samme ...
+TODO unser /admin/status
+vis alle jobs, og ved delete event fjern fra array af jobs der vises...
 
-er det et sikkerhedsmæssigt problem at browseren kan gemme url til status-side, skal den lave en session og sætte en cookie o redirecte i stedet, og så trækker den jobStatusId fra session,
-så browseren ikke gemmer url?
 
 SE MIDAS email ang forside og about side..., der er også nogle asset filer...
 lav også Help side se tlf..

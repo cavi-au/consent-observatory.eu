@@ -8,28 +8,40 @@
 
     let appContext = getContext('appContext');
 
+    let buttonsDisabled = false;
+
     async function deleteJob() {
         try {
+            buttonsDisabled = true;
+            let confirm = await appContext.showConfirmDialog('Delete', 'Are you sure you want to delete this Analysis?');
 
-            // TODO fetch, if error and status !== 404, showAlert()
+            if (confirm) {
+                let response = await fetch('/analysis/delete', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ jobId: job.id })
+                });
 
-            // on success
-            dispatch('delete');
-
+                let jsonResponse = await response.json();
+                if (jsonResponse.status === 'success' || jsonResponse?.error?.status === 404) {
+                    dispatch('delete');
+                } else {
+                    appContext.showAlert('Error', jsonResponse?.error?.message, 'danger');
+                    buttonsDisabled = false;
+                }
+            } else {
+                buttonsDisabled = false;
+            }
         } catch (e) {
             console.error(e);
             appContext.showAlert('Unknown error', e.message, 'danger');
+            buttonsDisabled = false;
         }
 
     }
-
-    // TODO only show buttons when job is finished
-    // TODO make a checkbox / swith to enable delete button
-    // TODO make all values (and missing values) come from the job
-    // TODO lav så knapper virker
-
 </script>
-
 
 <div class="container-fluid px-0">
     <div class="row">
@@ -59,22 +71,15 @@
         <div class="col-12 d-flex justify-content-end">
 
             {#if job.status !== 'processing'}
-                <button class="btn btn-danger">Delete</button>
+                <button class="btn btn-danger" class:disabled={buttonsDisabled} on:click|preventDefault={() => deleteJob()}>Delete</button>
             {/if}
             {#if job.status === 'completed' && job.dataFileSize > 0}
                 <form method="POST" action="/analysis/download" class="ms-2">
                     <input type="hidden" name="jobId" value="{job.id}">
-                    <input type="submit" class="btn btn-primary" value="Download" />
+                    <input type="submit" class="btn btn-primary" class:disabled={buttonsDisabled} value="Download" />
                 </form>
             {/if}
         </div>
     </div>
 
 </div>
-
-
-
-
-TODO make delete button on:click action, and make a toggle to enable delete button.
-On click call ajax POST delete request, and disable button. On result og success or 404 in json response, emit deleted event, so parent can remove and revalidate the page.
-If anay other other, alert the error (how???) and enable the delete button...
