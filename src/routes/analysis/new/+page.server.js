@@ -83,7 +83,7 @@ function validateAndParseUrls(urlsStr, email, errors) {
 
     if (isEmailOnWhitelist(email)) {
         if (urls.length > env.USER_WHITELIST_MAX_URLS) {
-            errors.urls = `Limit of max urls="${env.USER_DEFAULT_MAX_URLS}" exceeded`;
+            errors.urls = `Limit of max urls="${env.USER_WHITELIST_MAX_URLS}" exceeded`;
             return;
         }
     } else {
