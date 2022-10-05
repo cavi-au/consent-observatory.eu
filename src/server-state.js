@@ -49,7 +49,8 @@ async function init() {
     };
 
     mailService = new MailService(mailOptions);
-    await initService('Error creating mail-service', () => mailService.init());
+    let disableVerification = env.MAIL_SMTP_DISABLE_VERIFICATION === 'true';
+    await initService('Error creating mail-service', () => mailService.init(!disableVerification));
 
     mailTemplateEngine = new MailTemplateEngine(env.MAIL_MESSAGE_FROM);
     await initService('Error creating mail-template-engine', () => mailTemplateEngine.init());
@@ -127,6 +128,7 @@ function loadEnvVars() {
     env.USER_WHITELIST_MAX_URLS = Number.parseInt(privateEnvVars.USER_WHITELIST_MAX_URLS ?? 100);
     env.USER_WHITELIST_MAX_JOBS = Number.parseInt(privateEnvVars.USER_WHITELIST_MAX_JOBS ?? 1);
     env.USER_EMAIL_WHITELIST_FILE_PATH = privateEnvVars.USER_EMAIL_WHITELIST_FILE_PATH; // no default
+    env.MAIL_SMTP_DISABLE_VERIFICATION = privateEnvVars.MAIL_SMTP_DISABLE_VERIFICATION;
 
     env = Object.freeze(env);
 }

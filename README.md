@@ -16,3 +16,4 @@ create a `.env` file in the root of the project or set them using the host envir
 - `MAIL_SMTP_USER` **[required]** SMTP-server username (most likely the email address)
 - `MAIL_SMTP_PASS` **[required]** SMTP-server password (most likely password for the email address)
 - `MAIL_MESSAGE_FROM` **[required]** the email to set as the `from` field (e.g. `info@example.com` or `"John Doe" <info@example.com>`)
+- `MAIL_SMTP_DISABLE_VERIFICATION [default=false]` set to `true` disable the verification check when server starts, disable this during development for faster restart times 

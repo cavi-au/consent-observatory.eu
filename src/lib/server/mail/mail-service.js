@@ -16,7 +16,7 @@ class MailService {
         this.#options = options;
     }
 
-    async init() {
+    async init(verifyServer = true) {
         this.#transport = nodemailer.createTransport({
             host: this.#options.host,
             port: this.#options.port,
@@ -26,7 +26,9 @@ class MailService {
             }
         });
 
-        await this.#transport.verify();
+        if (verifyServer) {
+            await this.#transport.verify();
+        }
     }
 
     async sendMail(mail) {

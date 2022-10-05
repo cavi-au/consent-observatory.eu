@@ -15,6 +15,8 @@ se zenhub fil fra midas
 
 
 TODO disable submit button while submitting new analysis form, enable again when form change, e.g. when errors occur etc.
+- check the enhance settings, but maybe it is easier just to listen for on:submit on the
+  form and then disable the button and then on form change in a reactive statement re-enable the button
 
 TODO unser /admin/status
 vis alle jobs, og ved delete event fjern fra array af jobs der vises...

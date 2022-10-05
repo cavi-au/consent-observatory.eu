@@ -42,12 +42,16 @@ export const actions = {
             }
             await jobExecutor.addJob(job);
             let mail = mailTemplateEngine.createJobSubmittedMail(job);
-            try {
-                await mailService.sendMail(mail);
-            } catch (e) {
-                console.error(`Could not send submitted mail to: "${job.userEmail}"`);
-                console.error(e);
-            }
+
+            (async () => { // we don't want to wait for the promise to resolve, we don't inform the user anyway, so wrap it an log errors
+                try {
+                    await mailService.sendMail(mail);
+                } catch (e) {
+                    console.error(`Could not send submitted mail to: "${job.userEmail}"`);
+                    console.error(e);
+                }
+            })();
+
             return { success: true, jobId: job.id, queueSize, daysToExpiration };
         } else {
             return invalid(400, { errors, data: { email, urls: urlsStr } });
@@ -97,7 +101,6 @@ function validateAndParseUrls(urlsStr, email, errors) {
             return;
         }
     }
-
 
     return urls;
 }
