@@ -1,7 +1,7 @@
 import { invalid } from '@sveltejs/kit';
 import _ from 'lodash';
-import { Job } from "$lib/job/job.js";
-import { env, isEmailOnWhitelist, jobExecutor } from '../../../server-state.js';
+import { Job } from "$lib/server/job/job.js";
+import { env, isEmailOnWhitelist, jobExecutor, mailService, mailTemplateEngine } from '../../../server-state.js';
 
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
@@ -41,8 +41,13 @@ export const actions = {
                 daysToExpiration = daysToExpiration.toFixed(2);
             }
             await jobExecutor.addJob(job);
-            // TODO send email to user, ...make a emailService class which can do that and put todo into that... with info about job-id and link to status
-            // TODO make ENV vars for config of emailService and use nodemailer, we probably need to setup email at some host...
+            let mail = mailTemplateEngine.createJobSubmittedMail(job);
+            try {
+                await mailService.sendMail(mail);
+            } catch (e) {
+                console.error(`Could not send submitted mail to: "${job.userEmail}"`);
+                console.error(e);
+            }
             return { success: true, jobId: job.id, queueSize, daysToExpiration };
         } else {
             return invalid(400, { errors, data: { email, urls: urlsStr } });

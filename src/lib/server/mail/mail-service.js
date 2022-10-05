@@ -1,0 +1,45 @@
+import nodemailer from 'nodemailer';
+
+class MailService {
+
+    #options;
+    #transport;
+
+    /**
+     * @param {object} options
+     * @param {string} options.host
+     * @param {number} options.port
+     * @param {string} options.user
+     * @param {string} options.pass
+     */
+    constructor(options) {
+        this.#options = options;
+    }
+
+    async init() {
+        this.#transport = nodemailer.createTransport({
+            host: this.#options.host,
+            port: this.#options.port,
+            auth: {
+                user: this.#options.user,
+                pass: this.#options.pass
+            }
+        });
+
+        await this.#transport.verify();
+    }
+
+    async sendMail(mail) {
+        let mailObj = {
+            from: mail.from,
+            to: mail.to,
+            subject: mail.subject,
+            text: mail.text,
+            html: mail.html
+        };
+        await this.#transport.sendMail(mailObj);
+    }
+
+}
+
+export { MailService };

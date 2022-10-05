@@ -1,7 +1,13 @@
 import { env as privateEnvVars } from '$env/dynamic/private';
 import * as serverState from './server-state.js';
 
-await serverState.init();
+try {
+	await serverState.init();
+} catch (e) {
+	console.error('Could not init server...');
+	console.error(e);
+	process.exit(1);
+}
 
 /** @type {import('@sveltejs/kit').Handle} */
 export const handle = async ({ event, resolve }) => {

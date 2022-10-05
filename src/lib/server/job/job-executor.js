@@ -268,7 +268,6 @@ class JobExecutor {
 
     onJobCompleted(listener) {
         this.#eventEmitter.on('completed', listener);
-        //TODO have something hook up here, so a mail can be sent when a job completed
     }
 
     #getJobDirFromStatus(status) {

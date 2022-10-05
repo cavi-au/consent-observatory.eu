@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { env, isEmailOnWhitelist, jobExecutor } from "../../../server-state.js";
-import { Job } from "$lib/job/job.js";
+import { Job } from "$lib/server/job/job.js";
 import { invalid } from "@sveltejs/kit";
 
 export const actions = {

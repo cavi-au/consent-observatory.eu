@@ -8,10 +8,11 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@chcaa/web-extractor": "^1.0.4",
 		"archiver": "^5.3.1",
 		"chokidar": "^3.5.3",
 		"lodash": "^4.17.21",
-		"@chcaa/web-extractor": "^1.0.4"
+		"nodemailer": "^6.8.0"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-node": "^1.0.0-next.96",
@@ -19,5 +20,4 @@
 		"svelte": "^3.50.1",
 		"vite": "^3.1.3"
 	}
-
 }

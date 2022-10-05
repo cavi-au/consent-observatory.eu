@@ -14,6 +14,8 @@ I think both of these adjustments would reduce the number of errors I currently 
 se zenhub fil fra midas
 
 
+TODO disable submit button while submitting new analysis form, enable again when form change, e.g. when errors occur etc.
+
 TODO unser /admin/status
 vis alle jobs, og ved delete event fjern fra array af jobs der vises...
 

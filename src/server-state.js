@@ -1,12 +1,21 @@
 import fs from 'fs';
 import chokidar from 'chokidar';
-import { JobExecutor } from "$lib/job/job-executor.js";
+import { JobExecutor } from "$lib/server/job/job-executor.js";
 import { env as privateEnvVars } from '$env/dynamic/private';
-import { WebExtractorExecutor } from "$lib/job/web-extractor-executor.js";
+import { WebExtractorExecutor } from "$lib/server/job/web-extractor-executor.js";
+import { MailTemplateEngine } from "$lib/server/mail/mail-template-engine.js";
+import path from "path";
+import { fileURLToPath } from 'url';
+import { MailService } from "$lib/server/mail/mail-service.js";
 
 const REQUIRED_ENV_VARS = [
     'JOBS_ROOT_DIR',
-    'RULES_DIR'
+    'RULES_DIR',
+    'MAIL_SMTP_HOST',
+    'MAIL_SMTP_PORT',
+    'MAIL_SMTP_USER',
+    'MAIL_SMTP_PASS',
+    'MAIL_MESSAGE_FROM'
 ];
 
 let env = {};
@@ -15,20 +24,59 @@ loadEnvVars();
 
 let jobExecutor;
 let webExtractorExecutor;
+let mailService;
+let mailTemplateEngine;
 let emailWhitelist; // may be use this to it's own util if more files needs watching
 
 
 async function init() {
+    const __filename = fileURLToPath(import.meta.url);
+    const currentDirPath = path.dirname(__filename);
+
     let executorOpts = {
         completedExpirationTime: env.JOBS_COMPLETED_EXPIRATION_TIME_MS
     };
 
     webExtractorExecutor = new WebExtractorExecutor(env.RULES_DIR);
-    await webExtractorExecutor.init();
 
-    jobExecutor = new JobExecutor(env.JOBS_ROOT_DIR, webExtractorExecutor, executorOpts);
-    await jobExecutor.init();
+    await initService('Error creating web-extractor', () => webExtractorExecutor.init());
+
+    let mailOptions = {
+        host: env.MAIL_SMTP_HOST,
+        port: env.MAIL_SMTP_PORT,
+        user: env.MAIL_SMTP_USER,
+        pass: env.MAIL_SMTP_PASS
+    };
+
+    mailService = new MailService(mailOptions);
+    await initService('Error creating mail-service', () => mailService.init());
+
+    mailTemplateEngine = new MailTemplateEngine(env.MAIL_MESSAGE_FROM);
+    await initService('Error creating mail-template-engine', () => mailTemplateEngine.init());
+
+    jobExecutor = new JobExecutor(env.JOBS_ROOT_DIR, webExtractorExecutor, mailService, mailTemplateEngine, executorOpts);
+    await initService('Error creating job-executor', () => jobExecutor.init());
+
     loadAndWatchEmailWhitelist();
+
+    jobExecutor.onJobCompleted(async ({ job }) => {
+        let mail = mailTemplateEngine.createJobCompletedMail(job);
+        try {
+            await mailService.sendMail(mail);
+        } catch (e) {
+            console.error(`Could not send completed mail to: "${job.userEmail}"`);
+            console.error(e);
+        }
+    })
+}
+
+async function initService(debugMessage, initializer) {
+    try {
+        await initializer();
+    } catch (e) {
+        console.error(debugMessage);
+        throw e;
+    }
 }
 
 function isEmailOnWhitelist(email) {
@@ -66,6 +114,12 @@ function loadEnvVars() {
     // required
     env.JOBS_ROOT_DIR = privateEnvVars.JOBS_ROOT_DIR;
     env.RULES_DIR = privateEnvVars.RULES_DIR;
+    env.MAIL_SMTP_HOST = privateEnvVars.MAIL_SMTP_HOST;
+    env.MAIL_SMTP_PORT = Number.parseInt(privateEnvVars.MAIL_SMTP_PORT);
+    env.MAIL_SMTP_USER = privateEnvVars.MAIL_SMTP_USER;
+    env.MAIL_SMTP_PASS = privateEnvVars.MAIL_SMTP_PASS;
+    env.MAIL_MESSAGE_FROM = privateEnvVars.MAIL_MESSAGE_FROM;
+
     // optional, set defaults
     env.JOBS_COMPLETED_EXPIRATION_TIME_MS = Number.parseInt(privateEnvVars.JOBS_COMPLETED_EXPIRATION_TIME_MS ?? 7 * 24 * 60 * 60 * 1000);
     env.USER_DEFAULT_MAX_URLS = Number.parseInt(privateEnvVars.USER_DEFAULT_MAX_URLS ?? 10);
@@ -77,5 +131,5 @@ function loadEnvVars() {
     env = Object.freeze(env);
 }
 
-export { init, env, jobExecutor, isEmailOnWhitelist };
+export { init, env, jobExecutor, mailService, mailTemplateEngine, isEmailOnWhitelist };
 

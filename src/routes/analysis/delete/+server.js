@@ -1,6 +1,6 @@
-import * as responseUtils from '$lib/utils/response-utils.js';
+import * as responseUtils from '$lib/server/utils/response-utils.js';
 import { jobExecutor } from "../../../server-state.js";
-import { JobExecutor } from "$lib/job/job-executor.js";
+import { JobExecutor } from "$lib/server/job/job-executor.js";
 
 export async function POST({ request }) {
     let jsonObj;
