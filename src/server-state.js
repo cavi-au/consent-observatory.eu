@@ -5,6 +5,7 @@ import { env as privateEnvVars } from '$env/dynamic/private';
 import { WebExtractorExecutor } from "$lib/server/job/web-extractor-executor.js";
 import { MailTemplateEngine } from "$lib/server/mail/mail-template-engine.js";
 import path from "path";
+import { setTimeout } from 'timers/promises';
 import { fileURLToPath } from 'url';
 import { MailService } from "$lib/server/mail/mail-service.js";
 
@@ -17,6 +18,8 @@ const REQUIRED_ENV_VARS = [
     'MAIL_SMTP_PASS',
     'MAIL_MESSAGE_FROM'
 ];
+
+const MAIL_TIME_DISTRIBUTION_THRESHOLD = 60_000;
 
 let env = {};
 checkRequiredEnvVars();
@@ -52,7 +55,7 @@ async function init() {
     let disableVerification = env.MAIL_SMTP_DISABLE_VERIFICATION === 'true';
     await initService('Error creating mail-service', () => mailService.init(!disableVerification));
 
-    mailTemplateEngine = new MailTemplateEngine(env.MAIL_MESSAGE_FROM);
+    mailTemplateEngine = new MailTemplateEngine(path.join(currentDirPath, '/lib/server/assets/mail'), env.MAIL_MESSAGE_FROM);
     await initService('Error creating mail-template-engine', () => mailTemplateEngine.init());
 
     jobExecutor = new JobExecutor(env.JOBS_ROOT_DIR, webExtractorExecutor, mailService, mailTemplateEngine, executorOpts);
@@ -61,8 +64,13 @@ async function init() {
     loadAndWatchEmailWhitelist();
 
     jobExecutor.onJobCompleted(async ({ job }) => {
-        let mail = mailTemplateEngine.createJobCompletedMail(job);
         try {
+            let mail = mailTemplateEngine.createJobCompletedMail(job);
+            let now = Date.now();
+            let elapsed = now - job.submittedTime;
+            if (elapsed < MAIL_TIME_DISTRIBUTION_THRESHOLD) { // do not fire mails to rapidly (wait at least a minute)
+                await setTimeout(MAIL_TIME_DISTRIBUTION_THRESHOLD - elapsed);
+            }
             await mailService.sendMail(mail);
         } catch (e) {
             console.error(`Could not send completed mail to: "${job.userEmail}"`);

@@ -24,7 +24,10 @@ class WebExtractorExecutor {
         let options = {
             userAgent: undefined, // if undefined a default will be used
             output: {
-                screenshot: job.options.includeScreenshots
+                screenshot: job.options.includeScreenshots,
+                logs: {
+                    stackTrace: false // do not include stack traces as we don't know who will get the data
+                }
             },
             maxConcurrency: this.#maxConcurrency,
             pageTimeoutMs: 90000

@@ -1,4 +1,6 @@
 import { Mail } from "$lib/server/mail/mail.js";
+import path from 'path';
+import { pathToFileURL } from 'url';
 
 class MailTemplateEngine {
 
@@ -7,13 +9,17 @@ class MailTemplateEngine {
     #mailSubmittedTemplate;
     #mailCompletedTemplate;
 
-    constructor(from) {
+    constructor(mailTemplateDir, from) {
+        this.#mailTemplateDir = mailTemplateDir;
         this.#from = from;
     }
 
     async init() {
-        this.#mailSubmittedTemplate = (await import(/* @vite-ignore */ '$lib/server/assets/mail/analysis-submitted.js')).default;
-        this.#mailCompletedTemplate = (await import(/* @vite-ignore */ '$lib/server/assets/mail/analysis-completed.js')).default;
+        // we need to extract the pathname from the URL at vite import() expects a string not an URL object
+        let submittedFileUrl = pathToFileURL(path.join(this.#mailTemplateDir, 'analysis-submitted.js')).pathname;
+        this.#mailSubmittedTemplate = (await import(/* @vite-ignore */ submittedFileUrl)).default;
+        let completedFileUrl = pathToFileURL(path.join(this.#mailTemplateDir, 'analysis-completed.js')).pathname;
+        this.#mailCompletedTemplate = (await import(/* @vite-ignore */ completedFileUrl)).default;
     }
 
     createJobSubmittedMail(job) {

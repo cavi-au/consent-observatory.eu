@@ -18,3 +18,6 @@ Genereal questions and answers
 - folder
   - duttelut.jpg
 </pre>
+
+<h2>Why haven't I received any email about my analysis?</h2>
+<p>Please check you junk/spam folder</p>
