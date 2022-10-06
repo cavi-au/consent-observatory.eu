@@ -1,5 +1,6 @@
 import { invalid } from '@sveltejs/kit';
 import _ from 'lodash';
+import { isIP } from 'net';
 import { Job } from "$lib/server/job/job.js";
 import { env, isEmailOnWhitelist, jobExecutor, mailService, mailTemplateEngine } from '../../../server-state.js';
 
@@ -84,6 +85,14 @@ function validateAndParseUrls(urlsStr, email, errors) {
                 errors.urls = `"${url}" is not a valid url. Urls must start with "http://" or "https://"`;
                 return;
             }
+            let hostname = urlObj.hostname.trim().toLowerCase();
+            if (hostname === 'localhost') {
+                errors.urls = '"localhost" not allowed for hostname';
+                return;
+            } else if (isIpAddress(hostname)) { // prevent users from accessing internal network without dns-lookup
+                errors.urls = 'IP-address not allowed for hostname';
+                return;
+            }
         } catch (e) {
             errors.urls = `"${url}" is not a valid url`;
             return;
@@ -103,4 +112,8 @@ function validateAndParseUrls(urlsStr, email, errors) {
     }
 
     return urls;
+}
+
+function isIpAddress(hostname) {
+    return isIP(hostname) !== 0;
 }
