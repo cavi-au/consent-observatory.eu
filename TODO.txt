@@ -32,3 +32,21 @@ web-scraper update
 - test nogle af den fejl midas sendte, kan de afhjælpes?
 - OPDATER user-agent til en nutidig, lav så den kan sættes som option
 - push til npm, og integrer i denne app
+
+
+# ruleset ui
+tjek RULES_DIR og et niveau ned
+for __ui.json filer, kun de mapper (rod og subdir) der har en __ui.json får loadet deres rules
+__ui.json har
+- name, description, sortOrder, options: [] // options er valgfrit og order er valgfrit, de andre skal være sat., hvis der ikke er sat sortOrder sorterer den på name, så bliver sortOrder default int.MAX
+Lav en klasse RuleSet, tjek at navne er unikke ved load, da de skal bruges som keys
+- den indeholder name, description, sortOrder, uiOptions [], og rules
+Det er dem som loades ind i WebExtractor executor og som man kan få fat i til at lave ui.
+
+Hvis det er mere end 1 RuleSet laves dropdown og alt efter hvad der er valgt vises description og nedenunder options.
+options i __ui.json er array af objekter med { type: "checkbox|radio", name: string| string[]} hvis det er radio skal det være et array af strings eller bare en enkel streng, valider det
+Dissse generes i ui alt efter hvad der er valgt for et RuleSet,
+På serveren gives options med som et objekt til executoren, som giver dem med til hver rules init() funktion, så kan Midas selv bruge input til hvad han vil. DOKUMENTER dette.
+- options og ruleSet-name skal så gemmes sammen med Job, så de kan loades, de skal også vises på status-side.
+
+Hvis der kun er et RuleSet vises dropdown ikke, men bare options, (hvis de er sat)

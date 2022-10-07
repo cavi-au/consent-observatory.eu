@@ -19,7 +19,7 @@ class WebExtractorExecutor {
     }
 
     async execute(job, dataDestDir, progressListener) {
-        await ruleUtils.initRules(this.#rules, { destDir: dataDestDir });
+        await ruleUtils.initRules(this.#rules, { destDir: dataDestDir }); // TODO pass options in chosen from the ui here, see TODO.txt, options should be saved with the job...
 
         let options = {
             userAgent: undefined, // if undefined a default will be used
