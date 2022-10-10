@@ -1,8 +1,8 @@
 import { invalid } from '@sveltejs/kit';
 import _ from 'lodash';
 import { isIP } from 'net';
-import { Job } from "$lib/server/job/job.js";
-import { env, isEmailOnWhitelist, jobExecutor, mailService, mailTemplateEngine } from '../../../server-state.js';
+import { Job } from "$lib/server/analysis/job.js";
+import { env, isEmailOnWhitelist, jobService, webExtractorService, mailService, mailTemplateEngine } from '../../../server-state.js';
 
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
@@ -13,14 +13,21 @@ export const actions = {
         let email = formData.get('email')?.trim().toLowerCase();
         let urlsStr = formData.get('urls')?.trim();
         let includeScreenshots = !!formData.get('includeScreenshots');
+        let rulesetName = formData.get('rulesetName');
+
+        if (webExtractorService.rulesets.length === 1) {
+            rulesetName = webExtractorService.rulesets[0].name;
+        }
 
         let errors = {};
 
         validateEmail(email, errors);
         let urls = validateAndParseUrls(urlsStr, email, errors);
+        let rulesetOptions = getRulesetOptions(formData);
+        validateRulesetAndSetDefaults(rulesetName, rulesetOptions, errors);
 
         if (_.isEmpty(errors)) {
-            let currentJobs = jobExecutor.getJobsByEmail(email);
+            let currentJobs = jobService.getJobsByEmail(email);
             let errorMessage = `The maximum number of analyses has been reached for the current user. If you \
             have one or more analyses which is completed you can download the result and then delete the analysis to be able to submit a new one.`
             if (isEmailOnWhitelist(email)) {
@@ -35,13 +42,13 @@ export const actions = {
         }
 
         if (_.isEmpty(errors)) {
-            let job = Job.create(email, urls, { includeScreenshots });
-            let queueSize = jobExecutor.queueSize;
+            let job = Job.create(email, urls, rulesetName,{ includeScreenshots, ruleset: rulesetOptions });
+            let queueSize = jobService.queueSize;
             let daysToExpiration = (env.JOBS_COMPLETED_EXPIRATION_TIME_MS / (24 * 60 * 60 * 1000));
             if (daysToExpiration < 1) {
                 daysToExpiration = daysToExpiration.toFixed(2);
             }
-            await jobExecutor.addJob(job);
+            await jobService.addJob(job);
             let mail = mailTemplateEngine.createJobSubmittedMail(job);
 
             (async () => { // we don't want to wait for the promise to resolve, we don't inform the user anyway, so wrap it an log errors
@@ -112,6 +119,45 @@ function validateAndParseUrls(urlsStr, email, errors) {
     }
 
     return urls;
+}
+
+function validateRulesetAndSetDefaults(rulesetName, rulesetOptions, errors) {
+    let ruleset = webExtractorService.getRulesetByName(rulesetName);
+    if (!ruleset) {
+        errors.rulesetName = `Unknown ruleset "${rulesetName}"`;
+        return;
+    }
+
+    for (let option of ruleset.options) {
+        if (_.isNil(rulesetOptions[option.key])) {
+            rulesetOptions[option.key] = ruleset.getDefaultOptionValue(option.key);
+        } else if (option.type === 'checkbox') {
+            rulesetOptions[option.key] = !!rulesetOptions[option.key]; // convert to boolean
+        }
+    }
+
+    for (let key of Object.keys(rulesetOptions)) {
+        if (!ruleset.isOptionSupported(key)) {
+            errors.rulesetOption = `Unknown ruleset option "${key}"`;
+            return;
+        }
+
+        if (!ruleset.isOptionValueSupported(key, rulesetOptions[key])) {
+            errors.rulesetOption = `The value "${rulesetOptions[key]}" is not valid for the ruleset option "${key}"`;
+            return;
+        }
+    }
+}
+
+function getRulesetOptions(formData) {
+    let options = {};
+    for (let key of formData.keys()) {
+        if (key.startsWith('rulesetOption.')) {
+            let value = formData.get(key);
+            options[key.substring('rulesetOptions.'.length)] = value;
+        }
+    }
+    return options;
 }
 
 function isIpAddress(hostname) {

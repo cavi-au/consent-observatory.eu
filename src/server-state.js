@@ -1,8 +1,8 @@
 import fs from 'fs';
 import chokidar from 'chokidar';
-import { JobExecutor } from "$lib/server/job/job-executor.js";
+import { JobService } from "$lib/server/analysis/job-service.js";
 import { env as privateEnvVars } from '$env/dynamic/private';
-import { WebExtractorExecutor } from "$lib/server/job/web-extractor-executor.js";
+import { WebExtractorService } from "$lib/server/analysis/web-extractor-service.js";
 import { MailTemplateEngine } from "$lib/server/mail/mail-template-engine.js";
 import path from "path";
 import { setTimeout } from 'timers/promises';
@@ -25,8 +25,8 @@ let env = {};
 checkRequiredEnvVars();
 loadEnvVars();
 
-let jobExecutor;
-let webExtractorExecutor;
+let jobService;
+let webExtractorService;
 let mailService;
 let mailTemplateEngine;
 let emailWhitelist; // may be use this to it's own util if more files needs watching
@@ -40,9 +40,9 @@ async function init() {
         completedExpirationTime: env.JOBS_COMPLETED_EXPIRATION_TIME_MS
     };
 
-    webExtractorExecutor = new WebExtractorExecutor(env.RULES_DIR);
+    webExtractorService = new WebExtractorService(env.RULES_DIR);
 
-    await initService('Error creating web-extractor', () => webExtractorExecutor.init());
+    await initService('Error creating web-extractor', () => webExtractorService.init());
 
     let mailOptions = {
         host: env.MAIL_SMTP_HOST,
@@ -58,12 +58,12 @@ async function init() {
     mailTemplateEngine = new MailTemplateEngine(path.join(currentDirPath, '/lib/server/assets/mail'), env.MAIL_MESSAGE_FROM);
     await initService('Error creating mail-template-engine', () => mailTemplateEngine.init());
 
-    jobExecutor = new JobExecutor(env.JOBS_ROOT_DIR, webExtractorExecutor, mailService, mailTemplateEngine, executorOpts);
-    await initService('Error creating job-executor', () => jobExecutor.init());
+    jobService = new JobService(env.JOBS_ROOT_DIR, webExtractorService, mailService, mailTemplateEngine, executorOpts);
+    await initService('Error creating job-executor', () => jobService.init());
 
     loadAndWatchEmailWhitelist();
 
-    jobExecutor.onJobCompleted(async ({ job }) => {
+    jobService.onJobCompleted(async ({ job }) => {
         try {
             let mail = mailTemplateEngine.createJobCompletedMail(job);
             let now = Date.now();
@@ -141,5 +141,5 @@ function loadEnvVars() {
     env = Object.freeze(env);
 }
 
-export { init, env, jobExecutor, mailService, mailTemplateEngine, isEmailOnWhitelist };
+export { init, env, jobService, webExtractorService, mailService, mailTemplateEngine, isEmailOnWhitelist };
 

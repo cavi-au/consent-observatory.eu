@@ -13,7 +13,7 @@ const defaultOptions = {
     completedExpirationTime: 7 * 24 * 60 * 60 * 1000, // 1 week
 };
 
-class JobExecutor {
+class JobService {
 
     static jobStatus = Object.freeze({
        PENDING: 'pending',
@@ -71,7 +71,7 @@ class JobExecutor {
 
         let completedJobs = await this.#readJobsFromDir(this.#completedDir);
         for (let job of completedJobs) {
-            let jobInfo = this.#createJobInfoObject(job, JobExecutor.jobStatus.COMPLETED);
+            let jobInfo = this.#createJobInfoObject(job, JobService.jobStatus.COMPLETED);
             await this.#updateJobInfoMetaDataFileSize(jobInfo);
             this.#jobs.set(job.id, jobInfo);
         }
@@ -102,14 +102,14 @@ class JobExecutor {
     async removeJob(jobId) {
         let jobInfo = this.#jobs.get(jobId);
         if (jobInfo) {
-            if (jobInfo.status === JobExecutor.jobStatus.PROCESSING) {
+            if (jobInfo.status === JobService.jobStatus.PROCESSING) {
                 throw new Error('Cannot remove job while processing it');
                 // if we are to allow we must set activeJob = undefiened remove files etc. and cue the next job (something like when we finish a job)
             }
 
             this.#jobs.delete(jobInfo.job.id);
 
-            if (jobInfo.status === JobExecutor.jobStatus.PENDING) {
+            if (jobInfo.status === JobService.jobStatus.PENDING) {
                 for (let i = 0; i < this.#pendingJobs.length; i++) {
                     let pendingJob = this.#pendingJobs[i];
                     if (pendingJob.id === jobInfo.job.id) {
@@ -125,7 +125,7 @@ class JobExecutor {
             if (fs.existsSync(jobFilePath)) {
                 await fsPromises.unlink(jobFilePath);
             }
-            if (jobInfo.status === JobExecutor.jobStatus.COMPLETED) {
+            if (jobInfo.status === JobService.jobStatus.COMPLETED) {
                 let jobDataZipFilePath = this.#getJobDataZipFilePath(jobDir, jobInfo.job);
                 if (fs.existsSync(jobDataZipFilePath)) {
                     await fsPromises.unlink(jobDataZipFilePath);
@@ -139,7 +139,7 @@ class JobExecutor {
     }
 
     getJobDataFileSize(job) {
-        if (this.getJobStatus(job) !== JobExecutor.jobStatus.COMPLETED) {
+        if (this.getJobStatus(job) !== JobService.jobStatus.COMPLETED) {
             throw new Error('Job does not exist or is not completed');
         }
         return this.#jobs.get(job.id).meta.dataFileSize;
@@ -155,7 +155,7 @@ class JobExecutor {
     }
 
     getJobDataReadStream(job) {
-        if (this.getJobStatus(job) !== JobExecutor.jobStatus.COMPLETED) {
+        if (this.getJobStatus(job) !== JobService.jobStatus.COMPLETED) {
             throw new Error('Job does not exist or is not completed');
         }
         let stream = fs.createReadStream(this.#getJobDataZipFilePath(this.#completedDir, job));
@@ -178,7 +178,7 @@ class JobExecutor {
             urlCount: job.urls.length,
             dataFileSize: jobInfo.meta.dataFileSize
         };
-        if (jobInfo.status === JobExecutor.jobStatus.COMPLETED) {
+        if (jobInfo.status === JobService.jobStatus.COMPLETED) {
             result.expiresTime = job.completedTime + this.#options.completedExpirationTime;
         }
         return result;
@@ -186,7 +186,7 @@ class JobExecutor {
 
     #addJobToQueue(job) {
         this.#pendingJobs.push(job);
-        this.#jobs.set(job.id, this.#createJobInfoObject(job, JobExecutor.jobStatus.PENDING));
+        this.#jobs.set(job.id, this.#createJobInfoObject(job, JobService.jobStatus.PENDING));
         if (!this.#activeJob) {
             setImmediate(() => this.#pickAndExecuteNextJob());
         }
@@ -215,7 +215,7 @@ class JobExecutor {
             await fsPromises.mkdir(jobDataDirPath);
 
             this.#activeJob = job;
-            jobInfo.status = JobExecutor.jobStatus.PROCESSING;
+            jobInfo.status = JobService.jobStatus.PROCESSING;
         } catch (e) {
             console.error(`Could not initiate job: "${job.id}" due to the following error`);
             console.error(e);
@@ -257,7 +257,7 @@ class JobExecutor {
                 console.error(e);
             }
 
-            jobInfo.status = JobExecutor.jobStatus.COMPLETED;
+            jobInfo.status = JobService.jobStatus.COMPLETED;
         }
 
         this.#activeJob = undefined;
@@ -271,11 +271,11 @@ class JobExecutor {
     }
 
     #getJobDirFromStatus(status) {
-        if (status === JobExecutor.jobStatus.PENDING) {
+        if (status === JobService.jobStatus.PENDING) {
             return this.#pendingDir;
-        } else if (status === JobExecutor.jobStatus.PROCESSING) {
+        } else if (status === JobService.jobStatus.PROCESSING) {
             return this.#processingDir;
-        } else if (status === JobExecutor.jobStatus.COMPLETED) {
+        } else if (status === JobService.jobStatus.COMPLETED) {
             return this.#completedDir;
         } else {
             throw new Error(`Unknown job status "${status}"`);
@@ -294,7 +294,7 @@ class JobExecutor {
         return filename.startsWith('job-') && filename.endsWith('json');
     }
 
-    #createJobInfoObject(job, status = JobExecutor.jobStatus.PENDING) {
+    #createJobInfoObject(job, status = JobService.jobStatus.PENDING) {
         return { job, status, meta: { dataFileSize: -1 } };
     }
 
@@ -369,7 +369,7 @@ class JobExecutor {
 
     #removeExpiredJobs = async () => {
         for (let jobInfo of this.#jobs.values()) {
-            if (jobInfo.status === JobExecutor.jobStatus.COMPLETED) {
+            if (jobInfo.status === JobService.jobStatus.COMPLETED) {
                 let expired = Date.now() - jobInfo.job.completedTime > this.#options.completedExpirationTime;
                 if (expired) {
                     try {
@@ -387,7 +387,7 @@ class JobExecutor {
 
 async function test() {
     try {
-        let jEx = new JobExecutor('D:\\temp\\consent-observatory.eu');
+        let jEx = new JobService('D:\\temp\\consent-observatory.eu');
         await jEx.init();
         await jEx.addJob(Job.create('peter@vahlstrup.com', '[https://dr.dk]', { includeScreenshots: true }));
 
@@ -402,4 +402,4 @@ async function test() {
 
 //test();
 
-export { JobExecutor };
+export { JobService };

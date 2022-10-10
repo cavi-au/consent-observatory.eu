@@ -1,6 +1,6 @@
 import * as responseUtils from '$lib/server/utils/response-utils.js';
-import { jobExecutor } from "../../../server-state.js";
-import { JobExecutor } from "$lib/server/job/job-executor.js";
+import { jobService } from "../../../server-state.js";
+import { JobService } from "$lib/server/analysis/job-service.js";
 
 export async function POST({ request }) {
     let jsonObj;
@@ -15,16 +15,16 @@ export async function POST({ request }) {
         return responseUtils.apiError(400, '"jobId" must be defined and cannot be empty');
     }
 
-    let job = jobExecutor.getJobById(jsonObj.jobId);
+    let job = jobService.getJobById(jsonObj.jobId);
     if (!job) {
         return responseUtils.apiError(404, `Job with id: "${jsonObj.jobId}" does not exist`);
     }
-    if (jobExecutor.getJobStatus(job) === JobExecutor.jobStatus.PROCESSING) {
+    if (jobService.getJobStatus(job) === JobService.jobStatus.PROCESSING) {
         return responseUtils.apiError(400,'Cannot delete job while the job is being processed');
     }
 
     try {
-        await jobExecutor.removeJob(job.id);
+        await jobService.removeJob(job.id);
     } catch (e) {
         return responseUtils.apiError(500, e.message);
     }

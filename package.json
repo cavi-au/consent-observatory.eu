@@ -8,6 +8,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@chcaa/validator": "^1.2.6",
 		"@chcaa/web-extractor": "^1.0.6",
 		"archiver": "^5.3.1",
 		"chokidar": "^3.5.3",
@@ -16,8 +17,8 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-node": "^1.0.0-next.96",
-		"@sveltejs/kit": "^1.0.0-next.510",
+		"@sveltejs/kit": "^1.0.0-next.511",
 		"svelte": "^3.50.1",
-		"vite": "^3.1.5"
+		"vite": "^3.1.7"
 	}
 }

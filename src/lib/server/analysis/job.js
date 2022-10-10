@@ -2,7 +2,8 @@ import * as crypto from "crypto";
 import _ from 'lodash';
 
 const DEFAULT_OPTIONS = {
-    includeScreenshots: false
+    includeScreenshots: false,
+    ruleset: {}
 }
 
 class Job {
@@ -13,12 +14,14 @@ class Job {
     #completedTime = null;
     #userEmail;
     #urls;
+    #rulesetName;
     #options;
 
-    constructor(id, userEmail, urls, options) {
+    constructor(id, userEmail, urls, rulesetName, options) {
         this.#id = id;
         this.#userEmail = userEmail.trim().toLowerCase();
         this.#urls = urls;
+        this.#rulesetName = rulesetName;
         this.#options = _.defaultsDeep({}, options, DEFAULT_OPTIONS);
         this.#submittedTime = Date.now();
     }
@@ -47,8 +50,16 @@ class Job {
         return this.#urls;
     }
 
+    get rulesetName() {
+        return this.#rulesetName;
+    }
+
     get options() {
         return this.#options;
+    }
+
+    get rulesetOptions() {
+        return this.#options.ruleset;
     }
 
     markProcessingStartTime() {
@@ -73,12 +84,13 @@ class Job {
             completedTime: this.#completedTime,
             userEmail: this.#userEmail,
             urls: this.#urls,
+            rulesetName: this.rulesetName,
             options: this.#options
         };
     }
 
-    static create(userEmail, urls, options) {
-        return new Job(crypto.randomUUID(), userEmail, urls, options);
+    static create(userEmail, urls, rulesetName, options) {
+        return new Job(crypto.randomUUID(), userEmail, urls, rulesetName, options);
     }
 
     static fromJSONStr(jsonStr) {
@@ -87,7 +99,7 @@ class Job {
     }
 
     static fromJSON(jsonObj) {
-        let job = new Job(jsonObj.id, jsonObj.userEmail, jsonObj.urls, jsonObj.options);
+        let job = new Job(jsonObj.id, jsonObj.userEmail, jsonObj.urls, jsonObj.rulesetName, jsonObj.options);
         job.#submittedTime = jsonObj.submittedTime;
         job.#processingStartTime = jsonObj.processingStartTime;
         job.#completedTime = jsonObj.completedTime;
