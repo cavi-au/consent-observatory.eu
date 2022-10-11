@@ -1,5 +1,6 @@
 import fs from 'fs';
 import chokidar from 'chokidar';
+import appRootPath from 'app-root-path';
 import { JobExecutor } from "$lib/server/analysis/job-executor.js";
 import { env as privateEnvVars } from '$env/dynamic/private';
 import { WebExtractorExecutor } from "$lib/server/analysis/web-extractor-executor.js";
@@ -21,6 +22,7 @@ const REQUIRED_ENV_VARS = [
 ];
 
 const MAIL_TIME_DISTRIBUTION_THRESHOLD = 60_000;
+const APP_BASE_PATH = appRootPath.toString();
 
 let env = {};
 checkRequiredEnvVars();
@@ -35,8 +37,6 @@ let emailWhitelist; // may be use this to it's own util if more files needs watc
 
 
 async function init() {
-    const __filename = fileURLToPath(import.meta.url);
-    const currentDirPath = path.dirname(__filename);
 
     let executorOpts = {
         completedExpirationTime: env.JOBS_COMPLETED_EXPIRATION_TIME_MS
@@ -59,7 +59,7 @@ async function init() {
     let disableVerification = env.MAIL_SMTP_DISABLE_VERIFICATION === 'true';
     await initService('Error creating mail-service', () => mailService.init(!disableVerification));
 
-    mailTemplateEngine = new MailTemplateEngine(path.join(currentDirPath, '/lib/server/assets/mail'), env.MAIL_MESSAGE_FROM);
+    mailTemplateEngine = new MailTemplateEngine(path.join(APP_BASE_PATH, '/src/lib/server/assets/mail'), env.MAIL_MESSAGE_FROM);
     await initService('Error creating mail-template-engine', () => mailTemplateEngine.init());
 
     jobExecutor = new JobExecutor(env.JOBS_ROOT_DIR, webExtractorExecutor, mailService, mailTemplateEngine, executorOpts);

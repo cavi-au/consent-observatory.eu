@@ -57,5 +57,6 @@ Hvis der kun er et Ruleset vises dropdown ikke, men bare options, (hvis de er sa
 
 DEPLOY TIL webservice2 server og se om vi kan få det til at virke der, vi skal nok have åbnet for mail-ud, installere puppeteer ui-libs og så
 sætte substi for url-resolve til sveltekit, så url'er virker og så lave apache reverse proxy /consent-observatory.eu -> localhost:7098
+Få lavet en række dev1 - dev6 domæner der peger webservice2 serveren...
 
 
