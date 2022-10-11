@@ -3,7 +3,10 @@
     import CopyToClipboard from "$lib/client/components/CopyToClipboard.svelte";
     import { formAutoFocus } from "$lib/client/components/actions.js";
 
+    export let data;
     export let form;
+
+    console.log(data.rulesets)
 </script>
 
 <svelte:head>

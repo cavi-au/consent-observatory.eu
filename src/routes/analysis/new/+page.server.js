@@ -2,9 +2,24 @@ import { invalid } from '@sveltejs/kit';
 import _ from 'lodash';
 import { isIP } from 'net';
 import { Job } from "$lib/server/analysis/job.js";
-import { env, isEmailOnWhitelist, jobService, webExtractorService, mailService, mailTemplateEngine } from '../../../server-state.js';
+import { env, isEmailOnWhitelist, rulesetRepository, jobExecutor, mailService, mailTemplateEngine } from '../../../server-state.js';
 
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const URL_PROTOCOL_REGEX = /^\w+:\/\//;
+
+export async function load() {
+    let rulesets = [];
+    for (let ruleset of rulesetRepository.rulesets) {
+        rulesets.push({
+            name: ruleset.name,
+            description: ruleset.description,
+            options: ruleset.options
+        });
+    }
+
+    return { rulesets };
+    //TODO prepare data for form, so we can generate ruleset options, when form fails select the correct on and check what the user selected, so use the form-data in the client for that
+}
 
 export const actions = {
     default: async ({ request }) => {
@@ -15,8 +30,8 @@ export const actions = {
         let includeScreenshots = !!formData.get('includeScreenshots');
         let rulesetName = formData.get('rulesetName');
 
-        if (webExtractorService.rulesets.length === 1) {
-            rulesetName = webExtractorService.rulesets[0].name;
+        if (rulesetRepository.rulesets.length === 1) {
+            rulesetName = rulesetRepository.rulesets[0].name;
         }
 
         let errors = {};
@@ -27,7 +42,7 @@ export const actions = {
         validateRulesetAndSetDefaults(rulesetName, rulesetOptions, errors);
 
         if (_.isEmpty(errors)) {
-            let currentJobs = jobService.getJobsByEmail(email);
+            let currentJobs = jobExecutor.getJobsByEmail(email);
             let errorMessage = `The maximum number of analyses has been reached for the current user. If you \
             have one or more analyses which is completed you can download the result and then delete the analysis to be able to submit a new one.`
             if (isEmailOnWhitelist(email)) {
@@ -43,12 +58,12 @@ export const actions = {
 
         if (_.isEmpty(errors)) {
             let job = Job.create(email, urls, rulesetName,{ includeScreenshots, ruleset: rulesetOptions });
-            let queueSize = jobService.queueSize;
+            let queueSize = jobExecutor.queueSize;
             let daysToExpiration = (env.JOBS_COMPLETED_EXPIRATION_TIME_MS / (24 * 60 * 60 * 1000));
             if (daysToExpiration < 1) {
                 daysToExpiration = daysToExpiration.toFixed(2);
             }
-            await jobService.addJob(job);
+            await jobExecutor.addJob(job);
             let mail = mailTemplateEngine.createJobSubmittedMail(job);
 
             (async () => { // we don't want to wait for the promise to resolve, we don't inform the user anyway, so wrap it an log errors
@@ -87,9 +102,10 @@ function validateAndParseUrls(urlsStr, email, errors) {
     urls = urls.filter(url => url.trim() !== '');
     for (let url of urls) {
         try {
-            let urlObj = new URL(url);
+            let urlWithProtocol = URL_PROTOCOL_REGEX.test(url) ? url : 'https://' + url; // make a valid url for testing, we allow urls without protocol as input
+            let urlObj = new URL(urlWithProtocol);
             if (urlObj.protocol !== 'http:' && urlObj.protocol !== 'https:') {
-                errors.urls = `"${url}" is not a valid url. Urls must start with "http://" or "https://"`;
+                errors.urls = `"${url}" is not a valid url. Urls must start with "http://", "https://" or have no protocol specified`;
                 return;
             }
             let hostname = urlObj.hostname.trim().toLowerCase();
@@ -122,7 +138,7 @@ function validateAndParseUrls(urlsStr, email, errors) {
 }
 
 function validateRulesetAndSetDefaults(rulesetName, rulesetOptions, errors) {
-    let ruleset = webExtractorService.getRulesetByName(rulesetName);
+    let ruleset = rulesetRepository.getRulesetByName(rulesetName);
     if (!ruleset) {
         errors.rulesetName = `Unknown ruleset "${rulesetName}"`;
         return;

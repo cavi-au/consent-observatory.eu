@@ -2,6 +2,20 @@
   "name": "temp rule",
   "description": "A demo rule",
   "options": [
-
+    {
+      "type": "checkbox",
+      "key": "a",
+      "name": "Check Me"
+    },
+    {
+      "type": "radio",
+      "key": "b",
+      "options": [
+        {
+          "name": "option1",
+          "value": "value2"
+        }
+      ]
+    }
   ]
 }

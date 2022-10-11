@@ -53,3 +53,9 @@ Hvis der kun er et Ruleset vises dropdown ikke, men bare options, (hvis de er sa
 
 - lav validering af ruleset
 - lav så ruleset bliver en del af ui og vi tjekker på serveren af der er sat gyldige værdier for rulesetName, og rulesetOptions.xxx
+- select all option for checkboxes
+
+DEPLOY TIL webservice2 server og se om vi kan få det til at virke der, vi skal nok have åbnet for mail-ud, installere puppeteer ui-libs og så
+sætte substi for url-resolve til sveltekit, så url'er virker og så lave apache reverse proxy /consent-observatory.eu -> localhost:7098
+
+

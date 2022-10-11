@@ -1,19 +1,29 @@
-
+import _ from 'lodash';
 import { Validator } from '@chcaa/validator';
 
 class Ruleset {
 
+    static rulesetComparator = (r1, r2) => {
+        let res = r1.sortOrder - r2.sortOrder;
+        if (res === 0) {
+            return r1.name.localeCompare(r2.name);
+        }
+        return res;
+    };
+
     #name;
     #description;
     #rules;
+    #sortOrder;
     #options;
     #optionByKey = new Map();
 
-    constructor(name, description, rules, options= []) {
-        this.#validate(name, description, options);
+    constructor(name, description, rules, sortOrder = Number.MAX_SAFE_INTEGER, options= []) {
+        this.#validate(name, description, sortOrder, options);
         this.#name = name;
         this.#description = description;
         this.#rules = rules;
+        this.#sortOrder = sortOrder;
         this.#options = options;
         for (let option of this.#options) {
             this.#optionByKey.set(option.key, option);
@@ -32,6 +42,10 @@ class Ruleset {
         return this.#rules;
     }
 
+    get sortOrder() {
+        return this.#sortOrder;
+    }
+
     get options() {
         return this.#options;
     }
@@ -44,9 +58,9 @@ class Ruleset {
         let option = this.#optionByKey.get(optionKey);
         if (option.type === 'checkbox') {
             return _.isBoolean(value);
-        } else {
-            for (let nameVal of option.names) {
-                if (nameVal.value === value) {
+        } else if (option.type === 'radio') {
+            for (let radioOption of option.options) {
+                if (radioOption.value === value) {
                     return true;
                 }
             }
@@ -58,48 +72,66 @@ class Ruleset {
         let option = this.#optionByKey.get(optionKey);
         if (option.type === 'checkbox') {
             return false;
-        } else {
-            return option.names[0].value;
+        } else if (option.type === 'radio') {
+            return option.options[0].value;
         }
     }
 
-    #validate(name, description, options) {
+    #validate(name, description, sortOrder, options) {
         let test = Validator.createOnErrorThrowValidator('Ruleset Error:');
         test(name).fulfillAllOf(name => [
-            name.is.aString('"name" must be a string'),
-            name.isNot.empty('"name" cannot be empty')
+            name.is.aString('"${PATH}" must be a string'),
+            name.isNot.empty('"${PATH}" cannot be empty')
         ]);
         test(description).fulfillAllOf(description => [
-            description.is.aString('"description" must be a string'),
-            description.isNot.empty('"description" cannot be empty')
+            description.is.aString('"${PATH}" must be a string'),
+            description.isNot.empty('"${PATH}" cannot be empty')
         ]);
-        test(options).is.anArray('"options" must be an array');
-        test(options).each(option => option.fulfillAllOf(option => [
+        test(sortOrder, 'sortOrder').fulfillAllOf(sortOrder => [
+            sortOrder.is.anInteger('"${PATH}" must be an integer')
+        ]);
+        test(options, 'options').is.anArray('"${PATH}" must be an array');
+        test(options, 'options').each(option => option.fulfillAllOf(option => [
             option.is.anObject('each "option" must be an object'),
             option.prop('type').fulfillAllOf(type => [
-                type.is.aString('"type" must be a string'),
-                type.is.in(['radio', 'checkbox'], '"type" must be one of "radio" or "checkbox"'),
+                type.is.aString('"${PATH}" must be a string'),
+                type.is.in(['radio', 'checkbox'], '"${PATH}" must be one of "radio" or "checkbox"'),
             ]),
             option.conditionally(
                 option => option.prop('type').is.equalTo('radio')
-            ).prop('name').fulfillAllOf(name => [
-                // TODO
+            ).prop('options').fulfillAllOf(options => [
+                options.is.anArray('"${PATH}" must be an array'),
+                options.isNot.empty('"${PATH}" cannot be empty'),
+                options.each(option => option.fulfillAllOf(option => [
+                   option.is.anObject('"${PATH}" must be an object'),
+                   option.prop('name').fulfillAllOf(name => [
+                       name.is.aString('"${PATH}" must be a string'),
+                       name.isNot.empty('"${PATH}" cannot be empty'),
+                   ]),
+                    option.prop('value').fulfillAllOf(value => [
+                        value.is.aString('"${PATH}" must be a string'),
+                        value.isNot.empty('"${PATH}" cannot be empty'),
+                    ])
+                ]))
             ]),
             option.conditionally(
                 option => option.prop('type').is.equalTo('checkbox')
             ).prop('name').fulfillAllOf(name => [
-                // TODO
+                name.is.aString('"${PATH}" must be a string'),
+                name.isNot.empty('"${PATH}" cannot be empty'),
             ]),
             option.prop('key').fulfillAllOf(key => [
-                key.is.aString('"key" must be a string'),
-                key.isNot.empty('"key" cannot be empty')
+                key.is.aString('"${PATH}" must be a string'),
+                key.isNot.empty('"${PATH}" cannot be empty')
             ]),
-            //TODO continue validating
-
         ]));
-        // TODO validate and set defaults for options?
 
-        // TODO option keys must be unique for the ruleset
+        test(options, 'options').fulfill(options => {
+            let keysArrays = options.value.map(option => option.key);
+            let keys = new Set(keysArrays);
+            return keysArrays.length === keys.size;
+        }, 'All option keys must be unique');
+
     }
 
 }

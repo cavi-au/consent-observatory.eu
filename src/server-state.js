@@ -1,8 +1,9 @@
 import fs from 'fs';
 import chokidar from 'chokidar';
-import { JobService } from "$lib/server/analysis/job-service.js";
+import { JobExecutor } from "$lib/server/analysis/job-executor.js";
 import { env as privateEnvVars } from '$env/dynamic/private';
-import { WebExtractorService } from "$lib/server/analysis/web-extractor-service.js";
+import { WebExtractorExecutor } from "$lib/server/analysis/web-extractor-executor.js";
+import { RulesetRepository } from "$lib/server/analysis/ruleset-repository.js";
 import { MailTemplateEngine } from "$lib/server/mail/mail-template-engine.js";
 import path from "path";
 import { setTimeout } from 'timers/promises';
@@ -25,8 +26,9 @@ let env = {};
 checkRequiredEnvVars();
 loadEnvVars();
 
-let jobService;
-let webExtractorService;
+let jobExecutor;
+let webExtractorExecutor;
+let rulesetRepository;
 let mailService;
 let mailTemplateEngine;
 let emailWhitelist; // may be use this to it's own util if more files needs watching
@@ -40,9 +42,11 @@ async function init() {
         completedExpirationTime: env.JOBS_COMPLETED_EXPIRATION_TIME_MS
     };
 
-    webExtractorService = new WebExtractorService(env.RULES_DIR);
+    rulesetRepository = new RulesetRepository(env.RULES_DIR);
+    await initService('Error creating ruleset-repository', () => rulesetRepository.init());
 
-    await initService('Error creating web-extractor', () => webExtractorService.init());
+    webExtractorExecutor = new WebExtractorExecutor(rulesetRepository);
+    await initService('Error creating web-extractor-executor', () => webExtractorExecutor.init());
 
     let mailOptions = {
         host: env.MAIL_SMTP_HOST,
@@ -58,12 +62,12 @@ async function init() {
     mailTemplateEngine = new MailTemplateEngine(path.join(currentDirPath, '/lib/server/assets/mail'), env.MAIL_MESSAGE_FROM);
     await initService('Error creating mail-template-engine', () => mailTemplateEngine.init());
 
-    jobService = new JobService(env.JOBS_ROOT_DIR, webExtractorService, mailService, mailTemplateEngine, executorOpts);
-    await initService('Error creating job-executor', () => jobService.init());
+    jobExecutor = new JobExecutor(env.JOBS_ROOT_DIR, webExtractorExecutor, mailService, mailTemplateEngine, executorOpts);
+    await initService('Error creating job-executor', () => jobExecutor.init());
 
     loadAndWatchEmailWhitelist();
 
-    jobService.onJobCompleted(async ({ job }) => {
+    jobExecutor.onJobCompleted(async ({ job }) => {
         try {
             let mail = mailTemplateEngine.createJobCompletedMail(job);
             let now = Date.now();
@@ -141,5 +145,5 @@ function loadEnvVars() {
     env = Object.freeze(env);
 }
 
-export { init, env, jobService, webExtractorService, mailService, mailTemplateEngine, isEmailOnWhitelist };
+export { init, env, jobExecutor, rulesetRepository, webExtractorExecutor, mailService, mailTemplateEngine, isEmailOnWhitelist };
 
