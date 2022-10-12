@@ -140,7 +140,7 @@ function validateAndParseUrls(urlsStr, email, errors) {
 function validateRulesetAndSetDefaults(rulesetName, rulesetOptions, errors) {
     let ruleset = rulesetRepository.getRulesetByName(rulesetName);
     if (!ruleset) {
-        errors.rulesetName = `Unknown ruleset "${rulesetName}"`;
+        errors.global = `Unknown ruleset "${rulesetName}"`;
         return;
     }
 
@@ -154,12 +154,12 @@ function validateRulesetAndSetDefaults(rulesetName, rulesetOptions, errors) {
 
     for (let key of Object.keys(rulesetOptions)) {
         if (!ruleset.isOptionSupported(key)) {
-            errors.rulesetOption = `Unknown ruleset option "${key}"`;
+            errors.global = `Unknown ruleset option "${key}"`;
             return;
         }
 
         if (!ruleset.isOptionValueSupported(key, rulesetOptions[key])) {
-            errors.rulesetOption = `The value "${rulesetOptions[key]}" is not valid for the ruleset option "${key}"`;
+            errors[`rulesetOption.${key}`] = `The value "${rulesetOptions[key]}" is not valid for the ruleset option "${key}"`;
             return;
         }
     }
@@ -170,7 +170,7 @@ function getRulesetOptions(formData) {
     for (let key of formData.keys()) {
         if (key.startsWith('rulesetOption.')) {
             let value = formData.get(key);
-            options[key.substring('rulesetOptions.'.length)] = value;
+            options[key.substring('rulesetOption.'.length)] = value;
         }
     }
     return options;

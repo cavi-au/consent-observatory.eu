@@ -1,0 +1,26 @@
+{
+  "name": "dk demo rule",
+  "description": "Use this for dk sites",
+  "options": [
+    {
+      "type": "checkbox",
+      "key": "includeDkPopup2",
+      "label": "Duttelut",
+      "name": "Include Popup 2 elements"
+    },
+    {
+      "type": "radio",
+      "key": "typeOfSearch",
+      "options": [
+        {
+          "name": "Deep Search",
+          "value": "deep"
+        },
+        {
+          "name": "Shallow Search",
+          "value": "shallow"
+        }
+      ]
+    }
+  ]
+}
