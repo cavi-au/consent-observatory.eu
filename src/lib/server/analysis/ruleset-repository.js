@@ -48,7 +48,7 @@ class RulesetRepository {
                 let uiJson = JSON.parse(uiFileContent);
                 let rules = await ruleUtils.loadRules(dir);
                 try {
-                    let ruleSet = new Ruleset(uiJson.name, uiJson.description, rules, uiJson.sortOrder, uiJson.options);
+                    let ruleSet = new Ruleset(uiJson.name, uiJson.description, rules, uiJson.sortKey, uiJson.options);
                     rulesets.push(ruleSet);
                 } catch (e) {
                     e.message = `Error while loading: "${uiFilePath}". ` + e.message;

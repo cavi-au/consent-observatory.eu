@@ -5,8 +5,8 @@
     {
       "type": "checkbox",
       "key": "includeDkPopup2",
-      "description": "Some description",
-      "label": "Include Popup 2 elements"
+      "label": "Include Popup 2 elements",
+      "description": "Some description"
     },
     {
       "type": "radio",

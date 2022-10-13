@@ -39,16 +39,37 @@ At least one ruleset must be present for the application to start.
 
 ### __ui.json
 The `__ui.json` files has the following structure and is used for configuring the user-interface for the given ruleset and define which
-options should be passed to the `init()`method of the rules in the ruleset making it possible to have different options for each ruleset.
+options should be passed to the `init()` method of the rules in the ruleset making it possible to have different options for each ruleset.
 
 ```json5
 {
   "name": "Example Name", // [REQUIRED] name shown in ui, this must be unique
   "description": "Description of the ruleset", // [REQUIRED] description shown in the ui, what is the ruleset typically used for
+  "sortKey": 1, // a number to compare this ruleset to other rulesets, if not defined the name will be used for sorting
   "options": [ // zero or more option objects
-    // TODO
+    {
+      "type": "checkbox", // [REQUIRED]
+      "key": "includeParagraph", // [REQUIRED] the key will be used as property in the options object
+      "label": "Include paragraphs in the result", // [REQUIRED] the label of the checkbox 
+      "description": "If selected paragraphs will be extracted", // an optional description which will be shown below the checkbox in the ui
+    },
+    {
+      "type": "radio", // [REQUIRED] 
+      "key": "extractType", // [REQUIRED] the key will be used as property in the options object
+      "title": "Extraction Type", // an optional title to show above the radio buttons
+      "description": "What should be included in the result?", // an optional description which will be shown below the radio buttons in the ui
+      "options": [
+        {
+          "label": "Deep Search",
+          "value": "deep"
+        },
+        {
+          "label": "Shallow Search",
+          "value": "shallow"
+        }
+      ]
+    }
   ],
-  // TODO
 }
 ```
 

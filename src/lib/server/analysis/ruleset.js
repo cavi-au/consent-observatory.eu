@@ -4,7 +4,7 @@ import { Validator } from '@chcaa/validator';
 class Ruleset {
 
     static rulesetComparator = (r1, r2) => {
-        let res = r1.sortOrder - r2.sortOrder;
+        let res = r1.sortKey - r2.sortKey;
         if (res === 0) {
             return r1.name.localeCompare(r2.name);
         }
@@ -14,16 +14,16 @@ class Ruleset {
     #name;
     #description;
     #rules;
-    #sortOrder;
+    #sortKey;
     #options;
     #optionByKey = new Map();
 
-    constructor(name, description, rules, sortOrder = Number.MAX_SAFE_INTEGER, options= []) {
-        this.#validate(name, description, sortOrder, options);
+    constructor(name, description, rules, sortKey = Number.MAX_SAFE_INTEGER, options= []) {
+        this.#validate(name, description, sortKey, options);
         this.#name = name;
         this.#description = description;
         this.#rules = rules;
-        this.#sortOrder = sortOrder;
+        this.#sortKey = sortKey;
         this.#options = options;
         for (let option of this.#options) {
             this.#optionByKey.set(option.key, option);
@@ -42,8 +42,8 @@ class Ruleset {
         return this.#rules;
     }
 
-    get sortOrder() {
-        return this.#sortOrder;
+    get sortKey() {
+        return this.#sortKey;
     }
 
     get options() {
@@ -77,7 +77,7 @@ class Ruleset {
         }
     }
 
-    #validate(name, description, sortOrder, options) {
+    #validate(name, description, sortKey, options) {
         let test = Validator.createOnErrorThrowValidator('Ruleset Error:');
         test(name).fulfillAllOf(name => [
             name.is.aString('"${PATH}" must be a string'),
@@ -87,8 +87,8 @@ class Ruleset {
             description.is.aString('"${PATH}" must be a string'),
             description.isNot.empty('"${PATH}" cannot be empty')
         ]);
-        test(sortOrder, 'sortOrder').fulfillAllOf(sortOrder => [
-            sortOrder.is.anInteger('"${PATH}" must be an integer')
+        test(sortKey, 'sortKey').fulfillAllOf(sortKey => [
+            sortKey.is.anInteger('"${PATH}" must be an integer')
         ]);
         test(options, 'options').is.anArray('"${PATH}" must be an array');
         test(options, 'options').each(option => option.fulfillAllOf(option => [
