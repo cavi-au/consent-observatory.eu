@@ -26,7 +26,7 @@ class WebExtractorExecutor {
             throw new Error(`Ruleset with name: "${job.rulesetName}" does not exist`);
         }
         let rulesetOptions = job.rulesetOptions;
-        await ruleUtils.initRules(ruleset.rules, { destDir: dataDestDir, rulesetOptions });
+        let ruleInitOptions = { destDir: dataDestDir, rulesetOptions };
 
         let options = {
             userAgent: undefined, // if undefined a default will be used
@@ -36,6 +36,7 @@ class WebExtractorExecutor {
                     stackTrace: false // do not include stack traces as we don't know who will get the data
                 }
             },
+            ruleInitOptions,
             maxConcurrency: this.#maxConcurrency,
             pageTimeoutMs: 90000
         };
