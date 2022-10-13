@@ -97,6 +97,8 @@ class Ruleset {
                 type.is.aString('"${PATH}" must be a string'),
                 type.is.in(['radio', 'checkbox'], '"${PATH}" must be one of "radio" or "checkbox"'),
             ]),
+            option.prop('title').optional.is.aString('"${PATH}" must be a string'),
+            option.prop('description').optional.is.aString('"${PATH}" must be a string'),
             option.conditionally(
                 option => option.prop('type').is.equalTo('radio')
             ).prop('options').fulfillAllOf(options => [
@@ -104,7 +106,7 @@ class Ruleset {
                 options.isNot.empty('"${PATH}" cannot be empty'),
                 options.each(option => option.fulfillAllOf(option => [
                    option.is.anObject('"${PATH}" must be an object'),
-                   option.prop('name').fulfillAllOf(name => [
+                   option.prop('label').fulfillAllOf(name => [
                        name.is.aString('"${PATH}" must be a string'),
                        name.isNot.empty('"${PATH}" cannot be empty'),
                    ]),
@@ -116,7 +118,7 @@ class Ruleset {
             ]),
             option.conditionally(
                 option => option.prop('type').is.equalTo('checkbox')
-            ).prop('name').fulfillAllOf(name => [
+            ).prop('label').fulfillAllOf(name => [
                 name.is.aString('"${PATH}" must be a string'),
                 name.isNot.empty('"${PATH}" cannot be empty'),
             ]),

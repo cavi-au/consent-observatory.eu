@@ -77,7 +77,7 @@ export const actions = {
 
             return { success: true, jobId: job.id, queueSize, daysToExpiration };
         } else {
-            return invalid(400, { errors, data: { email, urls: urlsStr } });
+            return invalid(400, { errors, data: { email, urls: urlsStr, includeScreenshots, rulesetOptions } });
         }
     }
 };

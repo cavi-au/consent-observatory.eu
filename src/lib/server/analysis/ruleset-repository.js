@@ -46,7 +46,7 @@ class RulesetRepository {
                 let uiFilePath = path.join(dir, file.name);
                 let uiFileContent = await fs.readFile(uiFilePath, 'utf-8');
                 let uiJson = JSON.parse(uiFileContent);
-                let rules = await ruleUtils.getRules(dir);
+                let rules = await ruleUtils.loadRules(dir);
                 try {
                     let ruleSet = new Ruleset(uiJson.name, uiJson.description, rules, uiJson.sortOrder, uiJson.options);
                     rulesets.push(ruleSet);

@@ -6,7 +6,8 @@
     export let data;
     export let form;
 
-    let selectedOptions = new Set();
+    let selectedCheckboxes = new Set();
+    let selectedRadios = new Map();
 
     let selectedRuleset;
 
@@ -21,7 +22,11 @@
     function setSelectedRuleset(rulesetName, form) {
         if (selectedRuleset) {
             for (let rulesetOption of selectedRuleset.options) {
-                selectedOptions.delete(rulesetOption.key);
+                if (rulesetOption.type === 'checkbox') {
+                    selectedCheckboxes.delete(`rulesetOption.${rulesetOption.key}`);
+                } else if (rulesetOption.type === 'radio') {
+                    selectedRadios.delete(`rulesetOption.${rulesetOption.key}`);
+                }
             }
             selectedOptionsChanged();
         }
@@ -32,25 +37,60 @@
             }
         }
 
-        if (form) {
-            // TODO set currently selected options in the set
-            // also includeScreenshots if set...
+        for (let rulesetOption of selectedRuleset.options) {
+            if (rulesetOption.type === 'radio') {
+                selectedRadios.set(`rulesetOption.${rulesetOption.key}`, rulesetOption.options[0].value);
+            }
+        }
 
+        if (form?.data) {
+            if (form.data.includeScreenshots) {
+                selectedCheckboxes.add('includeScreenshots');
+            }
+            for (let rulesetOption of selectedRuleset.options) {
+                let rulesetOptionFormValue = form.data.rulesetOptions[rulesetOption.key];
+                if (rulesetOptionFormValue) {
+                    if (rulesetOption.type === 'checkbox') {
+                        selectedCheckboxes.add(`rulesetOption.${rulesetOption.key}`);
+                    } else if (rulesetOption.type === 'radio') {
+                        selectedRadios.set(`rulesetOption.${rulesetOption.key}`, rulesetOptionFormValue);
+                    }
+                }
+
+            }
             selectedOptionsChanged();
         }
     }
 
     function selectedOptionsChanged() {
-        selectedOptions = selectedOptions; // make it update
+        selectedCheckboxes = selectedCheckboxes; // make it update
+        selectedRadios = selectedRadios;
     }
-    function selectedAllOptions(selectAll) {
+
+    function checkboxChanged(key, selected) {
+        if (selected) {
+            selectedCheckboxes.add(key);
+        } else {
+            selectedCheckboxes.delete(key);
+        }
+        selectedOptionsChanged();
+    }
+
+    function radioChanged(key, value) {
+        selectedRadios.set(key, value);
+        selectedOptionsChanged();
+    }
+
+    function selectAllCheckboxes(selectAll) {
         if (selectAll) {
-            selectedOptions.add('includeScreenshots');
+            selectedCheckboxes.add('includeScreenshots');
             for (let rulesetOption of selectedRuleset.options) {
-                selectedOptions.add(`rulesetOption.${rulesetOption.key}`);
+                if (rulesetOption.type === 'checkbox') {
+                    selectedCheckboxes.add(`rulesetOption.${rulesetOption.key}`);
+                }
             }
         } else {
-            selectedOptions.clear();
+            selectedCheckboxes.clear();
         }
         selectedOptionsChanged();
     }
@@ -61,8 +101,6 @@
     <title>Consent Observatory - New Analysis</title>
     <meta name="description" content="" />
 </svelte:head>
-
-TODO test errors for ruleset and ruleset options ...
 
 {#if form?.success}
     <h1>Success - Your Analysis Was Submitted <i class="bi-check2-square text-success"></i></h1>
@@ -131,36 +169,53 @@ https://example2.eu`}">{form?.data?.urls ?? ''}</textarea>
         {/if}
 
         <legend>Options
-            <button class="btn btn-sm ms-2" title="Select All" on:click|preventDefault={() => selectedAllOptions(true)}><i class="bi bi-check2-square"></i></button>
-            <button class="btn btn-sm" title="Deselect All" on:click|preventDefault={() => selectedAllOptions(false)}><i class="bi bi-square"></i></button>
+            <button class="btn btn-sm ms-2" title="Select All" on:click|preventDefault={() => selectAllCheckboxes(true)}><i class="bi bi-check2-square"></i></button>
+            <button class="btn btn-sm" title="Deselect All" on:click|preventDefault={() => selectAllCheckboxes(false)}><i class="bi bi-square"></i></button>
         </legend>
 
         <div class="mb-3 form-check">
-            <input type="checkbox" checked={selectedOptions.has('includeScreenshots')} class="form-check-input" name="includeScreenshots" id="include-screenshots-checkbox">
+            <input type="checkbox" checked={selectedCheckboxes.has('includeScreenshots')} class="form-check-input" name="includeScreenshots"
+                   id="include-screenshots-checkbox" on:click={(event) => checkboxChanged('includeScreenshots', event.target.checked)}>
             <label class="form-check-label" for="include-screenshots-checkbox" aria-describedby="include-screenshots-checkbox-info">Include Screenshots</label>
             <div id="include-screenshots-checkbox-info" class="form-text">If selected a screenshot of each url analyzed will be included in the result</div>
         </div>
 
         {#each selectedRuleset.options as rulesetOption}
             {@const optionKey = `rulesetOption.${rulesetOption.key}`}
-            {#if rulesetOption.label}
-                <label class="form-label">{rulesetOption.label}</label>
+            {#if rulesetOption.title}
+                <p class="form-label">{rulesetOption.title}</p>
             {/if}
             {#if rulesetOption.type === 'checkbox'}
                 <div class="mb-3 form-check">
-                    <input type="checkbox" checked={selectedOptions.has(optionKey)} class="form-check-input" name="{optionKey}" id="{optionKey}">
-                    <label class="form-check-label" for="{optionKey}">{rulesetOption.name}</label>
-                    {#if rulesetOption.description}
+                    <input type="checkbox" checked={selectedCheckboxes.has(optionKey)} class="form-check-input" name="{optionKey}"
+                           id="{optionKey}" on:click={(event) => checkboxChanged(optionKey, event.target.checked)}>
+                    <label class="form-check-label" for="{optionKey}">{rulesetOption.label}</label>
+                    {#if form?.errors?.[optionKey]}
+                        <div id="{optionKey}-error" class="invalid-feedback">{form?.errors?.[optionKey]}</div>
+                    {:else if rulesetOption.description}
                         <div id="{optionKey}-info" class="form-text">{rulesetOption.description}</div>
                     {/if}
                 </div>
-            {:else if rulesetOption.value === 'radio'}
+            {:else if rulesetOption.type === 'radio'}
+                {#each rulesetOption.options as radioOption, i}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" checked={selectedRadios.get(optionKey) === radioOption.value} name="{optionKey}"
+                               value="{radioOption.value}" id="{optionKey}-{i}" on:click={(event) => radioChanged(optionKey, radioOption.value)}>
+                        <label class="form-check-label" for="{optionKey}-{i}">{radioOption.label}</label>
 
+                        {#if i === rulesetOption.options.length - 1}
+                            <div class="mb-3">
+                                {#if form?.errors?.[optionKey]}
+                                    <div id="{optionKey}-error" class="invalid-feedback">{form?.errors?.[optionKey]}</div>
+                                {:else if rulesetOption.description}
+                                    <div id="{optionKey}-info" class="form-text">{rulesetOption.description}</div>
+                                {/if}
+                            </div>
+                        {/if}
+                    </div>
+                {/each}
             {/if}
-
-            create option, chech or radio, add label if label set, add errors if set <br>
         {/each}
-
 
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

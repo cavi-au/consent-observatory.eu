@@ -5,14 +5,14 @@
     {
       "type": "checkbox",
       "key": "a",
-      "name": "Check Me"
+      "label": "Check Me"
     },
     {
       "type": "radio",
       "key": "b",
       "options": [
         {
-          "name": "option1",
+          "label": "option1",
           "value": "value2"
         }
       ]
