@@ -18,7 +18,6 @@ export async function load() {
     }
 
     return { rulesets };
-    //TODO prepare data for form, so we can generate ruleset options, when form fails select the correct on and check what the user selected, so use the form-data in the client for that
 }
 
 export const actions = {
