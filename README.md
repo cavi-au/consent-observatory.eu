@@ -46,7 +46,7 @@ options should be passed to the `init()` method of the rules in the ruleset maki
   "name": "Example Name", // [REQUIRED] name shown in ui, this must be unique
   "description": "Description of the ruleset", // [REQUIRED] description shown in the ui, what is the ruleset typically used for
   "sortKey": 1, // a number to compare this ruleset to other rulesets, if not defined the name will be used for sorting
-  "options": [ // zero or more option objects
+  "options": [ // an optional set of option objects
     {
       "type": "checkbox", // [REQUIRED]
       "key": "includeParagraph", // [REQUIRED] the key will be used as property in the options object
@@ -58,14 +58,14 @@ options should be passed to the `init()` method of the rules in the ruleset maki
       "key": "extractType", // [REQUIRED] the key will be used as property in the options object
       "title": "Extraction Type", // an optional title to show above the radio buttons
       "description": "What should be included in the result?", // an optional description which will be shown below the radio buttons in the ui
-      "options": [
+      "options": [ // [REQUIRED] at least one radio button must be present
         {
-          "label": "Deep Search",
-          "value": "deep"
+          "label": "Deep Search", // [REQUIRED] the label of the radio button
+          "value": "deep" // [REQUIRED] the value so set for the "key" in the options object if this radio button is selected
         },
         {
-          "label": "Shallow Search",
-          "value": "shallow"
+          "label": "Shallow Search", // [REQUIRED] the label of the radio button
+          "value": "shallow" // [REQUIRED] the value so set for the "key" in the options object if this radio button is selected
         }
       ]
     }
