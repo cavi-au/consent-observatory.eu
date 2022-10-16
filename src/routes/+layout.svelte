@@ -4,6 +4,7 @@
     import BoostrapCollapse from "$lib/client/components/bootstrap/BoostrapCollapse.svelte";
     import AlertStreamer from "$lib/client/components/AlertStreamer.svelte";
     import ConfirmDialog from "$lib/client/components/bootstrap/ConfirmDialog.svelte";
+    import coLogo from '$lib/client/assets/images/co-logo.png';
 
     let alertStreamer;
     let confirmDialogContext;
@@ -42,6 +43,7 @@
     }
 </script>
 
+
 {#if confirmDialogContext}
     <ConfirmDialog title={confirmDialogContext.title} message={confirmDialogContext.message} on:action={onConfirmDialogResult}/>
 {/if}
@@ -52,7 +54,7 @@
             <nav class="navbar navbar-expand-sm">
                 <span id="site-title" class="navbar-brand">
                     <a href="/" id="site-title-logo">
-                    	<span id="site-title-text">Consent Observatory</span>
+                        <img id="logo" src={coLogo}>
 					</a>
                 </span>
                 <BoostrapCollapse targetId="main-menu" show={showMainMenuMobile}/>
@@ -61,6 +63,9 @@
                 </button>
                 <div class="navbar-collapse collapse" id="main-menu">
                     <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="/" class="nav-link" class:active={isMenuItemActive('/', $page.url.pathname)}>Home</a>
+                        </li>
                         <li class="nav-item">
                             <a href="/analysis/new" class="nav-link" class:active={isMenuItemActive('/analysis/new', $page.url.pathname)}>New Analysis</a>
                         </li>
@@ -85,7 +90,7 @@
         <div class="container main">
             <div class="row">
                 <div class="col-sm-12">
-                    <span>Created by Peter B. Vahlstrup 2022</span>
+                    <span>Created by Peter B. Vahlstrup & Midas Nouwens 2022</span>
                 </div>
             </div>
         </div>

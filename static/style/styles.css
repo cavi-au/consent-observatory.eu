@@ -1,3 +1,19 @@
+:root {
+    --bs-code-color: #efb253;
+    --main-color: #e9d7b8;
+}
+
+@font-face {
+    font-family: "Haskoy-Medium";
+    src: url("./fonts/Haskoy-Medium.woff2") format("woff2");
+    font-family: "Haskoy-Bold";
+    src: url("./fonts/Haskoy-Bold.woff2") format("woff2");
+}
+
+* {
+    font-family: Haskoy-Medium, sans-serif;
+}
+
 body, #wrapper {
     min-height: 100vh;
 }
@@ -8,11 +24,15 @@ header {
 }
 
 #site-title {
-    color: #f9007e;
+    color: #EFB253;
     font-size: 18px;
     margin-right: 8px;
     padding-top: 7px;
     padding-bottom: 7px;
+}
+
+#logo {
+    width: 80px;
 }
 
 #site-title a {
@@ -25,6 +45,13 @@ header {
 }
 .main {
     max-width: 1200px;
+}
+
+#landing-abstract {
+    text-align: center;
+    padding: 20px;
+    margin: 20px;
+    background-color: var(--main-color);
 }
 
 .content {
@@ -45,4 +72,16 @@ footer {
     border-top: 1px solid #ccc;
     color: #333;
     width: 100%;
+}
+
+/* BOOTSTRAP OVERWRITE */
+.btn-primary {
+    --bs-btn-bg: #fab446;
+    --bs-btn-border-color: #efb253;
+    --bs-btn-hover-bg: #e28e16;
+    --bs-btn-hover-border-color: #cd7f10;
+    --bs-btn-active-bg: #e28901;
+    --bs-btn-active-border-color: #ca7b01;
+    --bs-btn-disabled-bg: #eac78c;
+    --bs-btn-disabled-border-color: #cdac7c;
 }

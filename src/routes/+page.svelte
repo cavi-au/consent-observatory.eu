@@ -9,21 +9,23 @@
 </svelte:head>
 
 <section>
-    <h1>Consent Observatory</h1>
-    <p>Consent Observatory is a tool for making ... </p>
-    <p>Using color to add meaning only provides a visual indication, which will not be conveyed to users of assistive technologies –
-        such as screen readers. Ensure that information denoted by the color is either obvious from the content itself (e.g. the visible text),
-        or is included through alternative means, such as additional text hidden with the <code>.visually-hidden</code> class.
-    </p>
+    <div id="landing-abstract" class="rounded">
+        <h1>Consent Observatory</h1>
+        <p>Automated analysis of consent pop-ups on the web</p>
+        <a href="/analysis/new" class="btn btn-primary">New Analysis</a>
+    </div>
 
-    <h2>Getting Started</h2>
-    <p>
-        Submitting a <a href="/analysis/new" class="btn btn-primary">New Analysis</a> only requires a few steps.You just need:
-    </p>
-    <ol>
-        <li>An email-address</li>
-        <li>A list of urls you want to analyze</li>
-    </ol>
+    <!-- Anatomy of a consent pop-up   -->
+    <h2>Anatomy of a consent pop-up</h2>
+    <img src="">
+
+    <h5>Consent Management Platform</h5>
+
+    <h5>Bulk consent</h5>
+
+    <h5>Purpose-level consent</h5>
+
+    <h5>Vendor-level consent</h5>
 
 
 </section>
