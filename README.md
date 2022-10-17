@@ -43,15 +43,21 @@ options should be passed to the `init()` method of the rules in the ruleset maki
 
 ```json5
 {
-  "name": "Example Name", // [REQUIRED] name shown in ui, this must be unique
-  "description": "Description of the ruleset", // [REQUIRED] description shown in the ui, what is the ruleset typically used for
+  "name": "Extract Text", // [REQUIRED] name shown in ui, this must be unique
+  "description": "A general rule for extraction headings and paragraphs", // [REQUIRED] description shown in the ui, what is the ruleset typically used for
   "sortKey": 1, // a number to compare this ruleset to other rulesets, if not defined the name will be used for sorting
   "options": [ // an optional set of option objects
     {
       "type": "checkbox", // [REQUIRED]
       "key": "includeParagraph", // [REQUIRED] the key will be used as property in the options object
       "label": "Include paragraphs in the result", // [REQUIRED] the label of the checkbox 
-      "description": "If selected paragraphs will be extracted", // an optional description which will be shown below the checkbox in the ui
+      "description": "If selected paragraphs will be extracted" // an optional description which will be shown below the checkbox in the ui
+    },
+    { // another checkbox, same rules as above apply
+      "type": "checkbox",
+      "key": "includeHeadings",
+      "label": "Include headings in the result",
+      "description": "If selected headings (h1-h6) will be extracted"
     },
     {
       "type": "radio", // [REQUIRED] 
@@ -60,16 +66,16 @@ options should be passed to the `init()` method of the rules in the ruleset maki
       "description": "What should be included in the result?", // an optional description which will be shown below the radio buttons in the ui
       "options": [ // [REQUIRED] at least one radio button must be present
         {
-          "label": "Deep Search", // [REQUIRED] the label of the radio button
-          "value": "deep" // [REQUIRED] the value so set for the "key" in the options object if this radio button is selected
+          "label": "Only Text", // [REQUIRED] the label of the radio button
+          "value": "textOnly" // [REQUIRED] the value so set for the "key" in the options object if this radio button is selected
         },
         {
-          "label": "Shallow Search", // [REQUIRED] the label of the radio button
-          "value": "shallow" // [REQUIRED] the value so set for the "key" in the options object if this radio button is selected
+          "label": "Text and HTML", // [REQUIRED] the label of the radio button
+          "value": "textAndHTML" // [REQUIRED] the value so set for the "key" in the options object if this radio button is selected
         }
       ]
     }
-  ],
+  ]
 }
 ```
 
