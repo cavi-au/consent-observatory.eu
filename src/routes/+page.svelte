@@ -10,7 +10,7 @@
 
 <section>
     <div  id="landing-abstract" class="subsection">
-        <h1 class="bold-header">Consent Observatory</h1>
+        <h1 class="bold-header">Consent-Observatory.eu</h1>
         <p class="subtitle">Automated analysis of consent pop-ups on the web</p>
         <a href="/analysis/new" class="btn btn-primary btn-lg">new analysis</a>
     </div>
@@ -28,7 +28,7 @@
             <p class="image-caption">Fig. 1: Basic design of a consent pop-up (2022)</p>
         </div>
 
-        <h4 class="center-text">Common Design Features</h4>
+        <h4 class="center-text accent accent-header mt-5">Common Design Features</h4>
         <p>
             Most consent pop-ups look the same.
             They often consist of three layers:

@@ -13,13 +13,13 @@
 <section>
     <div id="aboutpage" class="subsection">
 
-        <h4>This service is created and maintained by researchers at Aarhus University, Denmark.</h4>
+        <h4  class="accent-header">This service is created and maintained by workers at Aarhus University, Denmark.</h4>
 
         <p>
             All servers – both for hosting the website and the collection of the data – are located in Denmark and managed by the university.
         </p>
         <p>
-            If you have any specific requests that are not supported (e.g., more urls, from different locations), please contact us.
+            If you have any specific needs that are not supported (e.g., more urls, location-specific data collection), reach out and we can find a custom solution.
         </p>
         <p>
             <i>midasnouwens at cc au dk</i>

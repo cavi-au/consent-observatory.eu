@@ -1,9 +1,15 @@
+@import url('http://fonts.cdnfonts.com/css/noto-sans');
+@import url('http://fonts.cdnfonts.com/css/adorage');
+
 :root {
-    --bs-code-color: #efb253;
     --main-color: #e9d7b8;
-    --red-color: #FF2326;
+    --red-color: #ff2326;
     --green-color: #00B96C;
     --background-color: #FFCE3C;
+
+    --accent-font-weight: 700;
+    --accent-font: "Adorage";
+    /*--accent-font: "Chromate-Regular";*/
 }
 
 @font-face {
@@ -13,18 +19,15 @@
     src: url("./fonts/Haskoy-Bold.woff2") format("woff2");
     font-family: "Chromate-Regular";
     src: url("./fonts/Chromate-Regular.otf") format("opentype");
-
 }
-
-@import url('http://fonts.cdnfonts.com/css/noto-sans');
 
 * {
     font-family: 'Noto Sans', sans-serif;
-    background-color: var(--background-color);
 }
 
 body, #wrapper {
     min-height: 100vh;
+    background-color: var(--background-color);
 }
 
 header {
@@ -62,8 +65,10 @@ header {
     max-width: 1200px;
 }
 
+/* Landing page header content */
 .bold-header {
-    font-family: Chromate-Regular, serif;
+    font-family: var(--accent-font), serif;
+    font-weight: var(--accent-font-weight);
     font-size: 5rem;
 }
 
@@ -73,26 +78,30 @@ header {
 }
 
 .bold-subheader {
-    font-family: Chromate-Regular, serif;
+    font-family: var(--accent-font), serif;
+    font-weight: var(--accent-font-weight);
     font-size: 2rem;
     line-height: 2;
 }
+
+#landing-abstract {
+    /*height: 90vh;*/
+    text-align: center;
+    /*border: black solid 12px;*/
+}
+
+#landing-abstract .btn {
+    margin-top: 40px;
+}
+
+/* --------- */
+
 
 .subsection {
     padding: 100px 20px 50px 20px;
     margin: 50px auto;
     font-size: 1.2rem;
     text-align: justify;
-
-}
-
-#landing-abstract {
-    text-align: center;
-    border: black solid 12px;
-}
-
-#landing-abstract .btn {
-    margin-top: 40px;
 }
 
 .content {
@@ -105,9 +114,10 @@ header {
     position: relative;
     margin: auto;
 }
-h2, h4, h5 {
-    font-family: Chromate-Regular, sans-serif;
-    padding-top: 1rem;
+
+.accent-header {
+    font-family: var(--accent-font), sans-serif;
+    font-weight: var(--accent-font-weight);
 }
 
 .center-text {
@@ -146,14 +156,40 @@ footer {
     width: 100%;
 }
 
+/* FORM stuff */
+
+.form-select {
+    width: auto;
+}
+
+.form-text {
+    color: #533501;
+}
+
+/* ----------- */
+
 /* BOOTSTRAP OVERWRITE */
 .btn-primary {
-    --bs-btn-bg: #fab446;
-    --bs-btn-border-color: #efb253;
+    --bs-btn-bg: #de8b08;
+    --bs-btn-border-color: #b57203;
     --bs-btn-hover-bg: #e28e16;
     --bs-btn-hover-border-color: #cd7f10;
     --bs-btn-active-bg: #e28901;
     --bs-btn-active-border-color: #ca7b01;
     --bs-btn-disabled-bg: #eac78c;
     --bs-btn-disabled-border-color: #cdac7c;
+}
+
+.form-check-input:checked {
+    background-color: var(--green-color);
+    border-color: #019657;
+}
+
+code {
+    color: black;
+    font-weight: 900;
+}
+
+.text-bg-secondary {
+    background-color: var(--green-color) !important;
 }

@@ -103,7 +103,7 @@
 </svelte:head>
 
 {#if form?.success}
-    <h1>Success - Your Analysis Was Submitted <i class="bi-check2-square text-success"></i></h1>
+    <h2>Success - Your Analysis Was Submitted <i class="bi-check2-square text-success"></i></h2>
     <p>
         Your analysis was successfully submitted to the queue and will be processed as soon as possible.
     </p>
@@ -121,7 +121,7 @@
         result before it is automatically deleted.
     </p>
 {:else}
-    <h1>Submit a New Analysis</h1>
+    <h2>Submit a New Analysis</h2>
     {#if form?.errors?.global}
         <div class="alert alert-danger" role="alert">
             {form?.errors?.global}
@@ -153,7 +153,7 @@ https://example2.eu`}">{form?.data?.urls ?? ''}</textarea>
             <input type="hidden" name="rulesetName" value="{data.rulesets[0].name}" />
         {:else}
             <div class="mb-3">
-                <label for="rulesetName-field" class="form-label">Ruleset</label>
+                <label for="rulesetName-field" class="form-label">Pre-defined configuration</label>
                 <select class="form-select" class:is-invalid={form?.errors?.rulesetName} name="rulesetName" id="rulesetName-field"
                         aria-describedby="rulesetName-field-info rulesetName-field-error" on:change={(event) => setSelectedRuleset(event.target.value)}>
                     {#each data.rulesets as ruleset}
@@ -169,16 +169,10 @@ https://example2.eu`}">{form?.data?.urls ?? ''}</textarea>
         {/if}
 
         <legend>Options
-            <button class="btn btn-sm ms-2" title="Select All" on:click|preventDefault={() => selectAllCheckboxes(true)}><i class="bi bi-check2-square"></i></button>
-            <button class="btn btn-sm" title="Deselect All" on:click|preventDefault={() => selectAllCheckboxes(false)}><i class="bi bi-square"></i></button>
+            <br>
+            <button class="btn btn-primary btn-sm ms-2" title="Select All" on:click|preventDefault={() => selectAllCheckboxes(true)}>Select all: <i class="bi bi-check2-square"></i></button>
+            <button class="btn btn-primary btn-sm" title="Deselect All" on:click|preventDefault={() => selectAllCheckboxes(false)}>Unselect all: <i class="bi bi-square"></i></button>
         </legend>
-
-        <div class="mb-3 form-check">
-            <input type="checkbox" checked={selectedCheckboxes.has('includeScreenshots')} class="form-check-input" name="includeScreenshots"
-                   id="include-screenshots-checkbox" on:click={(event) => checkboxChanged('includeScreenshots', event.target.checked)}>
-            <label class="form-check-label" for="include-screenshots-checkbox" aria-describedby="include-screenshots-checkbox-info">Include Screenshots</label>
-            <div id="include-screenshots-checkbox-info" class="form-text">If selected a screenshot of each url analyzed will be included in the result</div>
-        </div>
 
         {#each selectedRuleset.options as rulesetOption}
             {@const optionKey = `rulesetOption.${rulesetOption.key}`}
@@ -196,6 +190,7 @@ https://example2.eu`}">{form?.data?.urls ?? ''}</textarea>
                         <div id="{optionKey}-info" class="form-text">{rulesetOption.description}</div>
                     {/if}
                 </div>
+
             {:else if rulesetOption.type === 'radio'}
                 {#each rulesetOption.options as radioOption, i}
                     <div class="form-check">
@@ -217,7 +212,14 @@ https://example2.eu`}">{form?.data?.urls ?? ''}</textarea>
             {/if}
         {/each}
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="mb-3 form-check">
+            <input type="checkbox" checked={selectedCheckboxes.has('includeScreenshots')} class="form-check-input" name="includeScreenshots"
+                   id="include-screenshots-checkbox" on:click={(event) => checkboxChanged('includeScreenshots', event.target.checked)}>
+            <label class="form-check-label" for="include-screenshots-checkbox" aria-describedby="include-screenshots-checkbox-info">Include Screenshots</label>
+            <div id="include-screenshots-checkbox-info" class="form-text">If selected a screenshot of each url analyzed will be included in the result</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">Submit</button>
     </form>
 {/if}
 
