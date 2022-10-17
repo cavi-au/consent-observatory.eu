@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="148mm"
+   height="109mm"
+   viewBox="0 0 148 109"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.1 (9c6d41e, 2022-07-14)"
+   sodipodi:docname="popup.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="true"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.2935935"
+     inkscape:cx="168.90932"
+     inkscape:cy="157.70024"
+     inkscape:window-width="2560"
+     inkscape:window-height="1322"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g4647"
+     showguides="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3407"
+       originx="0"
+       originy="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <rect
+       x="473.3746"
+       y="518.08221"
+       width="92.702522"
+       height="18.409012"
+       id="rect4523" />
+    <rect
+       x="228.14024"
+       y="287.96954"
+       width="324.78757"
+       height="174.8856"
+       id="rect4382" />
+    <rect
+       x="258.38364"
+       y="514.79486"
+       width="95.989845"
+       height="23.011265"
+       id="rect4307" />
+    <filter
+       style="color-interpolation-filters:sRGB"
+       inkscape:label="Drop Shadow"
+       id="filter2841"
+       x="-0.080471796"
+       y="-0.11785776"
+       width="1.1609436"
+       height="1.2357155">
+      <feFlood
+         flood-opacity="0.341176"
+         flood-color="rgb(0,0,0)"
+         result="flood"
+         id="feFlood2831" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="in"
+         result="composite1"
+         id="feComposite2833" />
+      <feGaussianBlur
+         in="composite1"
+         stdDeviation="2"
+         result="blur"
+         id="feGaussianBlur2835" />
+      <feOffset
+         dx="0"
+         dy="0"
+         result="offset"
+         id="feOffset2837" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         operator="over"
+         result="fbSourceGraphic"
+         id="feComposite2839" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix2843" />
+      <feFlood
+         id="feFlood2845"
+         flood-opacity="0.341176"
+         flood-color="rgb(0,0,0)"
+         result="flood"
+         in="fbSourceGraphic" />
+      <feComposite
+         in2="fbSourceGraphic"
+         id="feComposite2847"
+         in="flood"
+         operator="in"
+         result="composite1" />
+      <feGaussianBlur
+         id="feGaussianBlur2849"
+         in="composite1"
+         stdDeviation="2"
+         result="blur" />
+      <feOffset
+         id="feOffset2851"
+         dx="0"
+         dy="0"
+         result="offset" />
+      <feComposite
+         in2="offset"
+         id="feComposite2853"
+         in="fbSourceGraphic"
+         operator="over"
+         result="composite2" />
+    </filter>
+    <rect
+       x="258.38364"
+       y="514.79486"
+       width="95.989845"
+       height="23.011265"
+       id="rect4378" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;fill:#44aa00;stroke:#000000;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
+       x="75.148216"
+       y="137.77173"
+       id="text4249"><tspan
+         sodipodi:role="line"
+         id="tspan4247"
+         style="stroke-width:0;stroke-dasharray:none"
+         x="75.148216"
+         y="137.77173" /></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;fill:#44aa00;stroke:#000000;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
+       x="73.930534"
+       y="136.20613"
+       id="text4303"><tspan
+         sodipodi:role="line"
+         id="tspan4301"
+         style="stroke-width:0"
+         x="73.930534"
+         y="136.20613" /></text>
+    <g
+       id="g4647"
+       transform="translate(-28.768531,-50.34493)">
+      <rect
+         style="fill:#ffffff;stroke:#000000;stroke-width:1.065;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter2841)"
+         id="rect111"
+         width="125.91368"
+         height="85.972275"
+         x="39.33009"
+         y="61.597858" />
+      <rect
+         style="fill:#ff0000;stroke:#000000;stroke-width:1.065;stroke-dasharray:none;stroke-opacity:1"
+         id="rect3219"
+         width="38.617832"
+         height="11.480977"
+         x="59.753265"
+         y="119.12141" />
+      <rect
+         style="fill:#44aa00;stroke:#000000;stroke-width:1.065;stroke-dasharray:none;stroke-opacity:1"
+         id="rect3403"
+         width="38.617832"
+         height="11.480977"
+         x="107.76463"
+         y="119.29537" />
+      <text
+         xml:space="preserve"
+         transform="matrix(0.26458333,0,0,0.26458333,1.2176794,-13.758336)"
+         id="text4305"
+         style="font-size:16px;white-space:pre;shape-inside:url(#rect4307);display:inline;fill:#44aa00;stroke:#000000;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"><tspan
+           x="258.38281"
+           y="529.39221"
+           id="tspan5486"><tspan
+             style="-inkscape-font-specification:'sans-serif, Normal';fill:#ffffff"
+             id="tspan5484">Reject All</tspan></tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(0.26458333,0,0,0.26458333,48.185314,-13.758336)"
+         id="text4376"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;shape-inside:url(#rect4378);display:inline;fill:#ffffff;stroke:#000000;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"><tspan
+           x="258.38281"
+           y="529.39221"
+           id="tspan5488">Accept All</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="scale(0.26458333)"
+         id="text4380"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:0;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;shape-inside:url(#rect4382);display:inline;fill:#ffffff;stroke:#000000;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
+         x="603.17609"
+         y="0"><tspan
+           x="240.58105"
+           y="309.86468"
+           id="tspan5494"><tspan
+             style="font-weight:bold;font-size:24px;-inkscape-font-specification:'sans-serif, Bold';text-align:center;text-anchor:middle;fill:#000000"
+             id="tspan5490">We value your privacy</tspan><tspan
+             style="font-size:21.3333px;line-height:1.25;text-align:center;text-anchor:middle;fill:#000000"
+             id="tspan5492">
+</tspan></tspan><tspan
+           x="386.78419"
+           y="334.7651"
+           id="tspan5498"><tspan
+             style="line-height:1;text-align:center;text-anchor:middle;fill:#000000"
+             id="tspan5496"> 
+</tspan></tspan><tspan
+           x="228.50781"
+           y="348.75003"
+           id="tspan5502"><tspan
+             style="font-size:12px;line-height:1;text-align:center;text-anchor:middle;fill:#000000"
+             id="tspan5500">We store and/or access information on a device, such </tspan></tspan><tspan
+           x="228.4873"
+           y="360.75003"
+           id="tspan5506"><tspan
+             style="font-size:12px;line-height:1;text-align:center;text-anchor:middle;fill:#000000"
+             id="tspan5504">as cookies and process personal data, such as unique </tspan></tspan><tspan
+           x="230.72266"
+           y="372.75003"
+           id="tspan5510"><tspan
+             style="font-size:12px;line-height:1;text-align:center;text-anchor:middle;fill:#000000"
+             id="tspan5508">identifiers and standard information sent by a device </tspan></tspan><tspan
+           x="242.08691"
+           y="384.75003"
+           id="tspan5514"><tspan
+             style="font-size:12px;line-height:1;text-align:center;text-anchor:middle;fill:#000000"
+             id="tspan5512">for personalised ads and content, ad and content </tspan></tspan><tspan
+           x="237.28223"
+           y="396.75003"
+           id="tspan5518"><tspan
+             style="font-size:12px;line-height:1;text-align:center;text-anchor:middle;fill:#000000"
+             id="tspan5516">measurement, and audience insights, as well as to </tspan></tspan><tspan
+           x="296.93066"
+           y="408.75003"
+           id="tspan5522"><tspan
+             style="font-size:12px;line-height:1;text-align:center;text-anchor:middle;fill:#000000"
+             id="tspan5520">develop and improve products.
+</tspan></tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(0.26458333,0,0,0.26458333,4.0009467,0.52186261)"
+         id="text4521"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:1;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;white-space:pre;shape-inside:url(#rect4523);display:inline;fill:#000000;stroke:#000000;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"><tspan
+           x="473.375"
+           y="527.53"
+           id="tspan5524">Read more ➜</tspan></text>
+    </g>
+  </g>
+</svg>
