@@ -79,6 +79,43 @@ options should be passed to the `init()` method of the rules in the ruleset maki
 }
 ```
 
+#### Option Sections
+Options can be divided into sections with ther own title and sections can include other sections to create nested structures.
+
+```json5
+{
+  "name": "Some Name",
+  "description": "Some desc...",
+  "options": [
+    { // options defined here will be at the root level
+      "type": "checkbox",
+      "key": "someKey",
+      "label": "someLabel",
+    },
+    { // create a section with its own title and options
+      "type": "section", // [REQUIRED]
+      "title": "Extract the Following Element Types", // [REQUIRED] the title of the section
+      "options": [
+        {
+          "type": "checkbox",
+          "key": "includeH1",
+          "label": "H1"
+        },
+        {
+          "type": "checkbox",
+          "key": "includeH2",
+          "label": "H2"
+        },
+        {
+          "type": "checkbox",
+          "key": "includeH3",
+          "label": "H3"
+        }
+      ]
+    }
+  ]
+}
+```
 
 TODO mere beskrivelse og visning screenshot af ui.
 

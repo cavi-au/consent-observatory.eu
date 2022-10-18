@@ -168,6 +168,10 @@ footer {
     color: #533501;
 }
 
+legend.sub-legend {
+    font-size: 1rem;
+}
+
 /* ----------- */
 
 /* BOOTSTRAP OVERWRITE */
