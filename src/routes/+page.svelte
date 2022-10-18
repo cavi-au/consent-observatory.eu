@@ -12,7 +12,7 @@
     <div  id="landing-abstract" class="subsection">
         <h1 class="bold-header">Consent-Observatory.eu</h1>
         <p class="subtitle">Automated analysis of consent pop-ups on the web</p>
-        <a href="/analysis/new" class="btn btn-primary btn-lg">new analysis</a>
+        <a href="/analysis/new" class="btn btn-primary btn-lg">New analysis</a>
     </div>
 
     <div class="subsection long-text">

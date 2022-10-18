@@ -31,8 +31,9 @@ body, #wrapper {
 }
 
 header {
-    /*border-bottom: 1px solid #ccc;*/
+    border-bottom: 1px solid #ccc;
     vertical-align: center;
+    background-color: white;
 }
 
 #site-title {
@@ -154,6 +155,7 @@ footer {
     border-top: 1px solid #fab446;
     color: #333;
     width: 100%;
+    background-color: white;
 }
 
 /* FORM stuff */

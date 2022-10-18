@@ -64,16 +64,16 @@
                 <div class="navbar-collapse collapse" id="main-menu">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a href="/" class="nav-link" class:active={isMenuItemActive('/', $page.url.pathname)}>home</a>
+                            <a href="/" class="nav-link" class:active={isMenuItemActive('/', $page.url.pathname)}>Home</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/analysis/new" class="nav-link" class:active={isMenuItemActive('/analysis/new', $page.url.pathname)}>new analysis</a>
+                            <a href="/analysis/new" class="nav-link" class:active={isMenuItemActive('/analysis/new', $page.url.pathname)}>New analysis</a>
                         </li>
 <!--                        <li class="nav-item">-->
 <!--                            <a href="/help" class="nav-link" class:active={isMenuItemActive('/help', $page.url.pathname)}>help</a>-->
 <!--                        </li>-->
                         <li class="nav-item">
-                            <a href="/about" class="nav-link" class:active={isMenuItemActive('/about', $page.url.pathname)}>about</a>
+                            <a href="/about" class="nav-link" class:active={isMenuItemActive('/about', $page.url.pathname)}>About</a>
                         </li>
                     </ul>
                 </div>
