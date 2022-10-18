@@ -25,9 +25,7 @@ class Ruleset {
         this.#rules = rules;
         this.#sortKey = sortKey;
         this.#options = options;
-        for (let option of this.#options) {
-            this.#optionByKey.set(option.key, option);
-        }
+        this.#visitAllOptions(this.#options, option => this.#optionByKey.set(option.key, option));
     }
 
     get name() {
@@ -46,8 +44,19 @@ class Ruleset {
         return this.#sortKey;
     }
 
+    /**
+     *
+     * @returns {*} options in their original nested structure
+     */
     get options() {
         return this.#options;
+    }
+
+    /**
+     * @returns {IterableIterator<any>} options flattened to a single level
+     */
+    get optionsFlat() {
+        return this.#optionByKey.values();
     }
 
     isOptionSupported(optionKey) {
@@ -95,13 +104,15 @@ class Ruleset {
 
         // TODO make this recursive
         test(options, 'options').fulfill(options => {
-            let keysArrays = options.value.map(option => option.key);
-            let keys = new Set(keysArrays);
-            return keysArrays.length === keys.size;
+            let keysArray = [];
+            this.#visitAllOptions(options.value,option => keysArray.push(option.key));
+            let keys = new Set(keysArray);
+            return keysArray.length === keys.size;
         }, 'All option keys must be unique');
     }
 
     #validateOptions(basePath, options) {
+        let test = Validator.createOnErrorThrowValidator('Ruleset Error:');
         test(options, basePath).is.anArray('"${PATH}" must be an array');
         test(options, basePath).each(option => option.fulfillAllOf(option => [
             option.is.anObject('each "option" must be an object'),
@@ -145,14 +156,22 @@ class Ruleset {
                     options.is.anArray('${PATH} must be an array'),
                     options.isNot.empty('${PATH} cannot be empty'),
                     options.fulfill(options => {
-                        // TODO make validator expose contextValuePath
-                      return this.#validateOptions(basePath, options.value);
+                      return this.#validateOptions(basePath + options.contextValuePath, options.value);
                     })
                 ])
             ]),
         ]));
     }
 
+    #visitAllOptions(options, visitor) {
+        for (let option of options) {
+            if (option.type === 'section') {
+                this.#visitAllOptions(option.options, visitor);
+            } else {
+                visitor(option);
+            }
+        }
+    }
 }
 
 export { Ruleset };

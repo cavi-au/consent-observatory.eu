@@ -30,7 +30,7 @@
       "options": [
         {
           "type": "checkbox",
-          "key": "includeDkPopup2",
+          "key": "includeDkPopup3",
           "label": "Include Popup 2 elements",
           "description": "Some description"
         }

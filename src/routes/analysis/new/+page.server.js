@@ -143,7 +143,7 @@ function validateRulesetAndSetDefaults(rulesetName, rulesetOptions, errors) {
         return;
     }
 
-    for (let option of ruleset.options) {
+    for (let option of ruleset.optionsFlat) {
         if (_.isNil(rulesetOptions[option.key])) {
             rulesetOptions[option.key] = ruleset.getDefaultOptionValue(option.key);
         } else if (option.type === 'checkbox') {

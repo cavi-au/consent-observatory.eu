@@ -174,45 +174,6 @@ https://example2.eu`}">{form?.data?.urls ?? ''}</textarea>
         </legend>
 
         <RulesetOptions bind:this={rulesetOptionsComp} form={form} options={selectedRuleset.options} selectedCheckboxes={selectedCheckboxes} selectedRadios={selectedRadios} />
-        <!--
-        {#each selectedRuleset.options as rulesetOption}
-            {@const optionKey = `rulesetOption.${rulesetOption.key}`}
-            {#if rulesetOption.title}
-                <p class="form-label">{rulesetOption.title}</p>
-            {/if}
-            {#if rulesetOption.type === 'checkbox'}
-                <div class="mb-3 form-check">
-                    <input type="checkbox" checked={selectedCheckboxes.has(optionKey)} class="form-check-input" name="{optionKey}"
-                           id="{optionKey}" on:click={(event) => checkboxChanged(optionKey, event.target.checked)}>
-                    <label class="form-check-label" for="{optionKey}">{rulesetOption.label}</label>
-                    {#if form?.errors?.[optionKey]}
-                        <div id="{optionKey}-error" class="invalid-feedback">{form?.errors?.[optionKey]}</div>
-                    {:else if rulesetOption.description}
-                        <div id="{optionKey}-info" class="form-text">{rulesetOption.description}</div>
-                    {/if}
-                </div>
-
-            {:else if rulesetOption.type === 'radio'}
-                {#each rulesetOption.options as radioOption, i}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" checked={selectedRadios.get(optionKey) === radioOption.value} name="{optionKey}"
-                               value="{radioOption.value}" id="{optionKey}-{i}" on:click={(event) => radioChanged(optionKey, radioOption.value)}>
-                        <label class="form-check-label" for="{optionKey}-{i}">{radioOption.label}</label>
-
-                        {#if i === rulesetOption.options.length - 1}
-                            <div class="mb-3">
-                                {#if form?.errors?.[optionKey]}
-                                    <div id="{optionKey}-error" class="invalid-feedback">{form?.errors?.[optionKey]}</div>
-                                {:else if rulesetOption.description}
-                                    <div id="{optionKey}-info" class="form-text">{rulesetOption.description}</div>
-                                {/if}
-                            </div>
-                        {/if}
-                    </div>
-                {/each}
-            {/if}
-        {/each}
-        -->
 
         <div class="mb-3 form-check">
             <input type="checkbox" checked={selectedCheckboxes.has('includeScreenshots')} class="form-check-input" name="includeScreenshots"

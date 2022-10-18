@@ -3,7 +3,7 @@
     export let options;
     export let selectedCheckboxes;
     export let selectedRadios;
-    export let sectionTitle;
+    export let sectionTitle = undefined;
 
     let children = [];
 
@@ -17,6 +17,7 @@
                 }
             }
         }
+
         selectedCheckboxes = selectedCheckboxes;
         for (let child of children) {
             child.selectAllCheckboxes(selectAll);
@@ -44,10 +45,10 @@
         <button class="btn btn-primary btn-sm" title="Deselect All" on:click|preventDefault={() => selectAllCheckboxes(false)}><i class="bi bi-square"></i></button>
     </legend>
 {/if}
-<div class:ms-2={sectionTitle}>
+<div class:ms-4={sectionTitle}>
     {#each options as rulesetOption}
         {@const optionKey = `rulesetOption.${rulesetOption.key}`}
-        {#if rulesetOption.title}
+        {#if rulesetOption.title && rulesetOption.type !== 'section'}
             <p class="form-label">{rulesetOption.title}</p>
         {/if}
         {#if rulesetOption.type === 'checkbox'}
@@ -61,7 +62,6 @@
                     <div id="{optionKey}-info" class="form-text">{rulesetOption.description}</div>
                 {/if}
             </div>
-
         {:else if rulesetOption.type === 'radio'}
             {#each rulesetOption.options as radioOption, i}
                 <div class="form-check">

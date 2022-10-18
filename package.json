@@ -8,7 +8,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@chcaa/validator": "^1.2.6",
+		"@chcaa/validator": "^1.2.8",
 		"@chcaa/web-extractor": "^1.2.0",
 		"app-root-path": "^3.1.0",
 		"archiver": "^5.3.1",
