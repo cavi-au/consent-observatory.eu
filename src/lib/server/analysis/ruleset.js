@@ -90,50 +90,67 @@ class Ruleset {
         test(sortKey, 'sortKey').fulfillAllOf(sortKey => [
             sortKey.is.anInteger('"${PATH}" must be an integer')
         ]);
-        test(options, 'options').is.anArray('"${PATH}" must be an array');
-        test(options, 'options').each(option => option.fulfillAllOf(option => [
+
+        this.#validateOptions('options', options);
+
+        // TODO make this recursive
+        test(options, 'options').fulfill(options => {
+            let keysArrays = options.value.map(option => option.key);
+            let keys = new Set(keysArrays);
+            return keysArrays.length === keys.size;
+        }, 'All option keys must be unique');
+    }
+
+    #validateOptions(basePath, options) {
+        test(options, basePath).is.anArray('"${PATH}" must be an array');
+        test(options, basePath).each(option => option.fulfillAllOf(option => [
             option.is.anObject('each "option" must be an object'),
             option.prop('type').fulfillAllOf(type => [
                 type.is.aString('"${PATH}" must be a string'),
-                type.is.in(['radio', 'checkbox'], '"${PATH}" must be one of "radio" or "checkbox"'),
+                type.is.in(['radio', 'checkbox', 'section'], '"${PATH}" must be one of "radio", "checkbox" or "section"'),
             ]),
-            option.prop('title').optional.is.aString('"${PATH}" must be a string'),
-            option.prop('description').optional.is.aString('"${PATH}" must be a string'),
-            option.conditionally(
-                option => option.prop('type').is.equalTo('radio')
-            ).prop('options').fulfillAllOf(options => [
+            option.conditionally(option => option.prop('type').is.in(['radio', 'checkbox'])).fulfillAllOf(option => [
+                option.prop('key').fulfillAllOf(key => [
+                    key.is.aString('"${PATH}" must be a string'),
+                    key.isNot.empty('"${PATH}" cannot be empty')
+                ]),
+                option.prop('title').optional.is.aString('"${PATH}" must be a string'),
+                option.prop('description').optional.is.aString('"${PATH}" must be a string'),
+            ]),
+            option.conditionally(option => option.prop('type').is.equalTo('radio')).prop('options').fulfillAllOf(options => [
                 options.is.anArray('"${PATH}" must be an array'),
                 options.isNot.empty('"${PATH}" cannot be empty'),
                 options.each(option => option.fulfillAllOf(option => [
-                   option.is.anObject('"${PATH}" must be an object'),
-                   option.prop('label').fulfillAllOf(name => [
-                       name.is.aString('"${PATH}" must be a string'),
-                       name.isNot.empty('"${PATH}" cannot be empty'),
-                   ]),
+                    option.is.anObject('"${PATH}" must be an object'),
+                    option.prop('label').fulfillAllOf(name => [
+                        name.is.aString('"${PATH}" must be a string'),
+                        name.isNot.empty('"${PATH}" cannot be empty'),
+                    ]),
                     option.prop('value').fulfillAllOf(value => [
                         value.is.aString('"${PATH}" must be a string'),
                         value.isNot.empty('"${PATH}" cannot be empty'),
                     ])
                 ]))
             ]),
-            option.conditionally(
-                option => option.prop('type').is.equalTo('checkbox')
-            ).prop('label').fulfillAllOf(name => [
+            option.conditionally(option => option.prop('type').is.equalTo('checkbox')).prop('label').fulfillAllOf(name => [
                 name.is.aString('"${PATH}" must be a string'),
                 name.isNot.empty('"${PATH}" cannot be empty'),
             ]),
-            option.prop('key').fulfillAllOf(key => [
-                key.is.aString('"${PATH}" must be a string'),
-                key.isNot.empty('"${PATH}" cannot be empty')
+            option.conditionally(option => option.prop('type').is.equalTo('section')).fulfillAllOf(option => [
+                option.prop('title').fulfillAllOf(title => [
+                    title.is.aString('"${PATH}" must be a string'),
+                    title.isNot.empty('"${PATH}" cannot be empty'),
+                ]),
+                option.prop('options').fulfillAllOf(options => [
+                    options.is.anArray('${PATH} must be an array'),
+                    options.isNot.empty('${PATH} cannot be empty'),
+                    options.fulfill(options => {
+                        // TODO make validator expose contextValuePath
+                      return this.#validateOptions(basePath, options.value);
+                    })
+                ])
             ]),
         ]));
-
-        test(options, 'options').fulfill(options => {
-            let keysArrays = options.value.map(option => option.key);
-            let keys = new Set(keysArrays);
-            return keysArrays.length === keys.size;
-        }, 'All option keys must be unique');
-
     }
 
 }

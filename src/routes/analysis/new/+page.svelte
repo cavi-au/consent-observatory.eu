@@ -2,6 +2,7 @@
     import { enhance } from '$app/forms';
     import CopyToClipboard from "$lib/client/components/CopyToClipboard.svelte";
     import { formAutoFocus } from "$lib/client/components/actions.js";
+    import RulesetOptions from "$lib/client/components/RulesetOptions.svelte";
 
     export let data;
     export let form;
@@ -10,6 +11,8 @@
     let selectedRadios = new Map();
 
     let selectedRuleset;
+
+    let rulesetOptionsComp;
 
     setSelectedRuleset(data.rulesets[0].name);
 
@@ -84,11 +87,7 @@
     function selectAllCheckboxes(selectAll) {
         if (selectAll) {
             selectedCheckboxes.add('includeScreenshots');
-            for (let rulesetOption of selectedRuleset.options) {
-                if (rulesetOption.type === 'checkbox') {
-                    selectedCheckboxes.add(`rulesetOption.${rulesetOption.key}`);
-                }
-            }
+            rulesetOptionsComp.selectAllCheckboxes(selectAll);
         } else {
             selectedCheckboxes.clear();
         }
@@ -174,6 +173,8 @@ https://example2.eu`}">{form?.data?.urls ?? ''}</textarea>
             <button class="btn btn-primary btn-sm" title="Deselect All" on:click|preventDefault={() => selectAllCheckboxes(false)}>Unselect all: <i class="bi bi-square"></i></button>
         </legend>
 
+        <RulesetOptions bind:this={rulesetOptionsComp} form={form} options={selectedRuleset.options} selectedCheckboxes={selectedCheckboxes} selectedRadios={selectedRadios} />
+        <!--
         {#each selectedRuleset.options as rulesetOption}
             {@const optionKey = `rulesetOption.${rulesetOption.key}`}
             {#if rulesetOption.title}
@@ -211,6 +212,7 @@ https://example2.eu`}">{form?.data?.urls ?? ''}</textarea>
                 {/each}
             {/if}
         {/each}
+        -->
 
         <div class="mb-3 form-check">
             <input type="checkbox" checked={selectedCheckboxes.has('includeScreenshots')} class="form-check-input" name="includeScreenshots"

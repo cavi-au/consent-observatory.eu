@@ -23,6 +23,18 @@
           "value": "shallow"
         }
       ]
+    },
+    {
+      "type": "section",
+      "title": "A Sub-section",
+      "options": [
+        {
+          "type": "checkbox",
+          "key": "includeDkPopup2",
+          "label": "Include Popup 2 elements",
+          "description": "Some description"
+        }
+      ]
     }
   ]
 }
