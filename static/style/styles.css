@@ -1,5 +1,34 @@
-@import url('http://fonts.cdnfonts.com/css/noto-sans');
-@import url('http://fonts.cdnfonts.com/css/adorage');
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Adorage'), url('./fonts/NotoSans-Regular.woff') format('woff');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: italic;
+    font-weight: 400;
+    src: local('Adorage'), url('./fonts/NotoSans-Italic.woff') format('woff');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Adorage'), url('./fonts/NotoSans-Bold.woff') format('woff');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: italic;
+    font-weight: 700;
+    src: local('Adorage'), url('./fonts/NotoSans-BoldItalic.woff') format('woff');
+}
+@font-face {
+    font-family: 'Adorage';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Adorage'), url('./fonts/Adorage.woff') format('woff');
+}
+
 
 :root {
     --main-color: #e9d7b8;
@@ -10,15 +39,6 @@
     --accent-font-weight: 700;
     --accent-font: "Adorage";
     /*--accent-font: "Chromate-Regular";*/
-}
-
-@font-face {
-    font-family: "Haskoy-Medium";
-    src: url("./fonts/Haskoy-Medium.woff2") format("woff2");
-    font-family: "Haskoy-Bold";
-    src: url("./fonts/Haskoy-Bold.woff2") format("woff2");
-    font-family: "Chromate-Regular";
-    src: url("./fonts/Chromate-Regular.otf") format("opentype");
 }
 
 * {
