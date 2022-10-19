@@ -1,8 +1,16 @@
 # Consent Observatory
 TODO SOME INFO ABOUT THE PROJECT
 
-## Env Variables
-create a `.env` file in the root of the project or set them using the host environment.
+## Installation
+* Clone this repository
+* `cd`to the project root and run `npm install`
+* Configure the required `env` variables described below
+* For development run `npm run dev` for production run `npm run build` and then run the server application 
+  using node `build/index.js` (use e.g. `pm2` for running the server in production, see below example)
+
+### Env Variables
+For development create a `.env` file in the root of the project or set them using the host environment. 
+For the production build the variables must be set in the host environment.
 - `JOBS_ROOT_DIR` **[required]** where should pending, running and finished jobs be stored?
 - `RULES_DIR` **[required]** where are the rules files located for the `web-extractor`?
 - `JOBS_COMPLETED_EXPIRATION_TIME_MS [default=604800000]` how long should completed jobs (and their data) be kept?
@@ -17,6 +25,15 @@ create a `.env` file in the root of the project or set them using the host envir
 - `MAIL_SMTP_PASS` **[required]** SMTP-server password (most likely password for the email address)
 - `MAIL_MESSAGE_FROM` **[required]** the email to set as the `from` field (e.g. `info@example.com` or `"John Doe" <info@example.com>`)
 - `MAIL_SMTP_DISABLE_VERIFICATION [default=false]` set to `true` disable the verification check when server starts, disable this during development for faster restart times 
+- `MAIL_DISABLED [default=false]` set to `true` disable sending emails
+- `PORT [default=3000]` (only used for production) the port the server should use
+- `ORIGIN` (only used for production) the host name the server is running on, e.g. https://my.example
+
+for the full list of production `env` variables see https://github.com/sveltejs/kit/tree/master/packages/adapter-node
+
+### Using PM2 for Production
+**TODO beskriv forslag til setup med pm2, brugere etc. og inkluder bash-scripts i kode, så man kan kopiere, tilføje
+env-vars og lave scripts executable...**
 
 ## Configuring Rules (Rulesets)
 Rules are defined in rulesets which is one or more rule-files as described in the [Web-Extractor documentation](https://github.com/centre-for-humanities-computing/web-extractor)
@@ -117,11 +134,116 @@ Options can be divided into sections with ther own title and sections can includ
 }
 ```
 
-TODO mere beskrivelse og visning screenshot af ui.
+### Rule Init Options
+The `init()` method (if defined) will for each rule, before extraction, be called with an object in the following format, where the `ruleset` property
+will correspond the chosen ruleset and options for the ruleset selected by the user.
 
-TODO beskriv hvordan init() bliver kaldt og med hvad
+```js
+{
+  destDir: "/some/path", // the path where the result will be stored, can be used to include additional data
+  ruleset: {
+    name: "name-of-ruleset", // the name of the chosen ruleset
+    options: { // the options defined in __ui.json file for this ruleset and the values selected by the user
+      key1: "someValue",
+      key2: "someValue"
+    }
+  }
+}
+```
 
-## Ruleset Example
-// TODO lav færdig
-The following ruleset will make it possible to choose which heading to include in the output.
-// TODO make a __ui.json for h1,h2,h3,h4,h5,h6 options and a rule working with these options vis med init osv.
+### Ruleset Example
+
+The following ruleset will make it possible to choose which text content to extract and what format should be included in the output in the output.
+
+
+**__ui.json**
+
+```json5
+{
+  "name": "Text Content",
+  "description": "Use this rule for extracting text elements",
+  "options": [
+    {
+      "type": "radio",
+      "key": "extractScope",
+      "title": "What should be extracted?",
+      "options": [
+        {
+          "label": "Text",
+          "value": "text"
+        },
+        {
+          "label": "HTML",
+          "value": "html"
+        },
+        {
+          "label": "Text and HTML",
+          "value": "textAndHTML"
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "Elements to Extract",
+      "options": [
+        {
+          "type": "checkbox",
+          "key": "extractParagraphs",
+          "label": "Extract Paragraphs",
+          "description": "Extract all p-elements"
+        },
+        {
+          "type": "checkbox",
+          "key": "extractH1",
+          "label": "Extract H1",
+          "description": "Extract all h1-elements"
+        },
+        {
+          "type": "checkbox",
+          "key": "extractH2",
+          "label": "Extract H2",
+          "description": "Extract all h2-elements"
+        },
+        // ... etc ...
+      ]
+    }
+  ]
+}
+```
+
+**text-content-rule.js**
+```js
+export default {
+    init(options) {
+        this.options = options;
+    },
+    extractorOptions() {
+        return this.options;
+    },
+    extractor: {
+        extract(template = {}, url, options) {
+            const rulesetOptions = options.ruleset.options;
+            function saveData(key, elements) {
+                elements = [...elements]; // turn into an array of elements, so we can use array methods
+                let result = {};
+                if (rulesetOptions.extractScope.includes('text')) {
+                    result.text = elements.map(element => element.textContent);
+                }
+                if (rulesetOptions.extractScope.includes('HTML')) {
+                    result.HTML = elements.map(element => element.outerHTML);
+                }
+                template[key] = result;
+            }
+            if (rulesetOptions.extractParagraphs) {
+                saveData('p', document.querySelectorAll('p'));
+            }
+            for (let x = 1; x <= 6; x++) {
+                if (rulesetOptions[`extractH${x}`]) {
+                    saveData(`h${x}`, document.querySelectorAll(`h${x}`));
+                }
+            }
+            return template;
+        }
+    }
+};
+```

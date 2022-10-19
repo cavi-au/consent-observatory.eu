@@ -1,21 +1,11 @@
 {
-  "name": "temp rule",
-  "description": "A demo rule",
+  "name": "General",
+  "description": "Use this rule for general purpose tasks",
   "options": [
     {
       "type": "checkbox",
-      "key": "a",
-      "label": "Check Me"
-    },
-    {
-      "type": "radio",
-      "key": "b",
-      "options": [
-        {
-          "label": "option1",
-          "value": "value2"
-        }
-      ]
+      "key": "extractHTML",
+      "label": "Extract HTML"
     }
   ]
 }

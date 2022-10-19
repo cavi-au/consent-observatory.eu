@@ -25,8 +25,7 @@ class WebExtractorExecutor {
         if (!ruleset) {
             throw new Error(`Ruleset with name: "${job.rulesetName}" does not exist`);
         }
-        let rulesetOptions = job.rulesetOptions;
-        let ruleInitOptions = { destDir: dataDestDir, rulesetOptions };
+        let ruleInitOptions = { destDir: dataDestDir, ruleset: { name: job.rulesetName, options: job.rulesetOptions } };
 
         let options = {
             userAgent: undefined, // if undefined a default will be used

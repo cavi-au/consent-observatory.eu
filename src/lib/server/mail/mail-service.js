@@ -11,6 +11,7 @@ class MailService {
      * @param {number} options.port
      * @param {string} options.user
      * @param {string} options.pass
+     * @param {boolean} options.disabled
      */
     constructor(options) {
         this.#options = options;
@@ -39,7 +40,9 @@ class MailService {
             text: mail.text,
             html: mail.html
         };
-        await this.#transport.sendMail(mailObj);
+        if (!this.#options.disabled) {
+            await this.#transport.sendMail(mailObj);
+        }
     }
 
 }

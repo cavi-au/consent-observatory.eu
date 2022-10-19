@@ -9,16 +9,21 @@
 
     let selectedCheckboxes = new Set();
     let selectedRadios = new Map();
-
     let selectedRuleset;
-
     let rulesetOptionsComp;
+    let submitButtonEnabled = true;
 
     setSelectedRuleset(data.rulesets[0].name);
 
     $: {
         if (form?.rulesetName) {
             setSelectedRuleset(form.rulesetName, form);
+        }
+    }
+
+    $: {
+        if (form) { // enable whenever form data is updated (after submit)
+            submitButtonEnabled = true;
         }
     }
 
@@ -126,7 +131,7 @@
             {form?.errors?.global}
         </div>
     {/if}
-    <form method="POST" novalidate use:enhance use:formAutoFocus>
+    <form method="POST" novalidate use:enhance use:formAutoFocus on:submit={() => submitButtonEnabled = false}>
         <div class="mb-3">
             <label for="email-field" class="form-label">Your Email Address</label>
             <input type="email" class="form-control" class:is-invalid={form?.errors?.email} name="email" id="email-field" aria-describedby="email-field-info email-field-error"
@@ -182,7 +187,7 @@ https://example2.eu`}">{form?.data?.urls ?? ''}</textarea>
             <div id="include-screenshots-checkbox-info" class="form-text">If selected a screenshot of each url analyzed will be included in the result</div>
         </div>
 
-        <button type="submit" class="btn btn-primary mt-4">Submit</button>
+        <button type="submit" class="btn btn-primary mt-4" disabled={!submitButtonEnabled}>Submit</button>
     </form>
 {/if}
 

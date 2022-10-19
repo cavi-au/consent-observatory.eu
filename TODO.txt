@@ -18,4 +18,7 @@ Få lavet en række dev1 - dev6 domæner der peger webservice2 serveren...
 Se mails med TODO's og tjek todo liste på tlf,
 Se TODO's i projekt
 
+lav så submit knap er disabled mens den processerer...
+Se mails med todo
+
 

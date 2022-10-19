@@ -52,11 +52,12 @@ async function init() {
         host: env.MAIL_SMTP_HOST,
         port: env.MAIL_SMTP_PORT,
         user: env.MAIL_SMTP_USER,
-        pass: env.MAIL_SMTP_PASS
+        pass: env.MAIL_SMTP_PASS,
+        disabled: env.MAIL_DISABLED
     };
 
     mailService = new MailService(mailOptions);
-    let disableVerification = env.MAIL_SMTP_DISABLE_VERIFICATION === 'true';
+    let disableVerification = env.MAIL_SMTP_DISABLE_VERIFICATION;
     await initService('Error creating mail-service', () => mailService.init(!disableVerification));
 
     mailTemplateEngine = new MailTemplateEngine(path.join(APP_BASE_PATH, '/src/lib/server/assets/mail'), env.MAIL_MESSAGE_FROM);
@@ -140,7 +141,8 @@ function loadEnvVars() {
     env.USER_WHITELIST_MAX_URLS = Number.parseInt(privateEnvVars.USER_WHITELIST_MAX_URLS ?? 100);
     env.USER_WHITELIST_MAX_JOBS = Number.parseInt(privateEnvVars.USER_WHITELIST_MAX_JOBS ?? 1);
     env.USER_EMAIL_WHITELIST_FILE_PATH = privateEnvVars.USER_EMAIL_WHITELIST_FILE_PATH; // no default
-    env.MAIL_SMTP_DISABLE_VERIFICATION = privateEnvVars.MAIL_SMTP_DISABLE_VERIFICATION;
+    env.MAIL_SMTP_DISABLE_VERIFICATION = privateEnvVars.MAIL_SMTP_DISABLE_VERIFICATION?.trim() === 'true';
+    env.MAIL_DISABLED = privateEnvVars.MAIL_DISABLED?.trim() === 'true';
 
     env = Object.freeze(env);
 }
