@@ -2,11 +2,6 @@
 
 
 
-
-TODO disable submit button while submitting new analysis form, enable again when form change, e.g. when errors occur etc.
-- check the enhance settings, but maybe it is easier just to listen for on:submit on the
-  form and then disable the button and then on form change in a reactive statement re-enable the button, see email for example...
-
 TODO unser /admin/status
 vis alle jobs, og ved delete event fjern fra array af jobs der vises...
 
@@ -18,7 +13,5 @@ Få lavet en række dev1 - dev6 domæner der peger webservice2 serveren...
 Se mails med TODO's og tjek todo liste på tlf,
 Se TODO's i projekt
 
-lav så submit knap er disabled mens den processerer...
-Se mails med todo
 
 

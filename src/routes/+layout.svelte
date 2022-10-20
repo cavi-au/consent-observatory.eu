@@ -55,7 +55,7 @@
                 <span id="site-title" class="navbar-brand">
                     <a href="/" id="site-title-logo">
                         <img id="logo" src={coLogo}>
-					</a>
+                    </a>
                 </span>
                 <BoostrapCollapse targetId="main-menu" show={showMainMenuMobile}/>
                 <button class="navbar-toggler" type="button" on:click={() => showMainMenuMobile = !showMainMenuMobile}>

@@ -31,9 +31,34 @@ For the production build the variables must be set in the host environment.
 
 for the full list of production `env` variables see https://github.com/sveltejs/kit/tree/master/packages/adapter-node
 
-### Using PM2 for Production
-**TODO beskriv forslag til setup med pm2, brugere etc. og inkluder bash-scripts i kode, så man kan kopiere, tilføje
-env-vars og lave scripts executable...**
+### Server Setup With PM2 for Production
+The following is a full guide for installing and running the project on an linux (unbuntu) server. The example 
+will run most commands ass a system user called `apps` (instructions below), so multiple users are able to start/stop/deploy the
+app and so the app is not running as `root`.
+
+#### Requirements
+* git is installed
+* node.js >= 16.x is installed
+
+#### installation
+* install pm2 `sudo npm install pm2@latest -g`
+* create a user "apps" for running our app `sudo adduser --system --shell /bin/bash --group apps`
+* create a startup script for pm2 to run as the "apps" user `sudo -u apps pm2 startup` copy the generated line and run it
+* create a directory for the installation and pm2 scripts `sudo mkdir /apps && sudo chown apps:apps /apps`
+* switch to apps user `sudo su apps`
+* clone the git repo `git clone https://github.com/centre-for-humanities-computing/consent-observatory.eu.git`
+  * To update the existing git repo `cd /apps/consent-observatory.eu` and run `git pull origin master`
+* create a directory for the pm2 scripts `mkdir -p /apps/run-scripts/consent-observatory.eu`
+* copy the pm2 scripts and make them executable `cp /apps/consent-observatory.eu/pm2-scripts/ /apps/run-scripts/consent-observatory.eu/`
+* make the scripts executable `cd /apps/run-scripts/consent-observatory.eu && chmod ug+x start.sh stop.sh build.sh deploy.sh`
+* edit the `env.sh` file and add the missing values (and change paths if required)
+
+#### Usage
+> **NOTE** All commands should be run as the "apps" user unless explicitly stated
+* change to the "apps" user `sudo su apps`
+* navigate to the "run-scripts" dir `cd /apps/run-scripts/consent-observatory.eu`
+* start and stop the application using `./start.sh` and `./stop.sh`
+* After and update of the project (from git) use `./deploy.sh` (which will run `stop.sh`, `build.sh` and `start.sh`)
 
 ## Configuring Rules (Rulesets)
 Rules are defined in rulesets which is one or more rule-files as described in the [Web-Extractor documentation](https://github.com/centre-for-humanities-computing/web-extractor)
