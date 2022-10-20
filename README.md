@@ -49,9 +49,10 @@ app and so the app is not running as `root`.
 * clone the git repo `git clone https://github.com/centre-for-humanities-computing/consent-observatory.eu.git`
   * To update the existing git repo `cd /apps/consent-observatory.eu` and run `git pull origin master`
 * create a directory for the pm2 scripts `mkdir -p /apps/run-scripts/consent-observatory.eu`
-* copy the pm2 scripts and make them executable `cp /apps/consent-observatory.eu/pm2-scripts/ /apps/run-scripts/consent-observatory.eu/`
+* copy the pm2 scripts and make them executable `cp /apps/consent-observatory.eu/server-scripts/pm2/ /apps/run-scripts/consent-observatory.eu/`
 * make the scripts executable `cd /apps/run-scripts/consent-observatory.eu && chmod ug+x start.sh stop.sh build.sh deploy.sh`
 * edit the `env.sh` file and add the missing values (and change paths if required)
+* **TODO SETUP APACHE 2, inkluder også fil til config af site for den**
 
 #### Usage
 > **NOTE** All commands should be run as the "apps" user unless explicitly stated
