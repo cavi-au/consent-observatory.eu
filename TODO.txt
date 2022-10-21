@@ -13,5 +13,12 @@ Få lavet en række dev1 - dev6 domæner der peger webservice2 serveren...
 Se mails med TODO's og tjek todo liste på tlf,
 Se TODO's i projekt
 
+Layout midas/peter
+- instead of setting a lot of sizes to 70%, shouldn't we just set the max page size to 960 instead of 1200?
+- Images does not with current styling behave well when resizing the browser
+- buttons especially for the "select all / unselect all" could use some love
+- there is a lot of space at the top of pages with text, at least make i adapt when scaling down?
+- There is nowhere to find out what the analysis actually does, why would you do it?
+
 
 
