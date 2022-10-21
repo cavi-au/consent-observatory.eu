@@ -1,8 +1,6 @@
 <script>
     import auLogo from '$lib/client/assets/images/au-logo.png';
     import chcLogo from '$lib/client/assets/images/chc-logo.png';
-
-    let counter = 0;
 </script>
 
 <svelte:head>
@@ -32,7 +30,7 @@
                 <div class="col-sm-2"></div>
                 <div class="col-sm-3 mb-5 mb-sm-0"><a href="https://bachelor.au.dk/informationsvidenskab"><img class="img-fluid" src={auLogo}></a></div>
                 <div class="col-sm-2"></div>
-                <div class="col-sm-3"><a href="https://chcaa.io/"><img class="img-fluid" src={chcLogo}></a></div>
+                <div class="col-sm-3"><a href="https://chcaa.au.dk"><img class="img-fluid" src={chcLogo}></a></div>
                 <div class="col-sm-2"></div>
             </div>
         </div>

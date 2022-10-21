@@ -56,7 +56,7 @@ app and so the app is not running as `root`.
 * build the project `/apps/run-scripts/consent-observatory.eu/build.sh`
 
 ##### Puppeteer Dependencies and Sandbox
-The following is only required if you are running on a server installation without a GUI.
+> **NOTE** this is only required if you are running on a server installation without a GUI.
 
 * install ui libs and other dependencies `sudo apt update && sudo apt install ca-certificates fonts-liberation libappindicator3-1 libasound2
   libatk-bridge2.0-0 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3
@@ -76,6 +76,7 @@ See also [sandbox setup](https://github.com/puppeteer/puppeteer/blob/main/docs/t
 
 ##### Apache2 Setup (Optional)
 Used for reverse proxying to the application. If another reverse proxy is used this step is not required.
+
 * add the latest version of apache2 to the apt-repository `sudo add-apt-repository ppa:ondrej/apache2 -y && sudo apt update`
 * install apace2 `sudo apt install apache2 -y`
 * install extra modules `sudo a2enmod proxy proxy_http proxy_wstunnel rewrite`
@@ -86,6 +87,7 @@ Used for reverse proxying to the application. If another reverse proxy is used t
 
 #### Usage
 > **NOTE** All commands should be run as the "apps" user unless explicitly stated
+
 * change to the "apps" user `sudo su apps`
 * navigate to the "run-scripts" dir `cd /apps/run-scripts/consent-observatory.eu`
 * start and stop the application using `./start.sh` and `./stop.sh`
