@@ -10,7 +10,8 @@ TODO SOME INFO ABOUT THE PROJECT
 
 ### Env Variables
 For development create a `.env` file in the root of the project or set them using the host environment. 
-For the production build the variables must be set in the host environment.
+For the production build the variables must be set in the host environment. See the .
+
 - `JOBS_ROOT_DIR` **[required]** where should pending, running and finished jobs be stored?
 - `RULES_DIR` **[required]** where are the rules files located for the `web-extractor`?
 - `JOBS_COMPLETED_EXPIRATION_TIME_MS [default=604800000]` how long should completed jobs (and their data) be kept?
@@ -29,10 +30,10 @@ For the production build the variables must be set in the host environment.
 - `PORT [default=3000]` (only used for production) the port the server should use
 - `ORIGIN` (only used for production) the host name the server is running on, e.g. https://my.example
 
-for the full list of production `env` variables see https://github.com/sveltejs/kit/tree/master/packages/adapter-node
+for the full list of server production `env` variables see https://github.com/sveltejs/kit/tree/master/packages/adapter-node
 
 ### Server Setup With PM2 for Production
-The following is a full guide for installing and running the project on an linux (unbuntu) server. The example 
+The following is a full guide for installing and running the project on an linux (ubuntu) server. The example 
 will run most commands ass a system user called `apps` (instructions below), so multiple users are able to start/stop/deploy the
 app and so the app is not running as `root`.
 
@@ -40,7 +41,7 @@ app and so the app is not running as `root`.
 * git is installed
 * node.js >= 16.x is installed
 
-#### installation
+#### PM2 and Project Setup
 * install pm2 `sudo npm install pm2@latest -g`
 * create a user "apps" for running our app `sudo adduser --system --shell /bin/bash --group apps`
 * create a startup script for pm2 to run as the "apps" user `sudo -u apps pm2 startup` copy the generated line and run it
@@ -52,7 +53,36 @@ app and so the app is not running as `root`.
 * copy the pm2 scripts and make them executable `cp /apps/consent-observatory.eu/server-scripts/pm2/ /apps/run-scripts/consent-observatory.eu/`
 * make the scripts executable `cd /apps/run-scripts/consent-observatory.eu && chmod ug+x start.sh stop.sh build.sh deploy.sh`
 * edit the `env.sh` file and add the missing values (and change paths if required)
-* **TODO SETUP APACHE 2, inkluder også fil til config af site for den**
+* build the project `/apps/run-scripts/consent-observatory.eu/build.sh`
+
+##### Puppeteer Dependencies and Sandbox
+The following is only required if you are running on a server installation without a GUI.
+
+* install ui libs and other dependencies `sudo apt update && sudo apt install ca-certificates fonts-liberation libappindicator3-1 libasound2
+  libatk-bridge2.0-0 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3
+  libexpat1 libfontconfig1 libgbm1 libgcc1 libglib2.0-0 libgtk-3-0 libnspr4 libnss3 libpango-1.0-0
+  libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6
+  libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 lsb-release wget xdg-utils`
+* install chrome sandbox
+  * navigate to puppeteer local chromium dir `cd /apps/consent-observatory.eu/node_modules/puppeteer/.local-chromium`
+  * find linux-revision `ls -l` and navigate to `cd linux-[REVISION]/chrome-linux`
+  * copy the sandbox to `sudo cp chrome_sandbox /usr/local/sbin/chrome-devel-sandbox`
+  * change the owner of the sandbox `sudo chown root:root /usr/local/sbin/chrome-devel-sandbox`
+  * change the permissions of the sandbox `sudo chmod 4755 /usr/local/sbin/chrome-devel-sandbox`
+  * The path of the sandbox is exported from `env.sh` file described in the [PM2 and Project Setup](#pm2-and-project-setup) section. Change this is you change the path.
+
+See also [sandbox setup](https://github.com/puppeteer/puppeteer/blob/main/docs/troubleshooting.md#alternative-setup-setuid-sandbox) and
+[headless linux](https://github.com/puppeteer/puppeteer/blob/main/docs/troubleshooting.md#alternative-setup-setuid-sandbox) for more details.
+
+##### Apache2 Setup (Optional)
+Used for reverse proxying to the application. If another reverse proxy is used this step is not required.
+* add the latest version of apache2 to the apt-repository `sudo add-apt-repository ppa:ondrej/apache2 -y && sudo apt update`
+* install apace2 `sudo apt install apache2 -y`
+* install extra modules `sudo a2enmod proxy proxy_http proxy_wstunnel rewrite`
+* copy virtual host file to apache2 sites lib `sudo cp /apps/consent-observatory.eu/server-scripts/apache2/consent-observatory.eu.conf /etc/apace2/sites-available/`
+  * Default the virtual host is set to point to port `3000`, if the app is configured to something edit the `app-port` variable in `sudo nano /etc/apace2/sites-available/apache2/consent-observatory.eu.conf`
+* enable the virtual host `sudo a2ensite consent-observatory.eu`
+* restart apache2 `sudo systemctl reatart apache2`
 
 #### Usage
 > **NOTE** All commands should be run as the "apps" user unless explicitly stated

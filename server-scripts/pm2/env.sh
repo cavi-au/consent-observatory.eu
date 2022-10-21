@@ -17,3 +17,6 @@ export MAIL_SMTP_DISABLE_VERIFICATION="false" # set to `true` disable the verifi
 export MAIL_DISABLED="false" # set to `true` disable sending emails
 export PORT="3000" # the port the server should use
 export ORIGIN="https://consent-observatory.eu" # the host name the server is running on, e.g. https://my.example
+
+# chrome sandbox, see README.md file for details
+export CHROME_DEVEL_SANDBOX="/usr/local/sbin/chrome-devel-sandbox"
