@@ -46,7 +46,7 @@ app and so the app is not running as `root`.
 * create a user "apps" for running our app `sudo adduser --system --shell /bin/bash --group apps`
 * create a startup script for pm2 to run as the "apps" user `sudo -u apps pm2 startup` copy the generated line and run it
 * create a directory for the installation and pm2 scripts `sudo mkdir /apps && sudo chown apps:apps /apps`
-* switch to apps user `sudo su apps`
+* switch to the "apps" user `sudo su apps`
 * clone the git repo `git clone https://github.com/centre-for-humanities-computing/consent-observatory.eu.git`
   * To update the existing git repo `cd /apps/consent-observatory.eu` and run `git pull origin master`
 * create a directory for the pm2 scripts `mkdir -p /apps/run-scripts/consent-observatory.eu`
@@ -55,7 +55,7 @@ app and so the app is not running as `root`.
 * edit the `env.sh` file and add the missing values (and change paths if required)
 * build the project `/apps/run-scripts/consent-observatory.eu/build.sh`
 
-##### Puppeteer Dependencies and Sandbox
+#### Puppeteer Dependencies and Sandbox
 > **NOTE** this is only required if you are running on a server installation without a GUI.
 
 * install ui libs and other dependencies `sudo apt update && sudo apt install ca-certificates fonts-liberation libappindicator3-1 libasound2
@@ -74,7 +74,7 @@ app and so the app is not running as `root`.
 See also [sandbox setup](https://github.com/puppeteer/puppeteer/blob/main/docs/troubleshooting.md#alternative-setup-setuid-sandbox) and
 [headless linux](https://github.com/puppeteer/puppeteer/blob/main/docs/troubleshooting.md#alternative-setup-setuid-sandbox) for more details.
 
-##### Apache2 Setup (Optional)
+#### Apache2 Setup (Optional)
 Used for reverse proxying to the application. If another reverse proxy is used this step is not required.
 
 * add the latest version of apache2 to the apt-repository `sudo add-apt-repository ppa:ondrej/apache2 -y && sudo apt update`
