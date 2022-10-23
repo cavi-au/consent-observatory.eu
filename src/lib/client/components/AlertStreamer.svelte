@@ -10,10 +10,16 @@
 
     export function addAlert(title, message, type = 'primary') {
         queue.push({ title, message, type });
-        if (!show) {
-            queueNext();
+        initIfRequired();
+    }
+
+    function initIfRequired() {
+        if (!show && !showing) {
+            let hasNext = queueNext();
+            if (hasNext) {
+                show = true;
+            }
         }
-        show = true;
     }
 
     function dismissActiveAlert() {
@@ -23,16 +29,18 @@
         let hasNext = queueNext();
         if (!hasNext) {
             show = false;
-            showing = false;
         }
     }
 
     function transitionEnd(e) {
-        if (!show) {
-            activeAlert = undefined;
-        }
         showing = e.detail.show;
-
+        if (!show) {
+            if (queue.length > 0) {
+                initIfRequired();
+            } else {
+                activeAlert = undefined;
+            }
+        }
     }
 
     function queueNext() {

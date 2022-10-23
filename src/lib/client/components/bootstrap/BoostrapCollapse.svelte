@@ -53,7 +53,9 @@
         target.classList.add('collapse');
         target.style.height = '';
         inProgress = false;
-        dispatch('transitionEnd', { show })
+        setTimeout(() => { // wait until css animations has finished
+            dispatch('transitionEnd', { show });
+        }, 0);
     }
 
     onMount(() => {
