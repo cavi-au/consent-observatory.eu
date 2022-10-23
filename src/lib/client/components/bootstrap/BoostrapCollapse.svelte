@@ -1,11 +1,13 @@
 <script>
-    import { onMount } from "svelte";
+    import { createEventDispatcher, onMount } from "svelte";
 
     export let targetId;
     export let show = false;
 
     let target;
     let inProgress = false;
+
+    const dispatch = createEventDispatcher();
 
     $: toggle(show);
 
@@ -34,7 +36,7 @@
     function runHide() {
         let height = target.getBoundingClientRect().height;
         target.style.height = `${height}px`;
-        target.classList.remove('collapse')
+        target.classList.remove('collapse');
         window.requestAnimationFrame(() => {
             target.style.height = '0px';
             target.classList.add('collapsing');
@@ -51,6 +53,7 @@
         target.classList.add('collapse');
         target.style.height = '';
         inProgress = false;
+        dispatch('transitionEnd', { show })
     }
 
     onMount(() => {

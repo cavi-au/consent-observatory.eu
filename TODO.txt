@@ -13,6 +13,10 @@ Få lavet en række dev1 - dev6 domæner der peger webservice2 serveren...
 Se mails med TODO's og tjek todo liste på tlf,
 Se TODO's i projekt
 
+Kan vi lave "select" "unselct" som links i grå farve under deres heading, og si en størrelse 12px
+padding i toppen skal væk på mobil
+titel på forside skal skalere responsivt ligesom h1
+
 Layout midas/peter
 - instead of setting a lot of sizes to 70%, shouldn't we just set the max page size to 960 or 840 instead of 1200?
 - Images does not with current styling behave well when resizing the browser
