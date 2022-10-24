@@ -27,6 +27,7 @@ For the production build the variables must be set in the host environment. See 
 - `MAIL_MESSAGE_FROM` **[required]** the email to set as the `from` field (e.g. `info@example.com` or `"John Doe" <info@example.com>`)
 - `MAIL_SMTP_DISABLE_VERIFICATION [default=false]` set to `true` disable the verification check when server starts, disable this during development for faster restart times 
 - `MAIL_DISABLED [default=false]` set to `true` disable sending emails
+- `ADMIN_ACCESS_SECRET` **[required]** admin key for accessing /admin/status must a least be 8 characters long
 - `PORT [default=3000]` (only used for production) the port the server should use
 - `ORIGIN` (only used for production) the host name the server is running on, e.g. https://my.example
 

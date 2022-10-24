@@ -86,6 +86,10 @@ header {
     max-width: 1200px;
 }
 
+.job-status tr:last-child td {
+    border-bottom: 0px;
+}
+
 /* Landing page header content */
 .bold-header {
     font-family: var(--accent-font), serif;

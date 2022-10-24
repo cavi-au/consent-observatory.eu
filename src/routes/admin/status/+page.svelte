@@ -16,7 +16,6 @@
         jobs.splice(i, 1);
         jobs = jobs; // make svelte see the change
     }
-
 </script>
 
 <svelte:head>
@@ -24,7 +23,7 @@
     <meta name="description" content="" />
 </svelte:head>
 
-<h1>Analysis Status</h1>
+<h1 class="mb-3">Admin Analysis Status</h1>
 
 <form method="POST" class="mb-3" use:enhance use:formAutoFocus>
     <div class="input-group" class:is-invalid={form?.errors?.adminAccessSecret}>
@@ -32,15 +31,20 @@
                aria-describedby="admin-access-secret-field-info admin-access-secret-field-error" placeholder="Admin Access Secret">
         <button class="btn btn-primary" type="submit" id="submit-button">{jobs ? 'Refresh' : 'Submit'}</button>
     </div>
-    {#if form?.errors?.jobId}
-        <div id="admin-access-secret-field-error" class="invalid-feedback">{form?.errors?.jobId}</div>
+    {#if form?.errors?.adminAccessSecret}
+        <div id="admin-access-secret-field-error" class="invalid-feedback">{form?.errors?.adminAccessSecret}</div>
     {:else}
         <div id="admin-access-secret-field-info" class="form-text">Insert admin access secret to see jobs</div>
     {/if}
 </form>
 
 {#if jobs}
+    <h2>All Jobs</h2>
     {#each jobs as job, i}
-        <Job job={job} on:delete={() => jobDeleted(i)} />
+        <div class="mb-3 pb-3 border-bottom border-dark" class:border-bottom-0={i === jobs.length - 1}>
+            <Job job={job} on:delete={() => jobDeleted(i)} />
+        </div>
+    {:else}
+        <p>No jobs on the server...</p>
     {/each}
 {/if}

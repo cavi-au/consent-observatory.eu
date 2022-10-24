@@ -2,9 +2,6 @@
 
 
 
-TODO unser /admin/status
-vis alle jobs, og ved delete event fjern fra array af jobs der vises...
-
 
 DEPLOY TIL webservice2 server og se om vi kan få det til at virke der, vi skal nok have åbnet for mail-ud, installere puppeteer ui-libs og så
 sætte substi for url-resolve til sveltekit, så url'er virker og så lave apache reverse proxy /consent-observatory.eu -> localhost:7098

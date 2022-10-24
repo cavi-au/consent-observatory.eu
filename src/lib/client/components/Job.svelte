@@ -29,11 +29,9 @@
                     dispatch('delete');
                 } else {
                     appContext.showAlert('Error', jsonResponse?.error?.message, 'danger');
-                    buttonsDisabled = false;
                 }
-            } else {
-                buttonsDisabled = false;
             }
+            buttonsDisabled = false;
         } catch (e) {
             console.error(e);
             appContext.showAlert('Unknown error', e.message, 'danger');
@@ -43,25 +41,26 @@
     }
 </script>
 
-<div class="container-fluid px-0">
+<div class="container-fluid px-0 job-status">
     <div class="row">
         <div class="col-lg-6">
-            <table class="table table-sm table-striped">
+            <table class="table table-sm table-striped border-dark">
                 <tbody>
                     <tr><td>Id</td><td class="text-end"><code>{job.id}</code></td></tr>
-                    <tr><td>Submitted</td><td class="text-end">{job.submittedTime ? formatUtils.formatDateTime(job.submittedTime) : ''}</td></tr>
-                    <tr><td>Analysis Started</td><td class="text-end">{job.processingStartTime ? formatUtils.formatDateTime(job.processingStartTime) : ''}</td></tr>
-                    <tr><td>Completed</td><td class="text-end">{job.completedTime ? formatUtils.formatDateTime(job.completedTime) : ''}</td></tr>
-
+                    <tr><td>User Email</td><td class="text-end"><code>{job.userEmail}</code></td></tr>
+                    <tr><td>Status</td><td class="text-end">{job.status}</td></tr>
+                    <tr><td>Url Count</td><td class="text-end">{job.urlCount}</td></tr>
+                    <tr><td>Ruleset</td><td class="text-end">{job.rulesetName}</td></tr>
                 </tbody>
             </table>
         </div>
         <div class="col-lg-6">
-            <table class="table table-sm table-striped">
+            <table class="table table-sm table-striped border-dark">
                 <tbody>
-                    <tr><td>Status</td><td class="text-end">{job.status}</td></tr>
-                    <tr><td>Url Count</td><td class="text-end">{job.urlCount}</td></tr>
                     <tr><td>File Size</td><td class="text-end">{job.dataFileSize !== -1 ? formatUtils.formatBytes(job.dataFileSize) : ''}</td></tr>
+                    <tr><td>Submitted</td><td class="text-end">{job.submittedTime ? formatUtils.formatDateTime(job.submittedTime) : ''}</td></tr>
+                    <tr><td>Analysis Started</td><td class="text-end">{job.processingStartTime ? formatUtils.formatDateTime(job.processingStartTime) : ''}</td></tr>
+                    <tr><td>Completed</td><td class="text-end">{job.completedTime ? formatUtils.formatDateTime(job.completedTime) : ''}</td></tr>
                     <tr><td>Expires</td><td class="text-end">{job.expiresTime ? formatUtils.formatDateTime(job.expiresTime) : ''}</td></tr>
                 </tbody>
             </table>

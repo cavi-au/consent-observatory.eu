@@ -162,6 +162,12 @@ class JobExecutor {
         return stream;
     }
 
+    /**
+     * Info about the job what should be typically shown to the end user. Still restrictions is required as both the id and email is included.
+     *
+     * @param jobId
+     * @returns {{dataFileSize: number, submittedTime: number, completedTime: number, processingStartTime: number, rulesetName: string, id, expiresTime: number, email: string, status: string, urlCount: number}}
+     */
     getPublicJobInfo(jobId) {
         let jobInfo = this.#jobs.get(jobId);
         if (!jobInfo) {
@@ -176,12 +182,18 @@ class JobExecutor {
             completedTime: job.completedTime,
             expiresTime: null,
             urlCount: job.urls.length,
-            dataFileSize: jobInfo.meta.dataFileSize
+            dataFileSize: jobInfo.meta.dataFileSize,
+            rulesetName: job.rulesetName,
+            userEmail: job.userEmail
         };
         if (jobInfo.status === JobExecutor.jobStatus.COMPLETED) {
             result.expiresTime = job.completedTime + this.#options.completedExpirationTime;
         }
         return result;
+    }
+
+    getJobIds() {
+        return this.#jobs.keys();
     }
 
     #addJobToQueue(job) {

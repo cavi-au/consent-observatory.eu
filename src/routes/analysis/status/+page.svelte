@@ -32,7 +32,7 @@
     <meta name="description" content="" />
 </svelte:head>
 
-<h1>Analysis Status</h1>
+<h1 class="mb-3">Analysis Status</h1>
 
 <form method="POST" class="mb-3" use:enhance use:formAutoFocus>
     <div class="input-group" class:is-invalid={form?.errors?.jobId}>
