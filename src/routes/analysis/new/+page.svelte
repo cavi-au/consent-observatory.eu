@@ -15,17 +15,14 @@
 
     setSelectedRuleset(data.rulesets[0].name);
 
-    $: {
-        if (form?.rulesetName) {
-            setSelectedRuleset(form.rulesetName, form);
-        }
+    $: if (form?.rulesetName) {
+        setSelectedRuleset(form.rulesetName, form);
     }
 
-    $: {
-        if (form) { // enable whenever form data is updated (after submit)
-            submitButtonEnabled = true;
-        }
+    $: if (form) { // enable whenever form data is updated (after submit)
+        submitButtonEnabled = true;
     }
+
 
     function setSelectedRuleset(rulesetName, form) {
         if (selectedRuleset) {

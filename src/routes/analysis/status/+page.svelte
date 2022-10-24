@@ -2,9 +2,6 @@
     import { enhance } from '$app/forms';
     import Job from "$lib/client/components/Job.svelte";
     import { goto } from "$app/navigation";
-    import { page } from "$app/stores";
-    import { browser } from "$app/environment";
-    import { onMount } from "svelte";
     import { formAutoFocus } from "$lib/client/components/actions.js";
 
     export let form;
@@ -41,7 +38,7 @@
     <div class="input-group" class:is-invalid={form?.errors?.jobId}>
         <input type="text" class="form-control" class:is-invalid={form?.errors?.jobId} name="jobId" id="analysis-id-field" bind:value={jobIdFieldValue}
                aria-describedby="analysis-id-field-info analysis-id-field-error" placeholder="Analysis Id">
-        <button class="btn btn-primary" type="submit" id="button-addon1">{job && job.id === jobIdFieldValue ? 'Refresh' : 'Submit'}</button>
+        <button class="btn btn-primary" type="submit" id="submit-button">{job && job.id === jobIdFieldValue ? 'Refresh' : 'Submit'}</button>
     </div>
     {#if form?.errors?.jobId}
         <div id="analysis-id-field-error" class="invalid-feedback">{form?.errors?.jobId}</div>
