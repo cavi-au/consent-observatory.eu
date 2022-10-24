@@ -26,12 +26,9 @@
 
     <div class="subsection">
         <div class="container">
-            <div class="row">
-                <div class="col-sm-2"></div>
-                <div class="col-sm-3 mb-5 mb-sm-0"><a href="https://bachelor.au.dk/informationsvidenskab"><img class="img-fluid" src={auLogo}></a></div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-3"><a href="https://chcaa.au.dk"><img class="img-fluid" src={chcLogo}></a></div>
-                <div class="col-sm-2"></div>
+            <div class="row sponsor-logos">
+                <div class="col-sm-6 mb-5 mb-sm-0 p-3 text-center"><a href="https://bachelor.au.dk/informationsvidenskab"><img class="img-fluid" src={auLogo}></a></div>
+                <div class="col-sm-6 p-3 text-center"><a href="https://chc.au.dk"><img class="img-fluid" src={chcLogo}></a></div>
             </div>
         </div>
     </div>

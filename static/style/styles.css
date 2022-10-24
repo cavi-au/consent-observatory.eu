@@ -53,9 +53,10 @@ body, #wrapper {
 header {
     border-bottom: 1px solid #ccc;
     vertical-align: center;
-    background-color: white;
+    background-color: #fff;
 }
 
+/*
 #site-title {
     color: #EFB253;
     font-size: 18px;
@@ -64,26 +65,25 @@ header {
     padding-bottom: 7px;
 }
 
+#site-title a {
+    color: inherit;
+    text-decoration: none;
+}*/
+
 #logo {
     width: 80px;
 }
 
-.sponsor-logos {
-    width: 50%;
+.sponsor-logos img {
+    width: 300px;
 }
-
-#site-title a {
-    color: inherit;
-    text-decoration: none;
-}
-
 
 .navbar-toggler {
     font-size: 1rem;
 }
 
 .main {
-    max-width: 1200px;
+    max-width: 960px;
 }
 
 .job-status tr:last-child td {
@@ -94,12 +94,19 @@ header {
 .bold-header {
     font-family: var(--accent-font), serif;
     font-weight: var(--accent-font-weight);
-    font-size: 5rem;
+    font-size: calc(2.5rem + 4.0vw);
+}
+
+
+@media (min-width: 960px) {
+    .bold-header {
+        font-size: 5rem;
+    }
 }
 
 .subtitle {
     font-size: 1.5rem;
-    line-height: 2.5;
+    line-height: 1.5;
 }
 
 .bold-subheader {
@@ -135,7 +142,7 @@ header {
 }
 
 .long-text {
-    max-width: 80%;
+    /*max-width: 80%;*/
     position: relative;
     margin: auto;
 }
@@ -144,14 +151,15 @@ header {
     font-family: var(--accent-font), sans-serif;
     font-weight: var(--accent-font-weight);
 }
-
+/* boostrap has text-center
 .center-text {
     text-align: center;
 }
 
 .centering-parent {
     text-align: center;
-}
+}*/
+
 #popup {
     margin: 20px;
     width: 70%;
@@ -163,7 +171,7 @@ header {
 }
 
 #aboutpage {
-    width: 70%;
+    /*width: 70%;*/
 }
 
 pre.codeblock {

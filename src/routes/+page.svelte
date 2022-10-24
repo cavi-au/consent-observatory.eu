@@ -16,19 +16,19 @@
     </div>
 
     <div class="subsection long-text">
-        <h2 class="bold-subheader center-text">Anatomy of a Consent Pop-up</h2>
+        <h2 class="bold-subheader text-center">Anatomy of a Consent Pop-up</h2>
         <p>
             Consent pop-ups are interfaces that collect your permission to read and write data on your device.
             Many websites and apps used them.
             Unfortunately, most do not comply with European regulation.
             This website lets you automatically extract design features from those pop-ups.
         </p>
-        <div class="centering-parent">
+        <div class="text-center">
             <img id="popup" src={popup}>
             <p class="image-caption">Fig. 1: Basic design of a consent pop-up (2022)</p>
         </div>
 
-        <h4 class="center-text accent accent-header mt-5">Common Design Features</h4>
+        <h4 class="text-center accent accent-header mt-5">Common Design Features</h4>
         <p>
             Most consent pop-ups look the same.
             They often consist of three layers:
