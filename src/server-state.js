@@ -16,8 +16,6 @@ const REQUIRED_ENV_VARS = [
     'RULES_DIR',
     'MAIL_SMTP_HOST',
     'MAIL_SMTP_PORT',
-    'MAIL_SMTP_USER',
-    'MAIL_SMTP_PASS',
     'MAIL_MESSAGE_FROM',
     'ADMIN_ACCESS_SECRET'
 ];
@@ -135,12 +133,12 @@ function loadEnvVars() {
     env.RULES_DIR = privateEnvVars.RULES_DIR;
     env.MAIL_SMTP_HOST = privateEnvVars.MAIL_SMTP_HOST;
     env.MAIL_SMTP_PORT = Number.parseInt(privateEnvVars.MAIL_SMTP_PORT);
-    env.MAIL_SMTP_USER = privateEnvVars.MAIL_SMTP_USER;
-    env.MAIL_SMTP_PASS = privateEnvVars.MAIL_SMTP_PASS;
     env.MAIL_MESSAGE_FROM = privateEnvVars.MAIL_MESSAGE_FROM;
     env.ADMIN_ACCESS_SECRET = privateEnvVars.ADMIN_ACCESS_SECRET;
 
     // optional, set defaults
+    env.MAIL_SMTP_USER = privateEnvVars.MAIL_SMTP_USER;
+    env.MAIL_SMTP_PASS = privateEnvVars.MAIL_SMTP_PASS;
     env.JOBS_COMPLETED_EXPIRATION_TIME_MS = Number.parseInt(privateEnvVars.JOBS_COMPLETED_EXPIRATION_TIME_MS ?? 7 * 24 * 60 * 60 * 1000);
     env.USER_DEFAULT_MAX_URLS = Number.parseInt(privateEnvVars.USER_DEFAULT_MAX_URLS ?? 10);
     env.USER_DEFAULT_MAX_JOBS = Number.parseInt(privateEnvVars.USER_DEFAULT_MAX_JOBS ?? 1);

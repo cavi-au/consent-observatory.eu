@@ -46,12 +46,12 @@ app and so the app is not running as `root`.
 * install pm2 `sudo npm install pm2@latest -g`
 * create a user "apps" for running our app `sudo adduser --system --shell /bin/bash --group apps`
 * create a startup script for pm2 to run as the "apps" user `sudo -u apps pm2 startup` copy the generated line and run it
-* create a directory for the installation and pm2 scripts `sudo mkdir /apps && sudo chown apps:apps /apps`
+* create a directory for the installation and pm2 scripts `sudo mkdir /apps && sudo chown apps:apps /apps && sudo chmod o-rwx /apps`
 * switch to the "apps" user `sudo su apps`
 * clone the git repo `git clone https://github.com/centre-for-humanities-computing/consent-observatory.eu.git`
-  * To update the existing git repo `cd /apps/consent-observatory.eu` and run `git pull origin master`
+  * To update the existing git repo use `cd /apps/consent-observatory.eu` and run `git pull origin master`
 * create a directory for the pm2 scripts `mkdir -p /apps/run-scripts/consent-observatory.eu`
-* copy the pm2 scripts and make them executable `cp /apps/consent-observatory.eu/server-scripts/pm2/ /apps/run-scripts/consent-observatory.eu/`
+* copy the pm2 scripts and make them executable `cp /apps/consent-observatory.eu/server-scripts/pm2/* /apps/run-scripts/consent-observatory.eu/`
 * make the scripts executable `cd /apps/run-scripts/consent-observatory.eu && chmod ug+x start.sh stop.sh build.sh deploy.sh`
 * edit the `env.sh` file and add the missing values (and change paths if required)
 * build the project `/apps/run-scripts/consent-observatory.eu/build.sh`
@@ -80,7 +80,7 @@ Used for reverse proxying to the application. If another reverse proxy is used t
 
 * add the latest version of apache2 to the apt-repository `sudo add-apt-repository ppa:ondrej/apache2 -y && sudo apt update`
 * install apace2 `sudo apt install apache2 -y`
-* install extra modules `sudo a2enmod proxy proxy_http proxy_wstunnel rewrite`
+* install extra modules `sudo a2enmod proxy proxy_http proxy_wstunnel rewrite && sudo systemctl restart apache2`
 * copy virtual host file to apache2 sites lib `sudo cp /apps/consent-observatory.eu/server-scripts/apache2/consent-observatory.eu.conf /etc/apace2/sites-available/`
   * Default the virtual host is set to point to port `3000`, if the app is configured to something edit the `app-port` variable in `sudo nano /etc/apace2/sites-available/apache2/consent-observatory.eu.conf`
 * enable the virtual host `sudo a2ensite consent-observatory.eu`

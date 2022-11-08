@@ -1,4 +1,4 @@
-export APP_ROOT_DIR="/apps/consent-obvervatory.eu"
+export APP_ROOT_DIR="/apps/consent-observatory.eu"
 export APP_NAME="consent-observatory.eu"
 export JOBS_ROOT_DIR="" # [REQUIRED] where should pending, running and finished jobs be stored?
 export RULES_DIR="" # [REQUIRED] where are the rules files located for the `web-extractor`?
