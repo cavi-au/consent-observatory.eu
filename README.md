@@ -61,10 +61,10 @@ app and so the app is not running as `root`.
 #### Puppeteer Dependencies and Sandbox
 > **NOTE** this is only required if you are running on a server installation without a GUI.
 
-* install ui libs and other dependencies `sudo apt update && sudo apt install ca-certificates fonts-liberation libappindicator3-1 libasound2
-  libatk-bridge2.0-0 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3
-  libexpat1 libfontconfig1 libgbm1 libgcc1 libglib2.0-0 libgtk-3-0 libnspr4 libnss3 libpango-1.0-0
-  libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6
+* install ui libs and other dependencies `sudo apt update && sudo apt install ca-certificates fonts-liberation libappindicator3-1 libasound2 \
+  libatk-bridge2.0-0 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 \
+  libexpat1 libfontconfig1 libgbm1 libgcc1 libglib2.0-0 libgtk-3-0 libnspr4 libnss3 libpango-1.0-0 \
+  libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 \
   libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 lsb-release wget xdg-utils`
 * install chrome sandbox
   * navigate to puppeteer local chromium dir `cd /apps/consent-observatory.eu/node_modules/puppeteer/.local-chromium`
@@ -82,11 +82,10 @@ Used for reverse proxying to the application. If another reverse proxy is used t
 
 * add the latest version of apache2 to the apt-repository `sudo add-apt-repository ppa:ondrej/apache2 -y && sudo apt update`
 * install apace2 `sudo apt install apache2 -y`
-* install extra modules `sudo a2enmod proxy proxy_http proxy_wstunnel rewrite && sudo systemctl restart apache2`
-* copy virtual host file to apache2 sites lib `sudo cp /apps/consent-observatory.eu/server-scripts/apache2/consent-observatory.eu.conf /etc/apace2/sites-available/`
+* install extra modules `sudo a2enmod proxy proxy_http proxy_wstunnel rewrite && sudo systemctl reload apache2`
+* copy virtual host file to apache2 sites lib `sudo cp /apps/consent-observatory.eu/server-scripts/apache2/consent-observatory.eu.conf /etc/apache2/sites-available/`
   * Default the virtual host is set to point to port `3000`, if the app is configured to something edit the `app-port` variable in `sudo nano /etc/apace2/sites-available/apache2/consent-observatory.eu.conf`
-* enable the virtual host `sudo a2ensite consent-observatory.eu`
-* restart apache2 `sudo systemctl reatart apache2`
+* enable the virtual host `sudo a2ensite consent-observatory.eu && sudo systemctl reload apache2`
 
 #### Usage
 > **NOTE** All commands should be run as the "apps" user unless explicitly stated
