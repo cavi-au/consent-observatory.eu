@@ -8,7 +8,6 @@ import { RulesetRepository } from "$lib/server/analysis/ruleset-repository.js";
 import { MailTemplateEngine } from "$lib/server/mail/mail-template-engine.js";
 import path from "path";
 import { setTimeout } from 'timers/promises';
-import { fileURLToPath } from 'url';
 import { MailService } from "$lib/server/mail/mail-service.js";
 
 const REQUIRED_ENV_VARS = [

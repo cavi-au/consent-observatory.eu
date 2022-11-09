@@ -21,9 +21,9 @@ For the production build the variables must be set in the host environment. See 
 - `USER_WHITELIST_MAX_JOBS [default=1]` How many jobs can a whitelisted user have registered?
 - `USER_EMAIL_WHITELIST_FILE_PATH [default=]` The path for a newline delimited list of whitelisted user emails
 - `MAIL_SMTP_HOST` **[required]** SMTP-server hostname (e.g. `smtp.example.com`)
-- `MAIL_SMTP_PORT` **[required]** SMTP-server port
-- `MAIL_SMTP_USER` **[required]** SMTP-server username (most likely the email address)
-- `MAIL_SMTP_PASS` **[required]** SMTP-server password (most likely password for the email address)
+- `MAIL_SMTP_PORT` **[required]** SMTP-server port (e.g. 25 or 587)
+- `MAIL_SMTP_USER` SMTP-server username (most likely the email address or none of server is whitelisted on ip-address)
+- `MAIL_SMTP_PASS` SMTP-server password (most likely password for the email address or none of server is whitelisted on ip-address)
 - `MAIL_MESSAGE_FROM` **[required]** the email to set as the `from` field (e.g. `info@example.com` or `"John Doe" <info@example.com>`)
 - `MAIL_SMTP_DISABLE_VERIFICATION [default=false]` set to `true` disable the verification check when server starts, disable this during development for faster restart times 
 - `MAIL_DISABLED [default=false]` set to `true` disable sending emails
@@ -53,7 +53,9 @@ app and so the app is not running as `root`.
 * create a directory for the pm2 scripts `mkdir -p /apps/run-scripts/consent-observatory.eu`
 * copy the pm2 scripts and make them executable `cp /apps/consent-observatory.eu/server-scripts/pm2/* /apps/run-scripts/consent-observatory.eu/`
 * make the scripts executable `cd /apps/run-scripts/consent-observatory.eu && chmod ug+x start.sh stop.sh build.sh deploy.sh`
+* create data dirs e.g. `mkdir -p /apps/consent-obs-data/rules && -p /apps/consent-obs-data/jobs`
 * edit the `env.sh` file and add the missing values (and change paths if required)
+* add one or more rulesets to the rules dir created above see below documentation for how to create a ruleset
 * build the project `/apps/run-scripts/consent-observatory.eu/build.sh`
 
 #### Puppeteer Dependencies and Sandbox
@@ -99,6 +101,8 @@ Rules are defined in rulesets which is one or more rule-files as described in th
 and a `__ui.json` file. Rulesets can be defined in `RULES_DIR` directory as well as direct subdirectories of the `RULES_DIR`directory. 
 At least one ruleset must be present for the application to start.
 
+> **NOTE** to import the modules correctly it is important to have the `package.json` file at root of the rules dir with at least `{ "type": "module" }` defined.
+
 **Example Structure**
 ```shell
 /example/path/rules
@@ -110,7 +114,8 @@ At least one ruleset must be present for the application to start.
    ├─ dk-rule.js
 ├─ germany
    ├─ __ui.json
-   ├─ germany-rule.js    
+   ├─ germany-rule.js
+├─ package.json       
 ```
 
 ### __ui.json
@@ -305,4 +310,12 @@ export default {
         }
     }
 };
+```
+**package.json**
+
+*this only needs to be present at root of the rules dir*
+```json5
+{
+  "type": "module"
+}
 ```

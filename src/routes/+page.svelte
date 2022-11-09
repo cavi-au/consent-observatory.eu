@@ -24,7 +24,7 @@
             This website lets you automatically extract design features from those pop-ups.
         </p>
         <div class="text-center">
-            <img id="popup" src={popup}>
+            <img id="popup" src={popup} alt="popup">
             <p class="image-caption">Fig. 1: Basic design of a consent pop-up (2022)</p>
         </div>
 

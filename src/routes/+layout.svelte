@@ -54,7 +54,7 @@
             <nav class="navbar navbar-expand-sm">
                 <span id="site-title" class="navbar-brand">
                     <a href="/" id="site-title-logo">
-                        <img id="logo" src={coLogo}>
+                        <img id="logo" src={coLogo} alt="logo">
                     </a>
                 </span>
                 <BoostrapCollapse targetId="main-menu" show={showMainMenuMobile}/>
