@@ -1,5 +1,5 @@
 import * as responseUtils from '$lib/server/utils/response-utils.js';
-import { jobExecutor } from "../../../server-state.js";
+import { jobExecutor } from "../../../app.server.js";
 import { JobExecutor } from "$lib/server/analysis/job-executor.js";
 
 export async function POST({ request }) {
