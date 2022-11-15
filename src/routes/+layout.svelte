@@ -90,7 +90,7 @@
         <div class="container main">
             <div class="row">
                 <div class="col-sm-12">
-                    <span>Created by <a href="https://chc.au.dk">chc.au.dk</a> & Midas Nouwens 2022</span>
+                    <span>Created by <a href="https://chc.au.dk" class="link-secondary">chc.au.dk</a> & Midas Nouwens 2022</span>
                 </div>
             </div>
         </div>
