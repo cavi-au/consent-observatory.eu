@@ -2,7 +2,7 @@ import { invalid } from '@sveltejs/kit';
 import _ from 'lodash';
 import { isIP } from 'net';
 import { Job } from "$lib/server/analysis/job.js";
-import { env, isEmailOnWhitelist, rulesetRepository, jobExecutor, mailService, mailTemplateEngine } from '../../../server-state.js';
+import { env, isEmailOnWhitelist, rulesetRepository, jobExecutor, mailService, mailTemplateEngine } from '../../../app.server.js';
 
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 const URL_PROTOCOL_REGEX = /^\w+:\/\//;

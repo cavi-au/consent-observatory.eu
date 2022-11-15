@@ -1,8 +1,7 @@
-import { env as privateEnvVars } from '$env/dynamic/private';
-import * as serverState from './server-state.js';
+import * as app from './app.server.js';
 
 try {
-	await serverState.init();
+	await app.init();
 } catch (e) {
 	console.error('Could not init server...');
 	console.error(e);
