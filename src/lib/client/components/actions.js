@@ -24,7 +24,7 @@ export function formAutoFocus(formElement) {
                     break;
                 }
             }
-            focusElement?.focus();
+            setTimeout(() => focusElement?.focus());
         }
     }
 
