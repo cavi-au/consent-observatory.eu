@@ -39,12 +39,8 @@
             document.getElementById(nextScreenId).classList.toggle('hide');
         }
 
-        let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl, {
-                container:'body'
-            })
-        })
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
         let allNestedToggles = document.querySelectorAll( '[data-bs-toggle="tooltip"] [data-bs-toggle="tooltip"]');
 
@@ -125,11 +121,23 @@
     </style>
 </svelte:head>
 
-<div class="p-5 my-5 bg-medium rounded-3 text-center">
+<div class="pt-5 pb-2 my-5 bg-medium rounded-3 text-center">
     <h2 class="fw-bold">Consent Observatory</h2>
     <p class="lead">Automated analysis of consent pop-ups on the web</p>
     <p id="credits"><small>by Midas Nouwens</small></p>
     <a href="/analysis/new" class="btn btn-primary btn-md mt-2">Start a new analysis</a>
+    <div class="pt-3">
+        <p><small><small class="text-muted"><a href="#citeCollapse" aria-expanded="false" aria-controls="citeCollapse" class="link-secondary" data-bs-toggle="collapse">How to cite?</a></small></small></p>
+        <div class="row justify-content-center">
+            <div class="col-8 collapse" id="citeCollapse">
+                <small>
+                <div class="card card-body mt-auto">
+                    Nouwens, Midas. (2023). "Consent Observatory: Automated analysis of consent pop-ups on the web". Version 1.0. Retrieved from https://consent-observatory.eu
+                </div>
+                </small>
+            </div>
+        </div>
+    </div>
 </div>
 
 <hr class="my-4">
