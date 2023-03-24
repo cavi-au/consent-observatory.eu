@@ -32,12 +32,12 @@
     <meta name="description" content="" />
 </svelte:head>
 
-<h1 class="mb-3">Analysis Status</h1>
+<h3 class="mt-5 mb-4">Analysis status</h3>
 
-<form method="POST" class="mb-3" use:enhance use:formAutoFocus>
+<form method="POST" class="mb-4" use:enhance use:formAutoFocus>
     <div class="input-group" class:is-invalid={form?.errors?.jobId}>
         <input type="text" class="form-control" class:is-invalid={form?.errors?.jobId} name="jobId" id="analysis-id-field" bind:value={jobIdFieldValue}
-               aria-describedby="analysis-id-field-info analysis-id-field-error" placeholder="Analysis Id">
+               aria-describedby="analysis-id-field-info analysis-id-field-error" placeholder="Your request ID (e.g., 703c4871-a3b1-4748-8742-f37fdbc13f1a)">
         <button class="btn btn-primary" type="submit" id="submit-button">{job && job.id === jobIdFieldValue ? 'Refresh' : 'Submit'}</button>
     </div>
     {#if form?.errors?.jobId}

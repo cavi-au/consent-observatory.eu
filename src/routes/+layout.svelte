@@ -48,51 +48,55 @@
     <ConfirmDialog title={confirmDialogContext.title} message={confirmDialogContext.message} on:action={onConfirmDialogResult}/>
 {/if}
 
-<div id="wrapper" class="d-flex flex-column">
-    <header>
-        <div class="container main" id="header-content">
-            <nav class="navbar navbar-expand-sm">
-                <span id="site-title" class="navbar-brand">
-                    <a href="/" id="site-title-logo">
-                        <img id="logo" src={coLogo} alt="logo">
-                    </a>
-                </span>
-                <BoostrapCollapse targetId="main-menu" show={showMainMenuMobile}/>
-                <button class="navbar-toggler" type="button" on:click={() => showMainMenuMobile = !showMainMenuMobile}>
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse" id="main-menu">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a href="/" class="nav-link" class:active={isMenuItemActive('/', $page.url.pathname)}>Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/analysis/new" class="nav-link" class:active={isMenuItemActive('/analysis/new', $page.url.pathname)}>New analysis</a>
-                        </li>
-<!--                        <li class="nav-item">-->
-<!--                            <a href="/help" class="nav-link" class:active={isMenuItemActive('/help', $page.url.pathname)}>help</a>-->
-<!--                        </li>-->
-                        <li class="nav-item">
-                            <a href="/about" class="nav-link" class:active={isMenuItemActive('/about', $page.url.pathname)}>About</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-    </header>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <img src={coLogo} alt="Logo" height="24" class="d-inline-block align-text-top">
+            <span class="ms-2">Consent Observatory</span>
+        </a>
 
-    <div class="container main content d-flex flex-column flex-fill">
+        <BoostrapCollapse targetId="navbarSupportedContent" show={showMainMenuMobile}/>
+        <button class="navbar-toggler" type="button" on:click={() => showMainMenuMobile = !showMainMenuMobile}>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="navbar-collapse collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a href="/" class="nav-link" class:active={isMenuItemActive('/', $page.url.pathname)}>Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/analysis/new" class="nav-link" class:active={isMenuItemActive('/analysis/new', $page.url.pathname)}>New analysis</a>
+                </li>
+<!--                <li class="nav-item">-->
+<!--                    <a href="/methodology" class="nav-link" class:active={isMenuItemActive('/methodology', $page.url.pathname)}>Methodology</a>-->
+<!--                </li>-->
+    <!--            <li class="nav-item">-->
+    <!--                <a href="/help" class="nav-link" class:active={isMenuItemActive('/help', $page.url.pathname)}>help</a>-->
+    <!--            </li>-->
+                <li class="nav-item">
+                    <a href="/about" class="nav-link" class:active={isMenuItemActive('/about', $page.url.pathname)}>About</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main>
+    <div class="container">
         <AlertStreamer bind:this={alertStreamer}/>
         <slot></slot>
     </div>
+</main>
 
-    <footer>
-        <div class="container main">
-            <div class="row">
-                <div class="col-sm-12">
-                    <span>Created by <a href="https://chc.au.dk" class="link-secondary">chc.au.dk</a> & Midas Nouwens 2022</span>
-                </div>
-            </div>
-        </div>
-    </footer>
-</div>
+
+
+<footer class="d-flex flex-wrap mt-auto text-muted">
+    <span class="col d-flex px-5">
+        <small>Created by <a href="https://chc.au.dk" class="link-secondary">chc.au.dk</a> & Midas Nouwens 2022</small>
+    </span>
+    <span class="col d-flex justify-content-end px-5">
+        <small><a href="/privacy-policy" class="link-secondary">Privacy policy</a></small>
+    </span>
+</footer>
+

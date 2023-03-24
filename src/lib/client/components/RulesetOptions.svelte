@@ -4,13 +4,15 @@
     export let selectedCheckboxes;
     export let selectedRadios;
     export let sectionTitle = undefined;
+    export let sectionKey;
 
     let children = [];
 
-    export function selectAllCheckboxes(selectAll) {
+    export function toggleAllCheckboxes(event) {
+        let checkboxStatus = event.target.checked;
         for (let rulesetOption of options) {
             if (rulesetOption.type === 'checkbox') {
-                if (selectAll) {
+                if (checkboxStatus) {
                     selectedCheckboxes.add(`rulesetOption.${rulesetOption.key}`);
                 } else {
                     selectedCheckboxes.delete(`rulesetOption.${rulesetOption.key}`);
@@ -20,7 +22,7 @@
 
         selectedCheckboxes = selectedCheckboxes;
         for (let child of children) {
-            child.selectAllCheckboxes(selectAll);
+            child.toggleAllCheckboxes(checkboxStatus);
         }
     }
 
@@ -39,28 +41,30 @@
     }
 </script>
 
+
 {#if sectionTitle}
-    <legend class="sub-legend">{sectionTitle}
-        <button class="btn btn-primary btn-sm ms-2" title="Select All" on:click|preventDefault={() => selectAllCheckboxes(true)}><i class="bi bi-check2-square"></i></button>
-        <button class="btn btn-primary btn-sm" title="Deselect All" on:click|preventDefault={() => selectAllCheckboxes(false)}><i class="bi bi-square"></i></button>
-    </legend>
+    <h6 class="sub-legend mt-4">{sectionTitle}
+        <input id="toggleAll-{sectionKey}" type="checkbox" class="form-check-input ms-2 text-muted" on:click={(e) => toggleAllCheckboxes(e)}>
+        <label for="toggleAll-{sectionKey}"><small class="text-muted">Toggle all</small></label>
+    </h6>
+
 {/if}
-<div class:ms-4={sectionTitle}>
+<div>
     {#each options as rulesetOption}
         {@const optionKey = `rulesetOption.${rulesetOption.key}`}
         {#if rulesetOption.title && rulesetOption.type !== 'section'}
             <p class="form-label">{rulesetOption.title}</p>
         {/if}
         {#if rulesetOption.type === 'checkbox'}
-            <div class="mb-3 form-check">
+            <div class="form-check">
                 <input type="checkbox" checked={selectedCheckboxes.has(optionKey)} class="form-check-input" name="{optionKey}"
                        id="{optionKey}" on:click={(event) => checkboxChanged(optionKey, event.target.checked)}>
-                <label class="form-check-label" for="{optionKey}">{rulesetOption.label}</label>
-                {#if form?.errors?.[optionKey]}
-                    <div id="{optionKey}-error" class="invalid-feedback">{form?.errors?.[optionKey]}</div>
-                {:else if rulesetOption.description}
-                    <div id="{optionKey}-info" class="form-text">{rulesetOption.description}</div>
-                {/if}
+                <label class="form-check-label ms-2" for="{optionKey}" title="{rulesetOption.description}">{rulesetOption.label}</label>
+                <!--{#if form?.errors?.[optionKey]}-->
+                <!--    <div id="{optionKey}-error" class="invalid-feedback">{form?.errors?.[optionKey]}</div>-->
+                <!--{:else if rulesetOption.description}-->
+                <!--    <div id="{optionKey}-info" class="form-text">{rulesetOption.description}</div>-->
+                <!--{/if}-->
             </div>
         {:else if rulesetOption.type === 'radio'}
             {#each rulesetOption.options as radioOption, i}
@@ -81,7 +85,7 @@
                 </div>
             {/each}
         {:else if rulesetOption.type === 'section'}
-            <svelte:self bind:this={children[children.length]} form={form} options={rulesetOption.options} sectionTitle={rulesetOption.title} selectedCheckboxes={selectedCheckboxes} selectedRadios={selectedRadios} />
+            <svelte:self bind:this={children[children.length]} form={form} options={rulesetOption.options} sectionTitle={rulesetOption.title} sectionKey={rulesetOption.key} selectedCheckboxes={selectedCheckboxes} selectedRadios={selectedRadios} />
         {/if}
     {/each}
 </div>

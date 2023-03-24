@@ -1,34 +1,111 @@
 @font-face {
     font-family: 'Noto Sans';
     font-style: normal;
+    font-weight: 100;
+    src: local('NotoSans'), url('./fonts/NotoSans/NotoSans-Thin.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: italic;
+    font-weight: 100;
+    src: local('NotoSans'), url('./fonts/NotoSans/NotoSans-ThinItalic.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 200;
+    src: local('NotoSans'), url('./fonts/NotoSans/NotoSans-ExtraLight.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: italic;
+    font-weight: 200;
+    src: local('NotoSans'), url('./fonts/NotoSans/NotoSans-ExtraLightItalic.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 300;
+    src: local('NotoSans'), url('./fonts/NotoSans/NotoSans-Light.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: italic;
+    font-weight: 300;
+    src: local('NotoSans'), url('./fonts/NotoSans/NotoSans-LightItalic.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
     font-weight: 400;
-    src: local('Adorage'), url('./fonts/NotoSans-Regular.woff') format('woff');
+    src: local('NotoSans'), url('./fonts/NotoSans/NotoSans-Regular.woff2') format('woff2');
 }
 @font-face {
     font-family: 'Noto Sans';
     font-style: italic;
     font-weight: 400;
-    src: local('Adorage'), url('./fonts/NotoSans-Italic.woff') format('woff');
+    src: local('NotoSans'), url('./fonts/NotoSans/NotoSans-Italic.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 500;
+    src: local('NotoSans'), url('./fonts/NotoSans/NotoSans-Medium.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: italic;
+    font-weight: 500;
+    src: local('NotoSans'), url('./fonts/NotoSans/NotoSans-MediumItalic.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 600;
+    src: local('NotoSans'), url('./fonts/NotoSans/NotoSans-SemiBold.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: italic;
+    font-weight: 600;
+    src: local('NotoSans'), url('./fonts/NotoSans/NotoSans-SemiBoldItalic.woff2') format('woff2');
 }
 @font-face {
     font-family: 'Noto Sans';
     font-style: normal;
     font-weight: 700;
-    src: local('Adorage'), url('./fonts/NotoSans-Bold.woff') format('woff');
+    src: local('NotoSans'), url('./fonts/NotoSans/NotoSans-Bold.woff2') format('woff2');
 }
 @font-face {
     font-family: 'Noto Sans';
     font-style: italic;
     font-weight: 700;
-    src: local('Adorage'), url('./fonts/NotoSans-BoldItalic.woff') format('woff');
+    src: local('NotoSans'), url('./fonts/NotoSans/NotoSans-BoldItalic.woff2') format('woff2');
 }
 @font-face {
-    font-family: 'Adorage';
+    font-family: 'Noto Sans';
     font-style: normal;
-    font-weight: 400;
-    src: local('Adorage'), url('./fonts/Adorage.woff') format('woff');
+    font-weight: 800;
+    src: local('NotoSans'), url('./fonts/NotoSans/NotoSans-ExtraBold.woff2') format('woff2');
 }
-
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: italic;
+    font-weight: 800;
+    src: local('NotoSans'), url('./fonts/NotoSans/NotoSans-ExtraBoldItalic.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 900;
+    src: local('NotoSans'), url('./fonts/NotoSans/NotoSans-Black.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: italic;
+    font-weight: 900;
+    src: local('NotoSans'), url('./fonts/NotoSans/NotoSans-BlackItalic.woff2') format('woff2');
+}
 
 :root {
     --main-color: #e9d7b8;
@@ -37,197 +114,119 @@
     --background-color: #FFCE3C;
 
     --accent-font-weight: 700;
-    --accent-font: "Adorage";
+    /*--accent-font: "Adorage";*/
     /*--accent-font: "Chromate-Regular";*/
 }
 
 * {
     font-family: 'Noto Sans', sans-serif;
+    /*font-weight: 400;*/
 }
 
-body, #wrapper {
-    min-height: 100vh;
-    background-color: var(--background-color);
-}
-
-header {
-    border-bottom: 1px solid #ccc;
-    vertical-align: center;
-    background-color: #fff;
-}
-
-/*
-#site-title {
-    color: #EFB253;
-    font-size: 18px;
-    margin-right: 8px;
-    padding-top: 7px;
-    padding-bottom: 7px;
-}
-
-#site-title a {
-    color: inherit;
-    text-decoration: none;
-}*/
-
-#logo {
-    width: 80px;
+/*-------------*/
+.bg-medium {
+    background-color: #e9ecef;
 }
 
 .sponsor-logos img {
     width: 300px;
 }
 
-.navbar-toggler {
-    font-size: 1rem;
-}
 
-.main {
-    max-width: 960px;
-}
-
-.job-status tr:last-child td {
-    border-bottom: 0px;
-}
+/*.job-status tr:last-child td {*/
+/*    border-bottom: 0px;*/
+/*}*/
 
 /* Landing page header content */
-.bold-header {
-    font-family: var(--accent-font), serif;
-    font-weight: var(--accent-font-weight);
-    font-size: calc(2.5rem + 4.0vw);
-}
 
-
-@media (min-width: 960px) {
-    .bold-header {
-        font-size: 5rem;
-    }
-}
-
-.subtitle {
-    font-size: 1.5rem;
-    line-height: 1.5;
-}
-
-.bold-subheader {
-    font-family: var(--accent-font), serif;
-    font-weight: var(--accent-font-weight);
-    font-size: 2rem;
-    line-height: 2;
-}
-
-#landing-abstract {
-    /*height: 90vh;*/
-    text-align: center;
-    /*border: black solid 12px;*/
-}
-
-#landing-abstract .btn {
-    margin-top: 40px;
-}
-
-/* --------- */
-
-
-.subsection {
-    padding: 100px 20px 50px 20px;
-    margin: 50px auto;
-    font-size: 1.2rem;
-    text-align: justify;
-}
-
-.content {
-    padding-top: 16px;
-    padding-bottom: 16px;
-}
-
-.long-text {
-    /*max-width: 80%;*/
-    position: relative;
-    margin: auto;
-}
-
-.accent-header {
-    font-family: var(--accent-font), sans-serif;
-    font-weight: var(--accent-font-weight);
-}
-/* boostrap has text-center
-.center-text {
-    text-align: center;
-}
-
-.centering-parent {
-    text-align: center;
-}*/
-
-#popup {
-    margin: 20px;
-    width: 70%;
-    object-fit: contain;
-}
-.image-caption {
+#credits {
     font-style: italic;
-    font-size: 1rem;
 }
 
-#aboutpage {
-    /*width: 70%;*/
-}
 
-pre.codeblock {
-    background-color: var(--bs-gray-100);
-    padding: 8px;
-    border-radius: 6px;
-}
+/*!* --------- *!*/
 
+
+
+/*#popup {*/
+/*    margin: 20px;*/
+/*    width: 70%;*/
+/*    object-fit: contain;*/
+/*}*/
+/*.image-caption {*/
+/*    font-style: italic;*/
+/*    font-size: 1rem;*/
+/*}*/
+
+/*#aboutpage {*/
+/*    !*width: 70%;*!*/
+/*}*/
+
+/*pre.codeblock {*/
+/*    background-color: var(--bs-gray-100);*/
+/*    padding: 8px;*/
+/*    border-radius: 6px;*/
+/*}*/
 footer {
     font-size: 12px;
     height: 31px;
     line-height: 30px;
-    border-top: 1px solid #fab446;
+    border-top: 1px solid #ccc;
     color: #333;
     width: 100%;
-    background-color: white;
 }
 
 /* FORM stuff */
 
-.form-select {
-    width: auto;
+form .select-control {
+    --bs-btn-padding-y: 0.125rem;
+    --bs-btn-padding-x: 0.25rem;
+    --bs-btn-font-size: 0.50rem;
+    --bs-btn-border-radius: 0.125rem;
 }
 
-.form-text {
-    color: #533501;
+form .form-check {
+    display: inline-flex;
+    margin-right: 1rem;
 }
 
-legend.sub-legend {
-    font-size: 1rem;
-}
+/*.form-select {*/
+/*    width: auto;*/
+/*}*/
+
+/*.form-text {*/
+/*    color: #533501;*/
+/*}*/
+
+/*legend.sub-legend {*/
+/*    font-size: 1rem;*/
+/*}*/
 
 /* ----------- */
+.container {
+    max-width: 1000px;
+}
 
 /* BOOTSTRAP OVERWRITE */
 .btn-primary {
-    --bs-btn-bg: #de8b08;
-    --bs-btn-border-color: #b57203;
-    --bs-btn-hover-bg: #e28e16;
-    --bs-btn-hover-border-color: #cd7f10;
-    --bs-btn-active-bg: #e28901;
-    --bs-btn-active-border-color: #ca7b01;
-    --bs-btn-disabled-bg: #eac78c;
-    --bs-btn-disabled-border-color: #cdac7c;
+    /*--bs-btn-bg: #f1b357;*/
+    /*--bs-btn-border-color: #ecaf54;*/
+    /*--bs-btn-hover-bg: #e28e16;*/
+    /*--bs-btn-hover-border-color: #dd8a15;*/
+    /*--bs-btn-active-bg: #e28901;*/
+    /*--bs-btn-active-border-color: #d68201;*/
+    /*--bs-btn-disabled-bg: #eac78c;*/
+    /*--bs-btn-disabled-border-color: #cdac7c;*/
+    /*--bs-btn-font-size: 1rem;*/
 }
 
-.form-check-input:checked {
-    background-color: var(--green-color);
-    border-color: #019657;
-}
 
 code {
     color: black;
     font-weight: 900;
 }
 
-.text-bg-secondary {
-    background-color: var(--green-color) !important;
+hr {
+    border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color)!important;
+    opacity: 1;
 }

@@ -7,4 +7,4 @@
 
 </script>
 
-<a href="/" on:click|preventDefault={() => copyToClipboard()}><i class="bi-clipboard-data link-dark" title="Copy to Clipboard"></i></a>
+<a href="/" on:click|preventDefault={() => copyToClipboard()}><i class="bi-files link-dark" title="Copy to Clipboard"></i></a>
