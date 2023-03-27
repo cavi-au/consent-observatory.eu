@@ -121,7 +121,7 @@
     </style>
 </svelte:head>
 
-<div class="pt-5 pb-2 my-5 bg-medium rounded-3 text-center">
+<div class="pt-5 pb-2 my-5 bg-light border border-secondary-subtle rounded-3 text-center">
     <h2 class="fw-bold">Consent Observatory</h2>
     <p class="lead">Automated analysis of consent pop-ups on the web</p>
     <p id="credits"><small>by Midas Nouwens</small></p>
@@ -131,9 +131,9 @@
         <div class="row justify-content-center">
             <div class="col-8 collapse" id="citeCollapse">
                 <small>
-                <div class="card card-body mt-auto">
+                <p class="card card-body mt-auto">
                     Nouwens, Midas. (2023). "Consent Observatory: Automated analysis of consent pop-ups on the web". Version 1.0. Retrieved from https://consent-observatory.eu
-                </div>
+                </p>
                 </small>
             </div>
         </div>
@@ -175,13 +175,13 @@
             </div>
             <div class="row">
                 <div class="col align-self-end">
-                    <a href="#a" class="btn btn-primary m-2" data-bs-toggle="tooltip" data-bs-placement="left" title="An accept all button.">Accept all</a>
-                    <a href="#a" class="btn btn-primary m-2" data-bs-toggle="tooltip" data-bs-placement="right" title="A reject all button.">Reject all</a>
+                    <button class="btn btn-primary m-2" data-bs-toggle="tooltip" data-bs-placement="left" title="An accept all button.">Accept all</button>
+                    <button class="btn btn-primary m-2" data-bs-toggle="tooltip" data-bs-placement="right" title="A reject all button.">Reject all</button>
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col">
-                    <a class="control-next" href="#a" data-bs-toggle="tooltip" data-bs-placement="bottom" title="A button that will take you to more granular options. Click to see more!">More options</a>
+                    <a href="javascript:void(0);" class="control-next" data-bs-toggle="tooltip" data-bs-placement="bottom" title="A button that will take you to more granular options. Click to see more!">More options</a>
                 </div>
             </div>
         </div>
@@ -259,17 +259,17 @@
 
             <div class="row pt-3 border-top">
                 <div class="col align-self-end">
-                    <a href="#a" class="btn btn-primary m-2">Accept all</a>
-                    <a href="#a" class="btn btn-primary m-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="A button to save your custom settings.">Save selection</a>
-                    <a href="#a" class="btn btn-primary m-2">Reject all</a>
+                    <button class="btn btn-primary m-2">Accept all</button>
+                    <button class="btn btn-primary m-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="A button to save your custom settings.">Save selection</button>
+                    <button class="btn btn-primary m-2">Reject all</button>
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col">
-                    <a class="control-previous" href="#a">Previous options</a>
+                    <a class="control-previous" href="javascript:void(0);">Previous options</a>
                 </div>
                 <div class="col">
-                    <a class="control-next" href="#a">More options</a>
+                    <a class="control-next" href="javascript:void(0);">More options</a>
                 </div>
             </div>
         </div>
@@ -486,14 +486,14 @@
 
             <div class="row pt-3 border-top">
                 <div class="col align-self-end">
-                    <a href="#a" class="btn btn-primary m-2">Accept all</a>
-                    <a href="#a" class="btn btn-primary m-2">Save selection</a>
-                    <a href="#a" class="btn btn-primary m-2">Reject all</a>
+                    <button class="btn btn-primary m-2">Accept all</button>
+                    <button class="btn btn-primary m-2">Save selection</button>
+                    <button class="btn btn-primary m-2">Reject all</button>
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col">
-                    <a class="control-previous" href="#a">Previous options</a>
+                    <a class="control-previous" href="javascript:void(0);">Previous options</a>
                 </div>
             </div>
         </div>

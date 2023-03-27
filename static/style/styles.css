@@ -230,3 +230,7 @@ hr {
     border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color)!important;
     opacity: 1;
 }
+
+.bg-jumbotron {
+    /*background-color: rgba(252,176,64,1);*/
+}
