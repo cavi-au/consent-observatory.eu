@@ -1,5 +1,7 @@
 # Consent Observatory
-TODO SOME INFO ABOUT THE PROJECT
+We created the Consent Observatory to make it easier for more people to study consent services on the web.
+
+Consent pop-ups have become ubiquitous on the web as companies whose business models rely on personal data processing try to grapple with data protection regulation across the world. Researchers, regulators, and policy makers have become interested in understanding whether those consent pop-us actually comply with the regulation, how they evolve over time, what geographic differences are, etc. However, studying consent pop-ups at scale requires extensive computational infrastructure and domain expertise, and this complexity is currently a barrier for many people. By making our data gathering tools public, we hope to make it easier for more people to study this topic and to prevent unnecessary and time-consuming duplication of software.
 
 ## Installation
 * Clone this repository
@@ -15,9 +17,9 @@ For the production build the variables must be set in the host environment. See 
 - `JOBS_ROOT_DIR` **[required]** where should pending, running and finished jobs be stored?
 - `RULES_DIR` **[required]** where are the rules files located for the `web-extractor`?
 - `JOBS_COMPLETED_EXPIRATION_TIME_MS [default=604800000]` how long should completed jobs (and their data) be kept?
-- `USER_DEFAULT_MAX_URLS [default=10]` How many urls can a regular user submit for analysis?
+- `USER_DEFAULT_MAX_URLS [default=1000]` How many urls can a regular user submit for analysis?
 - `USER_DEFAULT_MAX_JOBS [default=1]` How many jobs can a regular user have registered?
-- `USER_WHITELIST_MAX_URLS [default=100]` How many urls can a whitelisted user submit for analysis?
+- `USER_WHITELIST_MAX_URLS [default=10000]` How many urls can a whitelisted user submit for analysis?
 - `USER_WHITELIST_MAX_JOBS [default=1]` How many jobs can a whitelisted user have registered?
 - `USER_EMAIL_WHITELIST_FILE_PATH [default=]` The path for a newline delimited list of whitelisted user emails
 - `MAIL_SMTP_HOST` **[required]** SMTP-server hostname (e.g. `smtp.example.com`)
