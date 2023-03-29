@@ -121,9 +121,8 @@
         There are currently <span class="badge rounded-pill bg-primary">{form?.queueSize}</span> jobs in the queue before yours.
     </p>
     <p>
-        An email with your analysis-id: <code>{form?.jobId}</code> <CopyToClipboard value={form?.jobId} /> has been sent to your email address <span class=""><b>(check your spam!)</b></span>. You can also copy the id:
-        <code>{form?.jobId}</code> <CopyToClipboard value={form?.jobId} />
-        and see the current status now by visiting the <a href="/analysis/status">status page</a>.
+        Your analysis ID is <code>{form?.jobId}</code> <CopyToClipboard value={form?.jobId} />, which you have also been sent in an email (check your spam if you can't find it).
+        You will need this ID to check the status of your request and download your files, which you can do via the <a href="/analysis/status?{form?.jobId}">status page</a>.
     </p>
     <p>
         You will receive a new email when the analysis is completed and your result is ready for download.

@@ -25,6 +25,7 @@ class MailTemplateEngine {
     createJobSubmittedMail(job) {
         let vars = {
             '$ANALYSIS_ID': job.id,
+            '$ANALYSIS_INFO': JSON.stringify(job),
         };
         let text = this.#replaceMailVars(this.#mailSubmittedTemplate.text, vars);
         let html = this.#replaceMailVars(this.#mailSubmittedTemplate.html, vars);

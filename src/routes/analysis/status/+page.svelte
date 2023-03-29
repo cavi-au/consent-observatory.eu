@@ -3,27 +3,37 @@
     import Job from "$lib/client/components/Job.svelte";
     import { goto } from "$app/navigation";
     import { formAutoFocus } from "$lib/client/components/actions.js";
+    import {onMount} from 'svelte';
+
 
     export let form;
 
-    let job;
-    let jobIdFieldValue = '';
-
+    let job = ''
+    let jobIdFieldValue = ''
+    const analysisID = $page.url.search.split('?')[1];
     $: {
         job = form?.job;
         if (job) {
-            setJobIdFieldValue(); // do not reference jobIdFieldValue directly here as it is reactive itself which will cause it to reset to job.id when user enters into the field
+            setJobIdFieldValue(job.id); // do not reference jobIdFieldValue directly here as it is reactive itself which will cause it to reset to job.id when user enters into the field
+        } else if (analysisID) {
+            setJobIdFieldValue(analysisID)
+            onMount(() => {
+                document.querySelector('#submit-button').click()
+            });
+
         }
     }
 
-    function setJobIdFieldValue() {
-        jobIdFieldValue = job.id;
+    function setJobIdFieldValue(id) {
+        jobIdFieldValue = id;
     }
 
     async function jobDeleted() {
         jobIdFieldValue = '';
         await goto('');
     }
+
+    import { page } from '$app/stores';
 
 </script>
 
