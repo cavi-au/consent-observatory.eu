@@ -180,7 +180,7 @@
             <h6 class="sub-legend mt-4">Screenshots</h6>
             <div class="form-check">
                 <input type="checkbox" checked={selectedCheckboxes.has('includeScreenshots')} class="form-check-input" name="includeScreenshots"
-                       id="include-screenshots-checkbox" on:click={(event) => checkboxChanged('includeScreenshots', event.target.checked)} bind:this={test}>
+                       id="include-screenshots-checkbox" on:click={(event) => checkboxChanged('includeScreenshots', event.target.checked)}>
                 <label class="form-check-label ms-2" for="include-screenshots-checkbox" aria-describedby="include-screenshots-checkbox-info">Include screenshots</label>
                 <Tooltip tip="If selected, the results will include a screenshot of each website" top>
                     <small><i class="bi bi-question-circle"></i></small>
