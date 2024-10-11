@@ -186,8 +186,8 @@ form .select-control {
 }
 
 form .form-check {
-    display: inline-flex;
-    margin-right: 1rem;
+    display: block;
+    margin-left: 1rem;
 }
 
 /*.form-select {*/
