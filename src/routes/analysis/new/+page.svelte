@@ -1,11 +1,5 @@
 <script>
-    import {onMount} from 'svelte';
-
-    onMount(() => {
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-    });
-
+    import Tooltip from 'sv-tooltip';
 
     import { enhance } from '$app/forms';
     import CopyToClipboard from "$lib/client/components/CopyToClipboard.svelte";
@@ -184,11 +178,13 @@
 
         <div>
             <h6 class="sub-legend mt-4">Screenshots</h6>
-            <div>
+            <div class="form-check">
                 <input type="checkbox" checked={selectedCheckboxes.has('includeScreenshots')} class="form-check-input" name="includeScreenshots"
-                       id="include-screenshots-checkbox" on:click={(event) => checkboxChanged('includeScreenshots', event.target.checked)}>
+                       id="include-screenshots-checkbox" on:click={(event) => checkboxChanged('includeScreenshots', event.target.checked)} bind:this={test}>
                 <label class="form-check-label ms-2" for="include-screenshots-checkbox" aria-describedby="include-screenshots-checkbox-info">Include screenshots</label>
-                <small><i class="bi bi-question-circle" data-bs-toggle="tooltip" data-bs-placement="right" title="If selected, the results will include a screenshot of each website"></i></small>
+                <Tooltip tip="If selected, the results will include a screenshot of each website" top>
+                    <small><i class="bi bi-question-circle"></i></small>
+                </Tooltip>
             </div>
         </div>
 

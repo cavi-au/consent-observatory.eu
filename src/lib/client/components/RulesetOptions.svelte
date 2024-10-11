@@ -1,4 +1,6 @@
 <script>
+    import Tooltip from "sv-tooltip";
+    
     export let form;
     export let options;
     export let selectedCheckboxes;
@@ -59,7 +61,12 @@
             <div class="form-check">
                 <input type="checkbox" checked={selectedCheckboxes.has(optionKey)} class="form-check-input" name="{optionKey}"
                        id="{optionKey}" on:click={(event) => checkboxChanged(optionKey, event.target.checked)}>
-                <label class="form-check-label ms-2" for="{optionKey}" title="{rulesetOption.description}">{rulesetOption.label}</label>
+                <label class="form-check-label ms-2" for="{optionKey}">{rulesetOption.label}</label>
+                {#if rulesetOption.description}
+                    <Tooltip tip={rulesetOption.description} top>
+                    <small><i class="bi bi-question-circle"></i></small>
+                    </Tooltip>
+                {/if}
                 <!--{#if form?.errors?.[optionKey]}-->
                 <!--    <div id="{optionKey}-error" class="invalid-feedback">{form?.errors?.[optionKey]}</div>-->
                 <!--{:else if rulesetOption.description}-->

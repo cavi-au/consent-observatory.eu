@@ -13,13 +13,15 @@
 		"app-root-path": "^3.1.0",
 		"archiver": "^5.3.1",
 		"chokidar": "^3.5.3",
+		"js-levenshtein": "^1.1.6",
 		"lodash": "^4.17.21",
-		"nodemailer": "^6.8.0"
+		"nodemailer": "^6.8.0",
+		"sv-tooltip": "^0.2.1"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-node": "^1.0.0-next.96",
 		"@sveltejs/kit": "^1.0.0-next.511",
 		"svelte": "^3.50.1",
-		"vite": "^3.1.7"
+		"vite": "^4.1.0"
 	}
 }
