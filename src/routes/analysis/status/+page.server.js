@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { jobExecutor } from "../../../app.server.js";
-import { invalid } from "@sveltejs/kit";
+import { fail } from "@sveltejs/kit";
 
 export const actions = {
     default: async ({ request }) => {
@@ -24,7 +24,7 @@ export const actions = {
             let publicJobInfo = jobExecutor.getPublicJobInfo(job.id);
             return { status: "success", job: publicJobInfo };
         } else {
-            return invalid(400, { errors, data: { jobId } });
+            return fail(400, { errors, data: { jobId } });
         }
     }
 };
