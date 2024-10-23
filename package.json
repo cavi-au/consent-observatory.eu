@@ -8,20 +8,20 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@chcaa/validator": "^1.2.8",
-		"@chcaa/web-extractor": "^1.3.1",
+		"@chcaa/validator": "^2.3.0",
+		"@chcaa/web-extractor": "^1.4.2",
 		"app-root-path": "^3.1.0",
-		"archiver": "^5.3.1",
-		"chokidar": "^3.5.3",
+		"archiver": "^7.0.1",
+		"chokidar": "^4.0.1",
 		"js-levenshtein": "^1.1.6",
 		"lodash": "^4.17.21",
-		"nodemailer": "^6.8.0",
-		"sv-tooltip": "^0.2.1"
+		"nodemailer": "^6.9.15",
+		"sv-tooltip": "^0.2.3"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-node": "^1.0.0-next.96",
-		"@sveltejs/kit": "^1.0.0-next.511",
-		"svelte": "^3.50.1",
-		"vite": "^4.1.0"
+		"@sveltejs/adapter-node": "^5.2.8",
+		"@sveltejs/kit": "^2.7.2",
+		"svelte": "^5.0.5",
+		"vite": "^5.4.10"
 	}
 }
