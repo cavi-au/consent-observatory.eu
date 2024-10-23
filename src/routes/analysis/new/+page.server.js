@@ -1,4 +1,4 @@
-import { invalid } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import _ from 'lodash';
 import { isIP } from 'net';
 import { Job } from "$lib/server/analysis/job.js";
@@ -76,7 +76,7 @@ export const actions = {
 
             return { success: true, jobId: job.id, queueSize, daysToExpiration };
         } else {
-            return invalid(400, { errors, data: { email, urls: urlsStr, includeScreenshots, rulesetOptions } });
+            return fail(400, { errors, data: { email, urls: urlsStr, includeScreenshots, rulesetOptions } });
         }
     }
 };
