@@ -168,12 +168,43 @@ class JobExecutor {
      * @param jobId
      * @returns {{dataFileSize: number, submittedTime: number, completedTime: number, processingStartTime: number, rulesetName: string, id, expiresTime: number, email: string, status: string, urlCount: number}}
      */
+
     getPublicJobInfo(jobId) {
         let jobInfo = this.#jobs.get(jobId);
+
         if (!jobInfo) {
             throw new Error(`Unknown job id: "${jobId}"`);
         }
         let job = jobInfo.job;
+
+        function extractRules(rulesetOptions) {
+            let ruleNameRecode = {
+                "WordBoxGatherer": "Cookie Banner",
+                "skipMoveLikeIdiot": "Skip Simulating Mouse Movement",
+                "skipWaiting": "Skip Waiting After Page Load",
+                "CloudflareFence": "CloudFlare",
+                "CaptchaDeliveryFence": "Captcha Delivery",
+                "ForbiddenFence": "Forbidden",
+                "CMPGatherer": "CMP name",
+                "IABJSGatherer": "IAB CMP info",
+                "NormalizedWordButtonGatherer": "User Options",
+                "CheckboxGatherer": "Toggles",
+                "DOMGatherer": "DOM",
+                "CookieGatherer": "Cookies placed",
+                "EventListenerGatherer": "Elements with event listeners",
+                "ButtonGatherer": "Button elements",
+                "VisibilityAnalyzer": "Visibility Analyzer",
+                "InspectorAnalyzer": "Click Listener Analyzer"
+            }
+            let rules = Object.keys(rulesetOptions).filter(k => rulesetOptions[k])
+            let newRuleNames = []
+            for (let rule of rules) {
+                newRuleNames.push(ruleNameRecode[rule])
+            }
+
+            return newRuleNames.join('; ')
+        }
+
         let result = {
             id: job.id,
             status: jobInfo.status,
@@ -184,6 +215,7 @@ class JobExecutor {
             urlCount: job.urls.length,
             dataFileSize: jobInfo.meta.dataFileSize,
             rulesetName: job.rulesetName,
+            rules: extractRules(job.rulesetOptions),
             userEmail: job.userEmail
         };
         if (jobInfo.status === JobExecutor.jobStatus.COMPLETED) {

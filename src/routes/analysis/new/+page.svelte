@@ -25,7 +25,6 @@
         submitButtonEnabled = true;
     }
 
-
     function setSelectedRuleset(rulesetName, form) {
         if (selectedRuleset) {
             for (let rulesetOption of selectedRuleset.options) {
@@ -72,6 +71,7 @@
     function selectedOptionsChanged() {
         selectedCheckboxes = selectedCheckboxes; // make it update
         selectedRadios = selectedRadios;
+        console.log(selectedCheckboxes)
     }
 
     function checkboxChanged(key, selected) {
@@ -126,7 +126,7 @@
 </div>
 {:else}
 <div class="py-5">
-    <h3>Request consent pop-up analysis</h3>
+    <h3>Request consent banner analysis</h3>
     <p class="lead">Configure your analysis below to retrieve the data you want.
     <br>
         <a href="/about#methodology">Read more about our data collection methodology.</a>
@@ -150,7 +150,7 @@
 
         <div class="mb-3">
             <h4>Features</h4>
-            <p class="text-muted">Specify which pop-ups and which aspects of those pop-ups you want to extract.</p>
+            <p class="text-muted">Specify what data you want to gather about consent banners.</p>
 
             <!-- DEFAULT CONFIGURATIONS  -->
             {#if data.rulesets.length === 1}
@@ -176,13 +176,14 @@
         <RulesetOptions bind:this={rulesetOptionsComp} form={form} options={selectedRuleset.options} selectedCheckboxes={selectedCheckboxes} selectedRadios={selectedRadios} />
         </div>
 
+
         <div>
             <h6 class="sub-legend mt-4">Screenshots</h6>
             <div class="form-check">
                 <input type="checkbox" checked={selectedCheckboxes.has('includeScreenshots')} class="form-check-input" name="includeScreenshots"
                        id="include-screenshots-checkbox" on:click={(event) => checkboxChanged('includeScreenshots', event.target.checked)}>
-                <label class="form-check-label ms-2" for="include-screenshots-checkbox" aria-describedby="include-screenshots-checkbox-info">Include screenshots</label>
-                <Tooltip tip="If selected, the results will include a screenshot of each website" top>
+                <label class="form-check-label ms-2" for="include-screenshots-checkbox" aria-describedby="include-screenshots-checkbox-info">Screenshots as png</label>
+                <Tooltip tip="Takes a screenshot of the page, stored as png." top>
                     <small><i class="bi bi-question-circle"></i></small>
                 </Tooltip>
             </div>
@@ -192,7 +193,7 @@
 
         <div class="mb-3">
             <h4>Targets</h4>
-            <p class="text-muted">Specify which urls and (coming soon) from which location you want to gather data.</p>
+            <p class="text-muted">Specify which urls you want to gather data.</p>
             <label for="urls-field" class="form-label">Urls</label>
             <textarea class="form-control" class:is-invalid={form?.errors?.urls} name="urls" id="urls-field" rows="10" aria-describedby="urls-field-info urls-field-error" placeholder="{`example.eu
 example2.eu`}">{form?.data?.urls ?? ''}</textarea>

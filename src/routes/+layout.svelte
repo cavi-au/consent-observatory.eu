@@ -93,7 +93,7 @@
 
 <footer class="d-flex flex-wrap mt-auto text-muted">
     <span class="col d-flex px-5">
-        <small>Created by <a href="https://chc.au.dk" class="link-secondary">chc.au.dk</a> & Midas Nouwens 2022</small>
+        <small>Created by Midas Nouwens, <a href="https://cavi.au.dk" class="link-secondary">CAVI</a> & <a href="https://chc.au.dk" class="link-secondary">chc.au.dk</a></small>
     </span>
     <span class="col d-flex justify-content-end px-5">
         <small><a href="/privacy-policy" class="link-secondary">Privacy policy</a></small>

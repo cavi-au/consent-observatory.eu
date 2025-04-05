@@ -3,7 +3,7 @@
     import { createEventDispatcher, getContext } from "svelte";
 
     export let job;
-
+    console.log(job)
     const dispatch = createEventDispatcher();
 
     let appContext = getContext('appContext');
@@ -46,11 +46,11 @@
         <div class="col-lg-6">
             <table class="table table-sm table-striped border-dark">
                 <tbody>
-                    <tr><td>Id</td><td class="text-end"><code>{job.id}</code></td></tr>
-                    <tr><td>User Email</td><td class="text-end"><code>{job.userEmail}</code></td></tr>
-                    <tr><td>Status</td><td class="text-end">{job.status}</td></tr>
-                    <tr><td>Url Count</td><td class="text-end">{job.urlCount}</td></tr>
-                    <tr><td>Ruleset</td><td class="text-end">{job.rulesetName}</td></tr>
+                    <tr><td class="text-nowrap">Id</td><td class="text-end"><code>{job.id}</code></td></tr>
+                    <tr><td class="text-nowrap">User Email</td><td class="text-end"><code>{job.userEmail}</code></td></tr>
+                    <tr><td class="text-nowrap">Status</td><td class="text-end">{job.status}</td></tr>
+                    <tr><td class="text-nowrap">Url Count</td><td class="text-end">{job.urlCount}</td></tr>
+                    <tr><td class="text-nowrap">Features</td><td class="text-end">{job.rules}</td></tr>
                 </tbody>
             </table>
         </div>

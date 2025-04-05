@@ -15,13 +15,15 @@ class Job {
     #userEmail;
     #urls;
     #rulesetName;
+    #rules;
     #options;
 
-    constructor(id, userEmail, urls, rulesetName, options) {
+    constructor(id, userEmail, urls, rulesetName, options, rulesetOptions) {
         this.#id = id;
         this.#userEmail = userEmail.trim().toLowerCase();
         this.#urls = urls;
         this.#rulesetName = rulesetName;
+        this.#rules = rulesetOptions;
         this.#options = _.defaultsDeep({}, options, DEFAULT_OPTIONS);
         this.#submittedTime = Date.now();
     }
@@ -85,12 +87,13 @@ class Job {
             userEmail: this.#userEmail,
             urls: this.#urls,
             rulesetName: this.rulesetName,
+            rules: this.#rules,
             options: this.#options
         };
     }
 
-    static create(userEmail, urls, rulesetName, options) {
-        return new Job(crypto.randomUUID(), userEmail, urls, rulesetName, options);
+    static create(userEmail, urls, rulesetName, options, rulesetOptions) {
+        return new Job(crypto.randomUUID(), userEmail, urls, rulesetName, options, rulesetOptions);
     }
 
     static fromJSONStr(jsonStr) {
@@ -99,7 +102,7 @@ class Job {
     }
 
     static fromJSON(jsonObj) {
-        let job = new Job(jsonObj.id, jsonObj.userEmail, jsonObj.urls, jsonObj.rulesetName, jsonObj.options);
+        let job = new Job(jsonObj.id, jsonObj.userEmail, jsonObj.urls, jsonObj.rulesetName, jsonObj.rules, jsonObj.options);
         job.#submittedTime = jsonObj.submittedTime;
         job.#processingStartTime = jsonObj.processingStartTime;
         job.#completedTime = jsonObj.completedTime;

@@ -123,8 +123,8 @@
 
 <div class="pt-5 pb-2 my-5 bg-light border border-secondary-subtle rounded-3 text-center">
     <h2 class="fw-bold">Consent Observatory</h2>
-    <p class="lead">Automated analysis of consent pop-ups on the web</p>
-    <p id="credits"><small>by Midas Nouwens</small></p>
+    <p class="lead">Automated analysis of cookie banners on the web</p>
+    <!-- <p id="credits"><small>by Midas Nouwens</small></p> -->
     <a href="/analysis/new" class="btn btn-primary btn-md mt-2">Start a new analysis</a>
     <div class="pt-3">
         <p><small><small class="text-muted"><a href="#citeCollapse" aria-expanded="false" aria-controls="citeCollapse" class="link-secondary" data-bs-toggle="collapse">How to cite?</a></small></small></p>
@@ -132,7 +132,7 @@
             <div class="col-8 collapse" id="citeCollapse">
                 <small>
                 <p class="card card-body mt-auto">
-                    Nouwens, Midas. (2023). "Consent Observatory: Automated analysis of consent pop-ups on the web". Version 1.0. Retrieved from https://consent-observatory.eu
+                    Nouwens, M., Kristensen, J. B., Maalt, K., & Bagge, R. (2025). A Cross-Country Analysis of GDPR Cookie Banners and Flexible Methods for Scraping Them. Proceedings of the ACM SIGCHI Conference on Human Factors in Computing Systems (CHI 2025).
                 </p>
                 </small>
             </div>
@@ -145,13 +145,13 @@
 <div class="py-2 mb-5">
     <h3>What are consent pop-ups?</h3>
     <p>
-        Consent pop-ups are interfaces that collect your permission to read and write data on your device, and permission to collect, process, or store any personal data.
-        Many websites and apps used consent pop-ups.
-        Unfortunately, most do not comply with data protection regulation.
-        This website lets you automatically extract design features from those pop-ups.
+        Cookie banners are interfaces that collect your permission to read and write data on your device, and permission to collect, process, or store any personal data.
+        Many websites and apps use cookie banners.
+        Unfortunately, many do not comply with data protection regulation.
+        This website lets you automatically extract design features from those interfaces.
     </p>
     <p>
-        Here is an <mark>interactive</mark> example of a common consent pop-up design:
+        Here is an <mark>interactive</mark> example of a common consent interface design:
     </p>
 
     <div class="card offset-md-2 col-md-8 my-5 text-center shadow">
@@ -501,6 +501,7 @@
 
 </div>
 
+<!--
 <hr class="my-4">
 
 <div class="py-2 mb-5">
@@ -510,7 +511,9 @@
     </p>
     <p>Analysing the pop-up above would give you the following result:</p>
     <pre><code id="JSONoutput"></code></pre>
+
 </div>
+    -->
 
 <!--        <h4>History of Consent Pop-ups</h4>-->
 <!--        <p>-->

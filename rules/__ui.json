@@ -1,0 +1,130 @@
+{
+    "name": "Scrape-O-Matic Data Gatherers",
+    "description": "A set of diverse components that gather data from websites",
+    "options": [
+        {
+            "type": "section",
+            "title": "Scraping Behaviour",
+            "key": "scraping-behaviour",
+            "options": [
+                {
+                    "type": "checkbox",
+                    "key": "skipMoveLikeIdiot",
+                    "label": "Skip Simulating Mouse Movement",
+                    "description": "Normally the scraper moves the mouse around a bit after loading the page to simulate an actual user"
+                },
+                {
+                    "type": "checkbox",
+                    "key": "skipWaiting",
+                    "label": "Skip Waiting After Page Load",
+                    "description": "Normally the scraper waits 10 seconds between loading the page and running the primary data gathering"
+                }
+            ]
+        },
+        {
+            "type": "section",
+            "title": "Anti-Bot Detectors",
+            "key": "anti-bot-detectors",
+            "options": [
+                {
+                    "type": "checkbox",
+                    "key": "CloudflareFence",
+                    "label": "CloudFlare",
+                    "description": "Detects the CloudFlare bot detector and waits for it"
+                },
+                {
+                    "type": "checkbox",
+                    "key": "CaptchaDeliveryFence",
+                    "label": "Captcha Delivery",
+                    "description": "Detects the CaptchaDelivery bot detector"
+                },
+                {
+                    "type": "checkbox",
+                    "key": "ForbiddenFence",
+                    "label": "Forbidden",
+                    "description": "Detects if the server replied with a 403 forbidden page"
+                }
+            ]
+        },
+        {
+            "type": "section",
+            "title": "Data Gatherers",
+            "key": "data-gatherers",
+            "options": [
+                {
+                    "type": "checkbox",
+                    "key": "WordBoxGatherer",
+                    "label": "Cookie Banner",
+                    "description": "Detects cookie banners using heuristics and word corpus."
+                },
+                {
+                    "type": "checkbox",
+                    "key": "CMPGatherer",
+                    "label": "CMP name",
+                    "description": "Tries to identify the name of the CMP using regex patterns in HTML attributes."
+                },
+                {
+                    "type": "checkbox",
+                    "key": "IABJSGatherer",
+                    "label": "IAB CMP info",
+                    "description": "Gathers CMP info by pinging the IAB TCF API."
+                },
+                {
+                    "type": "checkbox",
+                    "key": "NormalizedWordButtonGatherer",
+                    "label": "User Options",
+                    "description": "Find user options such as accept, reject, settings based on a large pre-processed word-corpus"
+                },
+                {
+                    "type": "checkbox",
+                    "key": "CheckboxGatherer",
+                    "label": "Toggles",
+                    "description": "Finds checkboxes and their default status"
+                },
+                {
+                    "type": "checkbox",
+                    "key": "DOMGatherer",
+                    "label": "DOM",
+                    "description": "Stores a copy of the DOM."
+                },
+                {
+                    "type": "checkbox",
+                    "key": "CookieGatherer",
+                    "label": "Cookies placed",
+                    "description": "Reports any cookies set on the page after load."
+                },
+                {
+                    "type": "checkbox",
+                    "key": "EventListenerGatherer",
+                    "label": "Elements with event listeners",
+                    "description": "Finds all clickable elements based on event listeners."
+                },
+                {
+                    "type": "checkbox",
+                    "key": "ButtonGatherer",
+                    "label": "Button elements",
+                    "description": "Finds all elements that might be buttons using HTML heuristics."
+                }
+            ]
+        },
+        {
+            "type": "section",
+            "title": "Meta Analyzers",
+            "key": "meta-analyzers",
+            "options": [
+                {
+                    "type": "checkbox",
+                    "key": "VisibilityAnalyzer",
+                    "label": "Visibility Analyzer",
+                    "description": "Enhance Cookie Banner and Button gatherers output with visual information."
+                },
+                {
+                    "type": "checkbox",
+                    "key": "InspectorAnalyzer",
+                    "label": "Click Listener Analyzer",
+                    "description": "Enhance Cookie Banner and Button gatherer output with number of click listeners."
+                }
+            ]
+        }
+    ]
+}
