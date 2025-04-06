@@ -3,6 +3,8 @@ We created the Consent Observatory to make it easier for more people to study co
 
 Consent pop-ups have become ubiquitous on the web as companies whose business models rely on personal data processing try to grapple with data protection regulation across the world. Researchers, regulators, and policy makers have become interested in understanding whether those consent pop-us actually comply with the regulation, how they evolve over time, what geographic differences are, etc. However, studying consent pop-ups at scale requires extensive computational infrastructure and domain expertise, and this complexity is currently a barrier for many people. By making our data gathering tools public, we hope to make it easier for more people to study this topic and to prevent unnecessary and time-consuming duplication of software.
 
+This software was used to generate the results in the research paper [A Cross-Country Analysis of GDPR Cookie Banners and Flexible Methods for Scraping Them](https://arxiv.org/abs/2503.19655).
+
 ## Installation
 * Clone this repository
 * `cd`to the project root and run `npm install`
@@ -15,7 +17,7 @@ For development create a `.env` file in the root of the project or set them usin
 For the production build the variables must be set in the host environment. See the .
 
 - `JOBS_ROOT_DIR` **[required]** where should pending, running and finished jobs be stored?
-- `RULES_DIR` **[required]** where are the rules files located for the `web-extractor`?
+- `RULES_DIR` **[required]** where are the rules files located for the `web-extractor`? The directory `rules` has the scripts used for the research paper.
 - `JOBS_COMPLETED_EXPIRATION_TIME_MS [default=604800000]` how long should completed jobs (and their data) be kept?
 - `USER_DEFAULT_MAX_URLS [default=1000]` How many urls can a regular user submit for analysis?
 - `USER_DEFAULT_MAX_JOBS [default=1]` How many jobs can a regular user have registered?
