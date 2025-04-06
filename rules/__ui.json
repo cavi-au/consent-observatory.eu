@@ -125,6 +125,19 @@
                     "description": "Enhance Cookie Banner and Button gatherer output with number of click listeners."
                 }
             ]
+        },
+        {
+            "type": "section",
+            "title": "Screenshots",
+            "key": "screenshots",
+            "options": [
+                {
+                    "type": "checkbox",
+                    "key": "ScreenshotGatherer",
+                    "label": "Screenshot as base64",
+                    "description": "Take two screenshots: one when the page is first loaded, one after 10 seconds. "
+                }
+            ]
         }
     ]
 }

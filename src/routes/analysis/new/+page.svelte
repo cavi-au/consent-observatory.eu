@@ -177,17 +177,17 @@
         </div>
 
 
-        <div>
-            <h6 class="sub-legend mt-4">Screenshots</h6>
-            <div class="form-check">
-                <input type="checkbox" checked={selectedCheckboxes.has('includeScreenshots')} class="form-check-input" name="includeScreenshots"
-                       id="include-screenshots-checkbox" on:click={(event) => checkboxChanged('includeScreenshots', event.target.checked)}>
-                <label class="form-check-label ms-2" for="include-screenshots-checkbox" aria-describedby="include-screenshots-checkbox-info">Screenshots as png</label>
-                <Tooltip tip="Takes a screenshot of the page, stored as png." top>
-                    <small><i class="bi bi-question-circle"></i></small>
-                </Tooltip>
-            </div>
-        </div>
+<!--        <div>-->
+<!--            <h6 class="sub-legend mt-4">Screenshots</h6>-->
+<!--            <div class="form-check">-->
+<!--                <input type="checkbox" checked={selectedCheckboxes.has('includeScreenshots')} class="form-check-input" name="includeScreenshots"-->
+<!--                       id="include-screenshots-checkbox" on:click={(event) => checkboxChanged('includeScreenshots', event.target.checked)}>-->
+<!--                <label class="form-check-label ms-2" for="include-screenshots-checkbox" aria-describedby="include-screenshots-checkbox-info">Screenshots as png</label>-->
+<!--                <Tooltip tip="Takes a screenshot of the page, stored as png." top>-->
+<!--                    <small><i class="bi bi-question-circle"></i></small>-->
+<!--                </Tooltip>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <hr class="my-4">
 

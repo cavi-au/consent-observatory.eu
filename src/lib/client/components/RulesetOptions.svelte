@@ -46,10 +46,11 @@
 
 {#if sectionTitle}
     <h6 class="sub-legend mt-4">{sectionTitle}
+        {#if options.length > 1}
         <input id="toggleAll-{sectionKey}" type="checkbox" class="form-check-input ms-2 text-muted" on:click={(e) => toggleAllCheckboxes(e)}>
         <label for="toggleAll-{sectionKey}"><small class="text-muted">Toggle all</small></label>
+        {/if}
     </h6>
-
 {/if}
 <div>
     {#each options as rulesetOption}
