@@ -54,8 +54,8 @@
                 {
                     "type": "checkbox",
                     "key": "WordBoxGatherer",
-                    "label": "Cookie Banner",
-                    "description": "Detects cookie banners using heuristics and word corpus."
+                    "label": "Consent Interface",
+                    "description": "Detects consent interfaces using heuristics and word corpus."
                 },
                 {
                     "type": "checkbox",
@@ -115,13 +115,13 @@
                 {
                     "type": "checkbox",
                     "key": "VisibilityAnalyzer",
-                    "label": "Visibility Analyzer",
+                    "label": "Visibility analyser",
                     "description": "Enhance Cookie Banner and Button gatherers output with visual information."
                 },
                 {
                     "type": "checkbox",
                     "key": "InspectorAnalyzer",
-                    "label": "Click Listener Analyzer",
+                    "label": "Click listener analyser",
                     "description": "Enhance Cookie Banner and Button gatherer output with number of click listeners."
                 }
             ]
