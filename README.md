@@ -18,20 +18,20 @@ For the production build the variables must be set in the host environment. See 
 
 - `JOBS_ROOT_DIR` **[required]** where should pending, running and finished jobs be stored?
 - `RULES_DIR` **[required]** where are the rules files located for the `web-extractor`? The directory `rules` has the scripts used for the research paper.
+- `MAIL_SMTP_HOST` **[required]** SMTP-server hostname (e.g. `smtp.example.com`)
+- `MAIL_SMTP_PORT` **[required]** SMTP-server port (e.g. 25 or 587)
+- `MAIL_MESSAGE_FROM` **[required]** the email to set as the `from` field (e.g. `info@example.com` or `"John Doe" <info@example.com>`)
+- `ADMIN_ACCESS_SECRET` **[required]** admin key for accessing /admin/status must a least be 8 characters long
 - `JOBS_COMPLETED_EXPIRATION_TIME_MS [default=604800000]` how long should completed jobs (and their data) be kept?
 - `USER_DEFAULT_MAX_URLS [default=1000]` How many urls can a regular user submit for analysis?
 - `USER_DEFAULT_MAX_JOBS [default=1]` How many jobs can a regular user have registered?
 - `USER_WHITELIST_MAX_URLS [default=10000]` How many urls can a whitelisted user submit for analysis?
 - `USER_WHITELIST_MAX_JOBS [default=1]` How many jobs can a whitelisted user have registered?
 - `USER_EMAIL_WHITELIST_FILE_PATH [default=]` The path for a newline delimited list of whitelisted user emails
-- `MAIL_SMTP_HOST` **[required]** SMTP-server hostname (e.g. `smtp.example.com`)
-- `MAIL_SMTP_PORT` **[required]** SMTP-server port (e.g. 25 or 587)
 - `MAIL_SMTP_USER` SMTP-server username (most likely the email address or none of server is whitelisted on ip-address)
 - `MAIL_SMTP_PASS` SMTP-server password (most likely password for the email address or none of server is whitelisted on ip-address)
-- `MAIL_MESSAGE_FROM` **[required]** the email to set as the `from` field (e.g. `info@example.com` or `"John Doe" <info@example.com>`)
 - `MAIL_SMTP_DISABLE_VERIFICATION [default=false]` set to `true` disable the verification check when server starts, disable this during development for faster restart times 
 - `MAIL_DISABLED [default=false]` set to `true` disable sending emails
-- `ADMIN_ACCESS_SECRET` **[required]** admin key for accessing /admin/status must a least be 8 characters long
 - `PORT [default=3000]` (only used for production) the port the server should use
 - `ORIGIN` (only used for production) the host name the server is running on, e.g. https://my.example
 
